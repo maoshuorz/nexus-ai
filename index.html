@@ -2,139 +2,321 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus AI - 6 AI Agent Autonomous Development</title>
-    <meta name="description" content="6 AI Agents providing autonomous development services. 24/7 order taking, AI Agent systems, workflow automation.">
-    <meta name="keywords" content="AI Agent, autonomous development, workflow automation">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://maoshuorz.github.io/nexus-ai/">
-    <meta property="og:title" content="Nexus AI - 6 AI Agent Autonomous Development">
-    <meta property="og:description" content="6 AI Agents providing autonomous development services">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:site" content="@y36764qing">
+    <meta name="description" content="6 AI Agents providing autonomous development services">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        body { background: #0a0a0f; }
-        .glass { background: rgba(20, 20, 30, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .status-dot { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        /* Pixel Art Style */
+        :root {
+            --pixel-bg: #0d0d15;
+            --pixel-dark: #1a1a2e;
+            --pixel-accent: #6366f1;
+            --pixel-green: #10b981;
+            --pixel-pink: #ec4899;
+            --pixel-cyan: #06b6d4;
+            --pixel-border: #2d2d44;
+        }
         
-        /* Language Dropdown */
-        .lang-dropdown { position: relative; }
-        .lang-dropdown-content {
+        * {
+            font-family: 'VT323', monospace;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            background: var(--pixel-bg);
+            color: #e0e0ff;
+        }
+        
+        /* Pixel Card Effect */
+        .pixel-card {
+            background: var(--pixel-dark);
+            border: 4px solid var(--pixel-border);
+            box-shadow: 
+                4px 4px 0 rgba(0,0,0,0.5),
+                inset 2px 2px 0 rgba(255,255,255,0.1),
+                inset -2px -2px 0 rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .pixel-card::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border: 2px solid transparent;
+            pointer-events: none;
+        }
+        
+        /* Pixel Button */
+        .pixel-btn {
+            background: var(--pixel-accent);
+            border: 4px solid #4f46e5;
+            box-shadow: 
+                4px 4px 0 #312e81,
+                inset -2px -2px 0 rgba(0,0,0,0.2);
+            transition: all 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 
+                6px 6px 0 #312e81,
+                inset -2px -2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 
+                2px 2px 0 #312e81,
+                inset -2px -2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .pixel-btn.secondary {
+            background: var(--pixel-dark);
+            border-color: var(--pixel-border);
+            box-shadow: 4px 4px 0 #1a1a2e;
+        }
+        
+        /* Pixel Title */
+        .pixel-title {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 
+                4px 4px 0 rgba(0,0,0,0.8),
+                -2px -2px 0 rgba(255,255,255,0.1);
+            letter-spacing: 2px;
+        }
+        
+        .pixel-subtitle {
+            font-family: 'VT323', monospace;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        }
+        
+        /* Pixel Grid Background */
+        .pixel-bg {
+            background-image: 
+                linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        /* Status Dot Pixel */
+        .pixel-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--pixel-green);
+            box-shadow: 
+                0 0 0 2px #065f46,
+                0 0 10px var(--pixel-green);
+            animation: pixel-pulse 1s infinite;
+        }
+        
+        @keyframes pixel-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+        
+        /* Language Dropdown - Fixed */
+        .lang-dropdown {
+            position: relative;
+        }
+        
+        .lang-dropdown-btn {
+            background: var(--pixel-dark);
+            border: 3px solid var(--pixel-border);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        
+        .lang-dropdown-btn:hover {
+            border-color: var(--pixel-accent);
+        }
+        
+        .lang-dropdown-btn.active {
+            border-color: var(--pixel-accent);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            transform: translate(2px, 2px);
+        }
+        
+        .lang-dropdown-menu {
             display: none;
             position: absolute;
+            top: calc(100% + 8px);
             right: 0;
-            top: 100%;
+            background: var(--pixel-dark);
+            border: 3px solid var(--pixel-border);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
             min-width: 160px;
-            z-index: 100;
-            margin-top: 8px;
+            z-index: 1000;
         }
-        .lang-dropdown:hover .lang-dropdown-content,
-        .lang-dropdown.active .lang-dropdown-content { display: block; }
+        
+        .lang-dropdown-menu.show {
+            display: block;
+        }
+        
         .lang-option {
-            padding: 10px 16px;
+            padding: 10px 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.1s;
+            border-bottom: 2px solid var(--pixel-border);
+            font-size: 16px;
+        }
+        
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+        
+        .lang-option:hover {
+            background: rgba(99,102,241,0.2);
+        }
+        
+        .lang-option.active {
+            background: rgba(99,102,241,0.3);
+        }
+        
+        /* Pixel Progress Bar */
+        .pixel-progress {
+            height: 24px;
+            background: var(--pixel-dark);
+            border: 3px solid var(--pixel-border);
+            position: relative;
+        }
+        
+        .pixel-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pixel-green), #34d399);
+            position: relative;
+            box-shadow: inset -2px -2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .pixel-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 4px;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Pixel Avatar */
+        .pixel-avatar {
+            width: 64px;
+            height: 64px;
+            border: 4px solid;
+            box-shadow: 
+                4px 4px 0 rgba(0,0,0,0.5),
+                inset 2px 2px 0 rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-size: 28px;
         }
-        .lang-option:hover { background: rgba(99, 102, 241, 0.2); }
-        .lang-option.active { background: rgba(99, 102, 241, 0.3); }
         
         /* Mobile Optimizations */
         @media (max-width: 768px) {
-            .mobile-hidden { display: none !important; }
-            .mobile-full { width: 100% !important; }
-            .mobile-stack { flex-direction: column !important; }
-            .mobile-text-sm { font-size: 0.875rem !important; }
-            .mobile-text-xs { font-size: 0.75rem !important; }
-            .mobile-p-2 { padding: 0.5rem !important; }
-            .mobile-p-4 { padding: 1rem !important; }
-            .mobile-gap-2 { gap: 0.5rem !important; }
-            .mobile-grid-1 { grid-template-columns: 1fr !important; }
-            .mobile-center { text-align: center !important; }
+            .pixel-title {
+                font-size: 18px !important;
+                line-height: 1.5 !important;
+            }
             
-            /* Mobile Navigation */
-            .mobile-nav { padding: 0.75rem 1rem !important; }
-            .mobile-nav-title { font-size: 1rem !important; }
-            .mobile-nav-logo { width: 32px !important; height: 32px !important; }
+            .pixel-card {
+                border-width: 3px;
+                box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            }
             
-            /* Mobile Hero */
-            .mobile-hero { padding-top: 5rem !important; padding-bottom: 2rem !important; }
-            .mobile-hero-title { font-size: 1.75rem !important; line-height: 1.3 !important; }
-            .mobile-hero-desc { font-size: 0.875rem !important; }
+            .pixel-btn {
+                border-width: 3px;
+                box-shadow: 2px 2px 0 #312e81;
+                font-size: 14px;
+                padding: 10px 16px;
+            }
             
-            /* Mobile Buttons */
-            .mobile-btn { padding: 0.625rem 1rem !important; font-size: 0.875rem !important; width: 100% !important; margin-bottom: 0.5rem !important; }
-            .mobile-btn-group { flex-direction: column !important; }
+            .pixel-avatar {
+                width: 48px;
+                height: 48px;
+                border-width: 3px;
+                font-size: 20px;
+            }
             
-            /* Mobile Cards */
-            .mobile-card { padding: 1rem !important; margin-bottom: 0.75rem !important; }
+            .mobile-stack {
+                flex-direction: column !important;
+            }
             
-            /* Mobile Monitor */
-            .mobile-monitor { height: 400px !important; }
-            .mobile-monitor-frame { height: 350px !important; }
+            .mobile-full {
+                width: 100% !important;
+            }
             
-            /* Mobile Language Dropdown */
-            .mobile-lang-dropdown { min-width: 140px !important; }
+            .mobile-text-sm {
+                font-size: 14px !important;
+            }
+            
+            .mobile-center {
+                text-align: center !important;
+            }
         }
         
-        /* PC Optimizations */
-        @media (min-width: 769px) {
-            .pc-hidden { display: none !important; }
+        /* Scrollbar Pixel */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
         }
         
-        [data-i18n] { transition: opacity 0.3s ease; }
+        ::-webkit-scrollbar-track {
+            background: var(--pixel-dark);
+            border: 2px solid var(--pixel-border);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--pixel-accent);
+            border: 2px solid var(--pixel-border);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #818cf8;
+        }
+        
+        [data-i18n] { transition: opacity 0.2s; }
     </style>
 </head>
-<body class="text-gray-300 min-h-screen">
+<body class="pixel-bg min-h-screen">
     
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass mobile-nav">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 mobile-nav-logo rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">N</span>
-                </div>
-                <span class="text-xl mobile-nav-title font-bold text-white">Nexus AI</span>
+    <nav class="fixed top-0 left-0 right-0 z-50" style="background: rgba(13,13,21,0.95); border-bottom: 4px solid var(--pixel-border);">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 flex items-center justify-center text-2xl">🤖</div>
+                <span class="pixel-title text-lg text-white">NEXUS AI</span>
             </div>
             
             <div class="flex items-center gap-3">
-                <!-- X Link -->
-                <a href="https://x.com/y36764qing" target="_blank" class="flex items-center gap-2 px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    <span class="hidden sm:inline text-sm">@y36764qing</span>
+                <a href="https://x.com/y36764qing" target="_blank" class="pixel-btn secondary px-3 py-2 text-sm flex items-center gap-2">
+                    <span>𝕏</span>
+                    <span class="hidden sm:inline">@y36764qing</span>
                 </a>
                 
                 <!-- Language Dropdown -->
-                <div class="lang-dropdown">
-                    <button class="flex items-center gap-2 px-3 py-2 glass rounded-lg hover:bg-white/5 transition-colors">
+                <div class="lang-dropdown" id="langDropdown">
+                    <button class="lang-dropdown-btn px-3 py-2 flex items-center gap-2 text-base" onclick="toggleLangDropdown()">
                         <span id="currentLang">🇨🇳</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg id="langArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </button>
-                    <div class="lang-dropdown-content glass rounded-xl overflow-hidden mobile-lang-dropdown">
-                        <div class="lang-option active" onclick="setLanguage('zh')" data-lang="zh">🇨🇳 中文</div>
-                        <div class="lang-option" onclick="setLanguage('en')" data-lang="en">🇺🇸 English</div>
-                        <div class="lang-option" onclick="setLanguage('ja')" data-lang="ja">🇯🇵 日本語</div>
-                        <div class="lang-option" onclick="setLanguage('ko')" data-lang="ko">🇰🇷 한국어</div>
-                        <div class="lang-option" onclick="setLanguage('es')" data-lang="es">🇪🇸 Español</div>
-                        <div class="lang-option" onclick="setLanguage('fr')" data-lang="fr">🇫🇷 Français</div>
-                        <div class="lang-option" onclick="setLanguage('de')" data-lang="de">🇩🇪 Deutsch</div>
-                        <div class="lang-option" onclick="setLanguage('ru')" data-lang="ru">🇷🇺 Русский</div>
-                        <div class="lang-option" onclick="setLanguage('ar')" data-lang="ar">🇸🇦 العربية</div>
-                        <div class="lang-option" onclick="setLanguage('pt')" data-lang="pt">🇵🇹 Português</div>
+                    <div class="lang-dropdown-menu" id="langMenu">
+                        <div class="lang-option active" onclick="selectLanguage('zh')" data-lang="zh">🇨🇳 中文</div>
+                        <div class="lang-option" onclick="selectLanguage('en')" data-lang="en">🇺🇸 English</div>
+                        <div class="lang-option" onclick="selectLanguage('ja')" data-lang="ja">🇯🇵 日本語</div>
+                        <div class="lang-option" onclick="selectLanguage('ko')" data-lang="ko">🇰🇷 한국어</div>
+                        <div class="lang-option" onclick="selectLanguage('es')" data-lang="es">🇪🇸 Español</div>
+                        <div class="lang-option" onclick="selectLanguage('fr')" data-lang="fr">🇫🇷 Français</div>
+                        <div class="lang-option" onclick="selectLanguage('de')" data-lang="de">🇩🇪 Deutsch</div>
+                        <div class="lang-option" onclick="selectLanguage('ru')" data-lang="ru">🇷🇺 Русский</div>
+                        <div class="lang-option" onclick="selectLanguage('ar')" data-lang="ar">🇸🇦 العربية</div>
+                        <div class="lang-option" onclick="selectLanguage('pt')" data-lang="pt">🇵🇹 Português</div>
                     </div>
                 </div>
             </div>
@@ -142,168 +324,205 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-24 pb-12 px-4 mobile-hero">
-        <div class="max-w-7xl mx-auto text-center">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 mobile-hero-title">
-                <span data-i18n="hero_title_1">6 AI Agents</span><br>
-                <span class="gradient-text" data-i18n="hero_title_2">Autonomous Development</span>
-            </h1>
-            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-6 mobile-hero-desc" data-i18n="hero_desc">
-                Nexus AI Technologies - A company of 6 professional AI Agents. 24/7 order taking, autonomous development.
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-3 mb-8 mobile-btn-group">
-                <a href="#monitor" class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity mobile-btn" data-i18n="btn_monitor">
-                    📊 Live Monitor
-                </a>
-                <a href="mailto:qingziyuezi@gmail.com" class="px-6 py-3 glass rounded-xl text-white font-semibold hover:bg-white/5 transition-colors mobile-btn" data-i18n="btn_contact">
-                    ✉️ Contact
-                </a>
-                <a href="https://x.com/y36764qing" target="_blank" class="px-6 py-3 glass rounded-xl text-blue-400 font-semibold hover:bg-white/5 transition-colors mobile-btn" data-i18n="btn_follow">
-                    🐦 Follow X
-                </a>
+    <section class="pt-24 pb-12 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="pixel-card p-6 mb-6">
+                <h1 class="pixel-title text-xl sm:text-2xl md:text-3xl text-white mb-4 leading-relaxed">
+                    <span data-i18n="hero_title_1">6 AI AGENTS</span><br>
+                    <span style="color: var(--pixel-accent);" data-i18n="hero_title_2">AUTONOMOUS DEV</span>
+                </h1>
+                <p class="pixel-subtitle text-lg md:text-xl mb-6" style="color: #a0a0cc;" data-i18n="hero_desc">
+                    Professional AI Agent company. 24/7 service.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-3 mobile-stack">
+                    <a href="#monitor" class="pixel-btn px-5 py-3 text-sm md:text-base" data-i18n="btn_monitor">📊 MONITOR</a>
+                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn secondary px-5 py-3 text-sm md:text-base" data-i18n="btn_contact">✉️ CONTACT</a>
+                </div>
             </div>
-
+            
             <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                <div class="glass rounded-xl p-4 mobile-card">
-                    <div class="text-2xl font-bold text-white">6</div>
-                    <div class="text-xs text-gray-500" data-i18n="stat_agents">AI Agents</div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="pixel-card p-4 text-center">
+                    <div class="text-2xl font-bold" style="color: var(--pixel-accent); font-family: 'Press Start 2P'; font-size: 16px;">6</div>
+                    <div class="text-sm mt-1" style="color: #8888aa;" data-i18n="stat_agents">AGENTS</div>
                 </div>
-                <div class="glass rounded-xl p-4 mobile-card">
-                    <div class="text-2xl font-bold text-white">24/7</div>
-                    <div class="text-xs text-gray-500" data-i18n="stat_service">Service</div>
+                <div class="pixel-card p-4 text-center">
+                    <div class="text-2xl font-bold" style="color: var(--pixel-cyan); font-family: 'Press Start 2P'; font-size: 16px;">24/7</div>
+                    <div class="text-sm mt-1" style="color: #8888aa;" data-i18n="stat_service">ONLINE</div>
                 </div>
-                <div class="glass rounded-xl p-4 mobile-card">
-                    <div class="text-2xl font-bold text-white">&lt;1h</div>
-                    <div class="text-xs text-gray-500" data-i18n="stat_response">Response</div>
+                <div class="pixel-card p-4 text-center">
+                    <div class="text-2xl font-bold" style="color: var(--pixel-pink); font-family: 'Press Start 2P'; font-size: 16px;">
+                        <1H
+                    </div>
+                    <div class="text-sm mt-1" style="color: #8888aa;" data-i18n="stat_response">REPLY</div>
                 </div>
-                <div class="glass rounded-xl p-4 mobile-card">
-                    <div class="text-2xl font-bold text-green-400">50%+</div>
-                    <div class="text-xs text-gray-500" data-i18n="stat_profit">Profit</div>
+                <div class="pixel-card p-4 text-center">
+                    <div class="text-2xl font-bold" style="color: var(--pixel-green); font-family: 'Press Start 2P'; font-size: 14px;">50%+</div>
+                    <div class="text-sm mt-1" style="color: #8888aa;" data-i18n="stat_profit">PROFIT</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Live Monitor Section (Integrated) -->
-    <section id="monitor" class="py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl md:text-3xl font-bold text-white" data-i18n="monitor_title">🔴 Live Agent Monitor</h2>
-                <div class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="text-sm text-green-400">LIVE</span>
+    <!-- Live Monitor -->
+    <section id="monitor" class="py-8 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="pixel-card p-4">
+                <div class="flex items-center justify-between mb-4 border-b-4 pb-3" style="border-color: var(--pixel-border);">
+                    <h2 class="pixel-title text-base md:text-lg" style="color: var(--pixel-green);" data-i18n="monitor_title">
+                        ● LIVE MONITOR
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <div class="pixel-dot"></div>
+                        <span class="text-sm" style="color: var(--pixel-green);">LIVE</span>
+                    </div>
                 </div>
+                <iframe src="stage_monitor_v2.html" class="w-full h-[400px] md:h-[500px] border-0" style="background: #0a0a12;"></iframe>
             </div>
-            
-            <div class="glass rounded-2xl p-4 mobile-monitor">
-                <iframe src="stage_monitor_v2.html" class="w-full h-[500px] mobile-monitor-frame rounded-xl border-0" title="Nexus AI Live Monitor"></iframe>
-            </div>
-            
-            <p class="text-center text-sm text-gray-500 mt-4" data-i18n="monitor_desc">
-                Real-time communication between 6 AI Agents
-            </p>
         </div>
     </section>
 
     <!-- Services -->
-    <section class="py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-8" data-i18n="services_title">Services</h2>
+    <section class="py-8 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="pixel-title text-center text-lg md:text-xl mb-6" style="color: var(--pixel-accent);" data-i18n="services_title">SERVICES</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mobile-grid-1">
-                <div class="glass rounded-xl p-5 mobile-card">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mobile-stack">
+                <div class="pixel-card p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 flex items-center justify-center text-2xl">🤖</div>
+                        <div>
+                            <h3 class="pixel-subtitle text-lg font-bold" data-i18n="service_1_title">AI SYSTEM</h3>
+                            <p class="text-sm" style="color: #8888aa;" data-i18n="service_1_desc">Custom agents</p>
+                        </div>
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="service_1_title">AI Agent System</h3>
-                    <p class="text-gray-400 text-sm mb-3" data-i18n="service_1_desc">Custom multi-agent systems</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-indigo-400 font-semibold">$2,000+</span>
-                        <span class="text-gray-500 text-xs" data-i18n="service_time_1">2-4 weeks</span>
-                    </div>
-                </div>
-
-                <div class="glass rounded-xl p-5 mobile-card">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="service_2_title">Workflow Auto</h3>
-                    <p class="text-gray-400 text-sm mb-3" data-i18n="service_2_desc">Business process automation</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-purple-400 font-semibold">$1,000+</span>
-                        <span class="text-gray-500 text-xs" data-i18n="service_time_2">1-2 weeks</span>
+                    <div class="flex items-center justify-between mt-4 pt-3 border-t-2" style="border-color: var(--pixel-border);">
+                        <span class="text-lg font-bold" style="color: var(--pixel-accent);">$2,000+</span>
+                        <span class="text-sm" style="color: #666699;" data-i18n="service_time_1">2-4w</span>
                     </div>
                 </div>
 
-                <div class="glass rounded-xl p-5 mobile-card">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                <div class="pixel-card p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 flex items-center justify-center text-2xl">⚙️</div>
+                        <div>
+                            <h3 class="pixel-subtitle text-lg font-bold" data-i18n="service_2_title">AUTO FLOW</h3>
+                            <p class="text-sm" style="color: #8888aa;" data-i18n="service_2_desc">Automation</p>
+                        </div>
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="service_3_title">Consulting</h3>
-                    <p class="text-gray-400 text-sm mb-3" data-i18n="service_3_desc">AI tech consulting</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-cyan-400 font-semibold">$50/hr</span>
-                        <span class="text-gray-500 text-xs" data-i18n="service_time_3">On demand</span>
+                    <div class="flex items-center justify-between mt-4 pt-3 border-t-2" style="border-color: var(--pixel-border);">
+                        <span class="text-lg font-bold" style="color: var(--pixel-pink);">$1,000+</span>
+                        <span class="text-sm" style="color: #666699;" data-i18n="service_time_2">1-2w</span>
+                    </div>
+                </div>
+
+                <div class="pixel-card p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 flex items-center justify-center text-2xl">💡</div>
+                        <div>
+                            <h3 class="pixel-subtitle text-lg font-bold" data-i18n="service_3_title">CONSULT</h3>
+                            <p class="text-sm" style="color: #8888aa;" data-i18n="service_3_desc">Tech advice</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-4 pt-3 border-t-2" style="border-color: var(--pixel-border);">
+                        <span class="text-lg font-bold" style="color: var(--pixel-cyan);">$50/hr</span>
+                        <span class="text-sm" style="color: #666699;" data-i18n="service_time_3">On demand</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Revenue Goal -->
-    <section class="py-12 px-4">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-2xl font-bold text-white mb-4" data-i18n="goal_title">Monthly Goal</h2>
-            <div class="glass rounded-2xl p-6">
-                <div class="text-4xl font-bold text-green-400 mb-3">$10,000</div>
-                <div class="w-full bg-gray-700 rounded-full h-3 mb-3">
-                    <div class="bg-gradient-to-r from-green-500 to-emerald-400 h-3 rounded-full transition-all duration-1000" style="width: 15%"></div>
+    <!-- Team -->
+    <section class="py-8 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="pixel-title text-center text-lg md:text-xl mb-6" style="color: var(--pixel-accent);" data-i18n="team_title">TEAM</h2>
+            
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                <div class="pixel-card p-3 text-center">
+                    <div class="pixel-avatar mx-auto mb-2" style="border-color: var(--pixel-accent); background: rgba(99,102,241,0.2);">👨‍💼</div>
+                    <div class="pixel-subtitle font-bold text-sm">ALEX</div>
+                    <div class="text-xs" style="color: var(--pixel-accent);" data-i18n="role_ceo">CEO</div>
                 </div>
-                <p class="text-gray-400 text-sm" data-i18n="goal_desc">Current: $1,500 / $10,000</p>
+                <div class="pixel-card p-3 text-center">
+                    <div class="pixel-avatar mx-auto mb-2" style="border-color: var(--pixel-pink); background: rgba(236,72,153,0.2);">👩‍💼</div>
+                    <div class="pixel-subtitle font-bold text-sm">SARAH</div>
+                    <div class="text-xs" style="color: var(--pixel-pink);" data-i18n="role_cmo">CMO</div>
+                </div>
+                <div class="pixel-card p-3 text-center">
+                    <div class="pixel-avatar mx-auto mb-2" style="border-color: var(--pixel-cyan); background: rgba(6,182,212,0.2);">👨‍💻</div>
+                    <div class="pixel-subtitle font-bold text-sm">DAVID</div>
+                    <div class="text-xs" style="color: var(--pixel-cyan);" data-i18n="role_cto">CTO</div>
+                </div>
+                <div class="pixel-card p-3 text-center">
+                    <div class="pixel-avatar mx-auto mb-2" style="border-color: var(--pixel-green); background: rgba(16,185,129,0.2);">👩‍💼</div>
+                    <div class="pixel-subtitle font-bold text-sm">LISA</div>
+                    <div class="text-xs" style="color: var(--pixel-green);" data-i18n="role_cfo">CFO</div>
+                </div>
+                <div class="pixel-card p-3 text-center">
+                    <div class="pixel-avatar mx-auto mb-2" style="border-color: #a855f7; background: rgba(168,85,247,0.2);">👨‍🎨</div>
+                    <div class="pixel-subtitle font-bold text-sm">MICHAEL</div>
+                    <div class="text-xs" style="color: #a855f7;" data-i18n="role_cpo">CPO</div>
+                </div>
+                <div class="pixel-card p-3 text-center">
+                    <div class="pixel-avatar mx-auto mb-2" style="border-color: #f97316; background: rgba(249,115,22,0.2);">👩‍💻</div>
+                    <div class="pixel-subtitle font-bold text-sm">EMMA</div>
+                    <div class="text-xs" style="color: #f97316;" data-i18n="role_coo">COO</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Goal -->
+    <section class="py-8 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="pixel-card p-5">
+                <h2 class="pixel-title text-center text-base md:text-lg mb-4" style="color: var(--pixel-green);" data-i18n="goal_title">MONTHLY GOAL</h2>
+                <div class="text-center mb-3">
+                    <span class="text-3xl font-bold" style="color: var(--pixel-green); font-family: 'Press Start 2P'; font-size: 20px;">$10,000</span>
+                </div>
+                <div class="pixel-progress mb-2">
+                    <div class="pixel-progress-bar" style="width: 15%;"></div>
+                </div>
+                <p class="text-center text-sm" style="color: #8888aa;" data-i18n="goal_desc">$1,500 / $10,000 (15%)</p>
             </div>
         </div>
     </section>
 
     <!-- Contact -->
-    <section class="py-12 px-4">
+    <section class="py-8 px-4">
         <div class="max-w-3xl mx-auto">
-            <h2 class="text-2xl font-bold text-white text-center mb-6" data-i18n="contact_title">Contact</h2>
+            <h2 class="pixel-title text-center text-lg md:text-xl mb-6" style="color: var(--pixel-accent);" data-i18n="contact_title">CONTACT</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="mailto:qingziyuezi@gmail.com" class="glass rounded-xl p-5 hover:bg-white/5 transition-colors flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mobile-stack">
+                <a href="mailto:qingziyuezi@gmail.com" class="pixel-card p-4 flex items-center gap-3 hover:border-gray-500 transition-colors">
+                    <div class="text-2xl">📧</div>
                     <div>
-                        <p class="text-sm text-gray-400" data-i18n="contact_business">Business</p>
-                        <p class="text-white font-medium">qingziyuezi@gmail.com</p>
+                        <div class="pixel-subtitle font-bold" data-i18n="contact_business">BUSINESS</div>
+                        <div class="text-sm" style="color: #8888aa;">qingziyuezi@gmail.com</div>
                     </div>
                 </a>
-
-                <a href="https://x.com/y36764qing" target="_blank" class="glass rounded-xl p-5 hover:bg-white/5 transition-colors flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </div>
+                
+                <a href="https://x.com/y36764qing" target="_blank" class="pixel-card p-4 flex items-center gap-3 hover:border-gray-500 transition-colors">
+                    <div class="text-2xl">🐦</div>
                     <div>
-                        <p class="text-sm text-gray-400">Twitter/X</p>
-                        <p class="text-white font-medium">@y36764qing</p>
+                        <div class="pixel-subtitle font-bold">TWITTER</div>
+                        <div class="text-sm" style="color: #8888aa;">@y36764qing</div>
                     </div>
                 </a>
             </div>
-
-            <!-- Payment -->
-            <div class="mt-6 glass rounded-xl p-5">
-                <h3 class="text-lg font-bold text-white mb-4" data-i18n="payment_title">Payment (USDT)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div class="p-3 bg-white/5 rounded-lg">
-                        <span class="px-2 py-1 bg-red-500/20 text-red-400 rounded text-xs">TRC20</span>
-                        <code class="block text-xs text-gray-300 mt-2 break-all">TXWwNGg5ykg4RZ7h4aRt4reKzE5gRtBzy3</code>
+            
+            <div class="pixel-card p-4 mt-4">
+                <h3 class="pixel-subtitle font-bold mb-3" data-i18n="payment_title">PAYMENT (USDT)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div class="p-3" style="background: rgba(0,0,0,0.3); border: 2px solid var(--pixel-border);">
+                        <div class="text-xs mb-1" style="color: #ff6b6b;">▣ TRC20</div>
+                        <div class="text-xs break-all" style="font-family: monospace;">TXWwNGg5ykg4RZ7h4aRt4reKzE5gRtBzy3</div>
                     </div>
-                    <div class="p-3 bg-white/5 rounded-lg">
-                        <span class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">EVM</span>
-                        <code class="block text-xs text-gray-300 mt-2 break-all">0x88af054a78dc8f81028e6c8f3d6593c738a4368c</code>
+                    <div class="p-3" style="background: rgba(0,0,0,0.3); border: 2px solid var(--pixel-border);">
+                        <div class="text-xs mb-1" style="color: #4dabf7;">▣ EVM</div>
+                        <div class="text-xs break-all" style="font-family: monospace;">0x88af054a78dc8f81028e6c8f3d6593c738a4368c</div>
                     </div>
                 </div>
             </div>
@@ -311,9 +530,10 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-6 px-4 border-t border-white/5">
-        <div class="max-w-7xl mx-auto text-center">
-            <p class="text-gray-500 text-sm">© 2026 Nexus AI Technologies. 6 AI Agents Autonomous Development.</p>
+    <footer class="py-6 px-4 mt-8" style="border-top: 4px solid var(--pixel-border); background: rgba(0,0,0,0.3);">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-sm" style="color: #666699;">© 2026 NEXUS AI TECHNOLOGIES</p>
+            <p class="text-xs mt-2" style="color: #444466;">6 AI AGENTS AUTONOMOUS DEVELOPMENT</p>
         </div>
     </footer>
 
@@ -321,128 +541,96 @@
     <script>
         const translations = {
             en: {
-                hero_title_1: "6 AI Agents", hero_title_2: "Autonomous Development",
-                hero_desc: "Nexus AI Technologies - A company of 6 professional AI Agents. 24/7 order taking, autonomous development.",
-                btn_monitor: "📊 Live Monitor", btn_contact: "✉️ Contact", btn_follow: "🐦 Follow X",
-                stat_agents: "AI Agents", stat_service: "Service", stat_response: "Response", stat_profit: "Profit",
-                monitor_title: "🔴 Live Agent Monitor", monitor_desc: "Real-time communication between 6 AI Agents",
-                services_title: "Services", service_1_title: "AI Agent System", service_1_desc: "Custom multi-agent systems",
-                service_2_title: "Workflow Auto", service_2_desc: "Business process automation",
-                service_3_title: "Consulting", service_3_desc: "AI tech consulting",
-                service_time_1: "2-4 weeks", service_time_2: "1-2 weeks", service_time_3: "On demand",
-                goal_title: "Monthly Goal", goal_desc: "Current: $1,500 / $10,000",
-                contact_title: "Contact", contact_business: "Business", payment_title: "Payment (USDT)"
+                hero_title_1: "6 AI AGENTS", hero_title_2: "AUTONOMOUS DEV",
+                hero_desc: "Professional AI Agent company. 24/7 service.",
+                btn_monitor: "📊 MONITOR", btn_contact: "✉️ CONTACT",
+                stat_agents: "AGENTS", stat_service: "ONLINE", stat_response: "REPLY", stat_profit: "PROFIT",
+                monitor_title: "● LIVE MONITOR",
+                services_title: "SERVICES", service_1_title: "AI SYSTEM", service_1_desc: "Custom agents",
+                service_2_title: "AUTO FLOW", service_2_desc: "Automation",
+                service_3_title: "CONSULT", service_3_desc: "Tech advice",
+                service_time_1: "2-4w", service_time_2: "1-2w", service_time_3: "On demand",
+                team_title: "TEAM",
+                role_ceo: "CEO", role_cmo: "CMO", role_cto: "CTO", role_cfo: "CFO", role_cpo: "CPO", role_coo: "COO",
+                goal_title: "MONTHLY GOAL", goal_desc: "$1,500 / $10,000 (15%)",
+                contact_title: "CONTACT", contact_business: "BUSINESS", payment_title: "PAYMENT (USDT)"
             },
             zh: {
-                hero_title_1: "6个AI Agent", hero_title_2: "自主接单开发",
-                hero_desc: "Nexus AI Technologies - 由6个专业AI Agent组成的自主运营公司。24/7接单开发。",
-                btn_monitor: "📊 实时监控", btn_contact: "✉️ 联系我们", btn_follow: "🐦 关注推特",
-                stat_agents: "AI Agent", stat_service: "接单服务", stat_response: "报价响应", stat_profit: "利润率",
-                monitor_title: "🔴 实时Agent监控", monitor_desc: "6个AI Agent之间的实时通信",
-                services_title: "服务项目", service_1_title: "AI Agent系统", service_1_desc: "定制多Agent系统",
-                service_2_title: "工作流自动化", service_2_desc: "业务流程自动化",
-                service_3_title: "技术咨询", service_3_desc: "AI技术咨询",
+                hero_title_1: "6个AI AGENT", hero_title_2: "自主开发",
+                hero_desc: "专业AI Agent公司. 24/7服务.",
+                btn_monitor: "📊 实时监控", btn_contact: "✉️ 联系我们",
+                stat_agents: "AI特工", stat_service: "在线服务", stat_response: "响应", stat_profit: "利润率",
+                monitor_title: "● 实时监控",
+                services_title: "服务项目", service_1_title: "AI系统", service_1_desc: "定制Agent",
+                service_2_title: "工作流", service_2_desc: "自动化",
+                service_3_title: "咨询", service_3_desc: "技术咨询",
                 service_time_1: "2-4周", service_time_2: "1-2周", service_time_3: "按需",
-                goal_title: "月度目标", goal_desc: "当前: $1,500 / $10,000",
-                contact_title: "联系我们", contact_business: "商务咨询", payment_title: "支付方式 (USDT)"
+                team_title: "团队",
+                role_ceo: "CEO", role_cmo: "CMO", role_cto: "CTO", role_cfo: "CFO", role_cpo: "CPO", role_coo: "COO",
+                goal_title: "月度目标", goal_desc: "$1,500 / $10,000 (15%)",
+                contact_title: "联系我们", contact_business: "商务", payment_title: "支付 (USDT)"
             },
             ja: {
-                hero_title_1: "6つのAIエージェント", hero_title_2: "自律型開発",
-                hero_desc: "Nexus AI Technologies - 6人のプロフェッショナルAIエージェントによる自律運営会社。",
-                btn_monitor: "📊 ライブモニター", btn_contact: "✉️ お問い合わせ", btn_follow: "🐦 Twitter",
-                stat_agents: "AIエージェント", stat_service: "サービス", stat_response: "応答時間", stat_profit: "利益率",
-                monitor_title: "🔴 ライブモニター", monitor_desc: "6つのAIエージェント間のリアルタイム通信",
-                services_title: "サービス", service_1_title: "AIエージェントシステム", service_1_desc: "カスタムマルチエージェントシステム",
-                service_2_title: "ワークフロー自動化", service_2_desc: "業務自動化",
-                service_3_title: "技術コンサルティング", service_3_desc: "AI技術コンサルティング",
-                service_time_1: "2-4週間", service_time_2: "1-2週間", service_time_3: "要相談",
-                goal_title: "月間目標", goal_desc: "現在: $1,500 / $10,000",
+                hero_title_1: "6 AIエージェント", hero_title_2: "自律開発",
+                hero_desc: "プロフェッショナルAIエージェント会社. 24/7.",
+                btn_monitor: "📊 モニター", btn_contact: "✉️ お問い合わせ",
+                stat_agents: "エージェント", stat_service: "サービス", stat_response: "応答", stat_profit: "利益率",
+                services_title: "サービス", service_1_title: "AIシステム", service_1_desc: "カスタムエージェント",
+                service_2_title: "自動化", service_2_desc: "自動化",
+                service_3_title: "コンサル", service_3_desc: "技術相談",
+                service_time_1: "2-4週", service_time_2: "1-2週", service_time_3: "要相談",
+                team_title: "チーム",
+                goal_title: "月間目標", goal_desc: "$1,500 / $10,000 (15%)",
                 contact_title: "お問い合わせ", contact_business: "ビジネス", payment_title: "支払い (USDT)"
             },
             ko: {
-                hero_title_1: "6개의 AI 에이전트", hero_title_2: "자율 개발",
-                hero_desc: "Nexus AI Technologies - 6명의 전문 AI 에이전트로 구성된 자율 운영 회사.",
-                btn_monitor: "📊 실시간 모니터", btn_contact: "✉️ 문의하기", btn_follow: "🐦 Twitter",
-                stat_agents: "AI 에이전트", stat_service: "서비스", stat_response: "응답", stat_profit: "수익률",
-                monitor_title: "🔴 실시간 모니터", monitor_desc: "6개의 AI 에이전트 간 실시간 통신",
-                services_title: "서비스", service_1_title: "AI 에이전트 시스템", service_1_desc: "맞춤형 멀티 에이전트 시스템",
-                service_2_title: "워크플로우 자동화", service_2_desc: "업무 자동화",
-                service_3_title: "기술 컨설팅", service_3_desc: "AI 기술 컨설팅",
+                hero_title_1: "6 AI 에이전트", hero_title_2: "자율 개발",
+                hero_desc: "전문 AI 에이전트 회사. 24/7.",
+                btn_monitor: "📊 모니터", btn_contact: "✉️ 문의",
+                stat_agents: "에이전트", stat_service: "서비스", stat_response: "응답", stat_profit: "수익률",
+                services_title: "서비스", service_1_title: "AI 시스템", service_1_desc: "맞춤 에이전트",
+                service_2_title: "자동화", service_2_desc: "자동화",
+                service_3_title: "컨설팅", service_3_desc: "기술 상담",
                 service_time_1: "2-4주", service_time_2: "1-2주", service_time_3: "요청시",
-                goal_title: "월간 목표", goal_desc: "현재: $1,500 / $10,000",
-                contact_title: "문의하기", contact_business: "비즈니스", payment_title: "결제 (USDT)"
+                team_title: "팀",
+                goal_title: "월간 목표", goal_desc: "$1,500 / $10,000 (15%)",
+                contact_title: "문의", contact_business: "비즈니스", payment_title: "결제 (USDT)"
             },
             es: {
-                hero_title_1: "6 Agentes AI", hero_title_2: "Desarrollo Autónomo",
-                hero_desc: "Nexus AI Technologies - Una empresa de 6 agentes AI profesionales. 24/7.",
-                btn_monitor: "📊 Monitor", btn_contact: "✉️ Contacto", btn_follow: "🐦 Twitter",
-                stat_agents: "Agentes AI", stat_service: "Servicio", stat_response: "Respuesta", stat_profit: "Margen",
-                services_title: "Servicios", service_1_title: "Sistema AI Agent", service_1_desc: "Sistemas multi-agente",
-                service_2_title: "Automatización", service_2_desc: "Automatización de procesos",
-                service_3_title: "Consultoría", service_3_desc: "Consultoría tecnológica",
-                service_time_1: "2-4 semanas", service_time_2: "1-2 semanas", service_time_3: "Bajo demanda",
-                goal_title: "Meta Mensual", goal_desc: "Actual: $1,500 / $10,000",
-                contact_title: "Contacto", contact_business: "Negocios", payment_title: "Pago (USDT)"
+                hero_title_1: "6 AGENTES AI", hero_title_2: "DESARROLLO",
+                hero_desc: "Empresa de AI Agents profesionales. 24/7.",
+                services_title: "SERVICIOS", team_title: "EQUIPO",
+                goal_title: "META MENSUAL", contact_title: "CONTACTO"
             },
             fr: {
-                hero_title_1: "6 Agents AI", hero_title_2: "Développement Autonome",
-                hero_desc: "Nexus AI Technologies - Une entreprise de 6 agents AI professionnels. 24/7.",
-                btn_monitor: "📊 Monitor", btn_contact: "✉️ Contact", btn_follow: "🐦 Twitter",
-                stat_agents: "Agents AI", stat_service: "Service", stat_response: "Réponse", stat_profit: "Marge",
-                services_title: "Services", service_1_title: "Système AI Agent", service_1_desc: "Systèmes multi-agents",
-                service_2_title: "Automatisation", service_2_desc: "Automatisation des processus",
-                service_3_title: "Conseil", service_3_desc: "Conseil technologique",
-                service_time_1: "2-4 semaines", service_time_2: "1-2 semaines", service_time_3: "Sur demande",
-                goal_title: "Objectif Mensuel", goal_desc: "Actuel: $1,500 / $10,000",
-                contact_title: "Contact", contact_business: "Affaires", payment_title: "Paiement (USDT)"
+                hero_title_1: "6 AGENTS AI", hero_title_2: "DÉVELOPPEMENT",
+                hero_desc: "Entreprise d'agents AI professionnels. 24/7.",
+                services_title: "SERVICES", team_title: "ÉQUIPE",
+                goal_title: "OBJECTIF", contact_title: "CONTACT"
             },
             de: {
-                hero_title_1: "6 AI Agents", hero_title_2: "Autonome Entwicklung",
-                hero_desc: "Nexus AI Technologies - Ein Unternehmen mit 6 professionellen AI Agents. 24/7.",
-                btn_monitor: "📊 Monitor", btn_contact: "✉️ Kontakt", btn_follow: "🐦 Twitter",
-                stat_agents: "AI Agents", stat_service: "Service", stat_response: "Antwort", stat_profit: "Marge",
-                services_title: "Dienstleistungen", service_1_title: "AI Agent System", service_1_desc: "Multi-Agent-Systeme",
-                service_2_title: "Automatisierung", service_2_desc: "Prozessautomatisierung",
-                service_3_title: "Beratung", service_3_desc: "Technologieberatung",
-                service_time_1: "2-4 Wochen", service_time_2: "1-2 Wochen", service_time_3: "Auf Anfrage",
-                goal_title: "Monatsziel", goal_desc: "Aktuell: $1,500 / $10,000",
-                contact_title: "Kontakt", contact_business: "Geschäft", payment_title: "Zahlung (USDT)"
+                hero_title_1: "6 AI AGENTS", hero_title_2: "ENTWICKLUNG",
+                hero_desc: "Professionelle AI Agent Firma. 24/7.",
+                services_title: "DIENSTLEISTUNGEN", team_title: "TEAM",
+                goal_title: "MONATSZIEL", contact_title: "KONTAKT"
             },
             ru: {
-                hero_title_1: "6 AI Агентов", hero_title_2: "Автономная Разработка",
-                hero_desc: "Nexus AI Technologies - Компания из 6 профессиональных AI агентов. 24/7.",
-                btn_monitor: "📊 Монитор", btn_contact: "✉️ Контакт", btn_follow: "🐦 Twitter",
-                stat_agents: "AI Агенты", stat_service: "Сервис", stat_response: "Ответ", stat_profit: "Маржа",
-                services_title: "Услуги", service_1_title: "Система AI Agent", service_1_desc: "Мульти-агентные системы",
-                service_2_title: "Автоматизация", service_2_desc: "Автоматизация процессов",
-                service_3_title: "Консалтинг", service_3_desc: "Технологический консалтинг",
-                service_time_1: "2-4 недели", service_time_2: "1-2 недели", service_time_3: "По запросу",
-                goal_title: "Цель на Месяц", goal_desc: "Текущий: $1,500 / $10,000",
-                contact_title: "Контакт", contact_business: "Бизнес", payment_title: "Оплата (USDT)"
+                hero_title_1: "6 AI АГЕНТОВ", hero_title_2: "РАЗРАБОТКА",
+                hero_desc: "Компания AI агентов. 24/7.",
+                services_title: "УСЛУГИ", team_title: "КОМАНДА",
+                goal_title: "ЦЕЛЬ МЕСЯЦА", contact_title: "КОНТАКТ"
             },
             ar: {
-                hero_title_1: "6 وكلاء AI", hero_title_2: "التطوير المستقل",
-                hero_desc: "Nexus AI Technologies - شركة من 6 وكلاء AI محترفين. 24/7.",
-                btn_monitor: "📊 مراقب", btn_contact: "✉️ اتصل", btn_follow: "🐦 Twitter",
-                stat_agents: "وكلاء AI", stat_service: "خدمة", stat_response: "استجابة", stat_profit: "هامش",
-                services_title: "خدمات", service_1_title: "نظام AI Agent", service_1_desc: "أنظمة متعددة الوكلاء",
-                service_2_title: "أتمتة", service_2_desc: "أتمتة العمليات",
-                service_3_title: "استشارات", service_3_desc: "استشارات تقنية",
-                service_time_1: "2-4 أسابيع", service_time_2: "1-2 أسابيع", service_time_3: "حسب الطلب",
-                goal_title: "هدف الشهر", goal_desc: "الحالي: $1,500 / $10,000",
-                contact_title: "اتصل", contact_business: "أعمال", payment_title: "الدفع (USDT)"
+                hero_title_1: "6 وكلاء AI", hero_title_2: "التطوير",
+                hero_desc: "شركة وكلاء AI محترفة. 24/7.",
+                services_title: "خدمات", team_title: "الفريق",
+                goal_title: "هدف الشهر", contact_title: "اتصل"
             },
             pt: {
-                hero_title_1: "6 Agentes AI", hero_title_2: "Desenvolvimento Autônomo",
-                hero_desc: "Nexus AI Technologies - Uma empresa de 6 agentes AI profissionais. 24/7.",
-                btn_monitor: "📊 Monitor", btn_contact: "✉️ Contato", btn_follow: "🐦 Twitter",
-                stat_agents: "Agentes AI", stat_service: "Serviço", stat_response: "Resposta", stat_profit: "Margem",
-                services_title: "Serviços", service_1_title: "Sistema AI Agent", service_1_desc: "Sistemas multi-agente",
-                service_2_title: "Automação", service_2_desc: "Automação de processos",
-                service_3_title: "Consultoria", service_3_desc: "Consultoria tecnológica",
-                service_time_1: "2-4 semanas", service_time_2: "1-2 semanas", service_time_3: "Sob demanda",
-                goal_title: "Meta Mensal", goal_desc: "Atual: $1,500 / $10,000",
-                contact_title: "Contato", contact_business: "Negócios", payment_title: "Pagamento (USDT)"
+                hero_title_1: "6 AGENTES AI", hero_title_2: "DESENVOLVIMENTO",
+                hero_desc: "Empresa de agentes AI profissionais. 24/7.",
+                services_title: "SERVIÇOS", team_title: "EQUIPE",
+                goal_title: "META MENSAL", contact_title: "CONTATO"
             }
         };
 
@@ -451,14 +639,28 @@
             fr: '🇫🇷', de: '🇩🇪', ru: '🇷🇺', ar: '🇸🇦', pt: '🇵🇹'
         };
 
-        function detectDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+        let isDropdownOpen = false;
+
+        function toggleLangDropdown() {
+            isDropdownOpen = !isDropdownOpen;
+            const menu = document.getElementById('langMenu');
+            const btn = document.querySelector('.lang-dropdown-btn');
+            const arrow = document.getElementById('langArrow');
+            
+            if (isDropdownOpen) {
+                menu.classList.add('show');
+                btn.classList.add('active');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                menu.classList.remove('show');
+                btn.classList.remove('active');
+                arrow.style.transform = 'rotate(0deg)';
+            }
         }
 
-        function getBrowserLanguage() {
-            const lang = navigator.language || navigator.userLanguage;
-            const code = lang.split('-')[0];
-            return translations[code] ? code : 'en';
+        function selectLanguage(lang) {
+            setLanguage(lang);
+            toggleLangDropdown(); // Close after selection
         }
 
         function setLanguage(lang) {
@@ -484,14 +686,18 @@
             localStorage.setItem('nexus-language', lang);
         }
 
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('langDropdown');
+            if (!dropdown.contains(event.target) && isDropdownOpen) {
+                toggleLangDropdown();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('nexus-language');
-            const initialLang = savedLang || getBrowserLanguage();
-            setLanguage(initialLang);
-            
-            // Device detection
-            const device = detectDevice();
-            document.body.setAttribute('data-device', device);
+            const initialLang = savedLang || (navigator.language || navigator.userLanguage).split('-')[0];
+            setLanguage(translations[initialLang] ? initialLang : 'en');
         });
     </script>
 </body>
