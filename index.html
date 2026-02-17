@@ -467,7 +467,7 @@
                     <span class="text-white/80 text-sm ml-2">Nexus AI Agent Monitor v3.0</span>
                 </div>
                 
-                <iframe src="monitor_v3.html" class="w-full h-[400px] md:h-[600px] border-0 bg-stone-900"></iframe>
+                <iframe src="monitor_v4.html" class="w-full h-[400px] md:h-[600px] border-0 bg-stone-900"></iframe>
             </div>
         </div>
     </section>
@@ -508,18 +508,18 @@
                     
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
-                            <span class="text-stone-600" data-i18n="insight_active">Active</span>
-                            <span class="font-bold text-emerald-600">3</span>
+                            <span class="text-stone-600" data-i18n="insight_discussing">Discussing</span>
+                            <span class="font-bold text-amber-600" id="proj-discussing">2</span>
                         </div>
                         
                         <div class="flex items-center justify-between">
-                            <span class="text-stone-600" data-i18n="insight_evaluating">Evaluating</span>
-                            <span class="font-bold text-amber-600">2</span>
+                            <span class="text-stone-600" data-i18n="insight_active">Active</span>
+                            <span class="font-bold text-emerald-600" id="proj-active">2</span>
                         </div>
                         
                         <div class="flex items-center justify-between">
                             <span class="text-stone-600" data-i18n="insight_completed">Completed</span>
-                            <span class="font-bold text-blue-600">8</span>
+                            <span class="font-bold text-blue-600" id="proj-completed">3</span>
                         </div>
                     </div>
                 </div>
@@ -619,8 +619,8 @@
                 insights_title: "数据洞察", insights_subtitle: "数据驱动的商业智能",
                 insight_revenue_title: "收入追踪", insight_revenue_desc: "月度目标",
                 insight_achieved: "本月已完成", insight_projects_title: "项目状态",
-                insight_active: "进行中", insight_evaluating: "评估中", insight_completed: "已完成",
-                insight_agents_title: "Agent活动", agent_ceo_activity: "评估项目", agent_cto_activity: "开发Gmail系统", agent_cmo_activity: "监控Twitter",
+                insight_discussing: "待探讨", insight_active: "进行中", insight_evaluating: "评估中", insight_completed: "已完成",
+                insight_agents_title: "Agent活动", agent_ceo_activity: "评估项目", agent_cto_activity: "开发免费工具", agent_cmo_activity: "X营销推广",
                 contact_title: "准备开始？", contact_subtitle: "联系我们来讨论您的下一个AI项目",
                 contact_email: "发邮件给我们", payment_title: "支付方式",
                 footer_rights: "保留所有权利。", footer_autonomous: "自主开发"
@@ -641,8 +641,8 @@
                 insights_title: "INSIGHTS", insights_subtitle: "Data-Driven Business Intelligence",
                 insight_revenue_title: "Revenue Tracker", insight_revenue_desc: "monthly goal",
                 insight_achieved: "achieved this month", insight_projects_title: "Project Status",
-                insight_active: "Active", insight_evaluating: "Evaluating", insight_completed: "Completed",
-                insight_agents_title: "Agent Activity", agent_ceo_activity: "Evaluating projects", agent_cto_activity: "Coding Gmail system", agent_cmo_activity: "Scanning Twitter",
+                insight_discussing: "Discussing", insight_active: "Active", insight_evaluating: "Evaluating", insight_completed: "Completed",
+                insight_agents_title: "Agent Activity", agent_ceo_activity: "Evaluating projects", agent_cto_activity: "Developing free tools", agent_cmo_activity: "Scanning Twitter",
                 contact_title: "READY TO START?", contact_subtitle: "Get in touch for your next AI project",
                 contact_email: "Email Us", payment_title: "Payment Methods",
                 footer_rights: "All rights reserved.", footer_autonomous: "Autonomous Development"
@@ -849,7 +849,7 @@
             }
         }
 
-        function selectLanguage(lang) {
+        function selectLanguage(lang, isInit = false) {
             // Update all elements with data-i18n attribute
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -877,8 +877,10 @@
                 }
             });
             
-            // Close dropdown
-            toggleLangDropdown();
+            // Close dropdown only if not initializing
+            if (!isInit) {
+                toggleLangDropdown();
+            }
             
             // Save preference
             localStorage.setItem('nexus-language', lang);
@@ -914,7 +916,7 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             const lang = detectLanguage();
-            selectLanguage(lang);
+            selectLanguage(lang, true);  // Pass true to prevent dropdown toggle on init
         });
     </script>
 </body>
