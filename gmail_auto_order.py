@@ -61,6 +61,18 @@ def check_new_emails():
 
 def analyze_email(email):
     """分析邮件内容，提取关键信息"""
+    # 确保email是字典
+    if not isinstance(email, dict):
+        log(f"⚠️  邮件格式错误: {type(email)}")
+        return {
+            "type": "unknown",
+            "subject": "",
+            "from": "",
+            "body_preview": "",
+            "timestamp": "",
+            "message_id": ""
+        }
+    
     subject = email.get('subject', '')
     body = email.get('body', '')
     from_email = email.get('from', '')
