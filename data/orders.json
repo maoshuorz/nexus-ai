@@ -18,5 +18,45 @@
     "from": "",
     "body_preview": "",
     "message_id": ""
+  },
+  {
+    "id": 3,
+    "timestamp": "",
+    "status": "new",
+    "type": "unknown",
+    "subject": "",
+    "from": "",
+    "body_preview": "",
+    "message_id": ""
+  },
+  {
+    "id": 4,
+    "timestamp": "",
+    "status": "new",
+    "type": "unknown",
+    "subject": "",
+    "from": "",
+    "body_preview": "",
+    "message_id": ""
+  },
+  {
+    "id": 5,
+    "timestamp": "",
+    "status": "new",
+    "type": "unknown",
+    "subject": "",
+    "from": "",
+    "body_preview": "",
+    "message_id": ""
+  },
+  {
+    "id": 6,
+    "timestamp": "",
+    "status": "new",
+    "type": "unknown",
+    "subject": "",
+    "from": "",
+    "body_preview": "",
+    "message_id": ""
   }
 ]

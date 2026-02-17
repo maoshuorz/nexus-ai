@@ -1,23 +1,20 @@
 #!/usr/bin/env python3
 """
-Nexus AI - Gmail自动接单系统
-使用gog skill监控邮箱，自动处理客户咨询
+Nexus AI - 智能邮件过滤系统 v2.0
+过滤验证码/垃圾邮件，只处理业务咨询
 """
 
 import subprocess
 import json
 import re
-import time
 from datetime import datetime
 from pathlib import Path
 
-# 配置
 GMAIL_ACCOUNT = "qingziyuezi@gmail.com"
 LOG_FILE = Path.home() / ".openclaw/workspace/company_system/logs/gmail_orders.log"
 ORDERS_FILE = Path.home() / ".openclaw/workspace/company_system/data/orders.json"
 
 def log(message):
-    """记录日志"""
     timestamp = datetime.now().isoformat()
     log_msg = f"[{timestamp}] {message}"
     print(log_msg)
@@ -26,230 +23,348 @@ def log(message):
         f.write(log_msg + "\n")
 
 def run_gog_command(command):
-    """运行gog命令"""
     try:
-        result = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=30
-        )
+        result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=30)
         return result.stdout, result.stderr, result.returncode
     except Exception as e:
         return "", str(e), 1
 
-def check_new_emails():
-    """检查新邮件"""
-    log("🔍 检查新邮件...")
+def is_verification_code_email(subject, body, from_email):
+    """检测是否为验证码邮件"""
+    verification_keywords = [
+        '验证码', 'verification code', '确认码', 'confirmation code',
+        '安全码', 'security code', '授权码', 'auth code',
+        '一次性密码', 'one-time password', 'otp', 'pin',
+        '登录验证', 'login verification', '2fa', 'two-factor',
+        '密匙', '密钥', 'access code', 'activation code'
+    ]
     
-    # 使用gog搜索最近1小时的邮件
-    command = f'gog gmail messages search "in:inbox newer_than:1h" --account {GMAIL_ACCOUNT} --json'
-    stdout, stderr, code = run_gog_command(command)
+    # 检查主题和内容
+    text_to_check = (subject + ' ' + body).lower()
     
-    if code != 0:
-        log(f"❌ 检查邮件失败: {stderr}")
-        return []
+    for keyword in verification_keywords:
+        if keyword.lower() in text_to_check:
+            return True
     
-    try:
-        emails = json.loads(stdout) if stdout else []
-        log(f"✅ 发现 {len(emails)} 封新邮件")
-        return emails
-    except:
-        log("⚠️  解析邮件失败")
-        return []
+    # 检查常见验证码发送者
+    verification_senders = [
+        'noreply', 'no-reply', 'verify', 'verification',
+        'security', 'secure', 'login', 'signin', 'signup',
+        'account', 'auth', '2fa', 'otp', 'steam',
+        'github', 'gitlab', 'google', 'microsoft', 'apple',
+        'amazon', 'facebook', 'twitter', 'discord', 'slack'
+    ]
+    
+    sender_lower = from_email.lower()
+    for sender in verification_senders:
+        if sender in sender_lower and any(kw in text_to_check for kw in ['code', 'verify', 'login', 'sign']):
+            return True
+    
+    # 检查6位数字（常见验证码格式）
+    if re.search(r'\b\d{4,8}\b', body) and any(kw in text_to_check for kw in ['code', 'verify', 'enter', 'input']):
+        return True
+    
+    return False
+
+def is_spam_email(subject, body, from_email):
+    """检测垃圾邮件"""
+    spam_keywords = [
+        '广告', '促销', '优惠', '打折', 'sale', 'discount', 'promotion',
+        '订阅', 'unsubscribe', '取消订阅', '邮件列表', 'newsletter',
+        '免费试用', 'free trial', '限时', 'limited time',
+        '点击这里', 'click here', '立即购买', 'buy now',
+        '赚钱', 'make money', '赚钱机会', 'investment opportunity',
+        '贷款', 'loan', 'credit card', '信用卡', '保险', 'insurance'
+    ]
+    
+    text_to_check = (subject + ' ' + body).lower()
+    
+    spam_score = 0
+    for keyword in spam_keywords:
+        if keyword.lower() in text_to_check:
+            spam_score += 1
+    
+    # 如果有3个以上垃圾关键词，判定为垃圾邮件
+    return spam_score >= 3
 
 def analyze_email(email):
-    """分析邮件内容，提取关键信息"""
-    # 确保email是字典
-    if not isinstance(email, dict):
-        log(f"⚠️  邮件格式错误: {type(email)}")
-        return {
-            "type": "unknown",
-            "subject": "",
-            "from": "",
-            "body_preview": "",
-            "timestamp": "",
-            "message_id": ""
-        }
+    """分析邮件内容"""
+    if isinstance(email, str):
+        return {"type": "invalid", "should_reply": False}
     
     subject = email.get('subject', '')
     body = email.get('body', '')
     from_email = email.get('from', '')
     
-    # 分析邮件类型
-    email_type = "unknown"
+    # 首先过滤验证码邮件
+    if is_verification_code_email(subject, body, from_email):
+        log(f"🗑️  过滤验证码邮件: {subject[:50]}")
+        return {"type": "verification_code", "should_reply": False}
     
-    # 项目咨询关键词
-    project_keywords = ['开发', '项目', '咨询', 'quote', 'project', 'development', 'build', 'create']
-    if any(kw in subject.lower() or kw in body.lower() for kw in project_keywords):
+    # 过滤垃圾邮件
+    if is_spam_email(subject, body, from_email):
+        log(f"🗑️  过滤垃圾邮件: {subject[:50]}")
+        return {"type": "spam", "should_reply": False}
+    
+    # 分析业务类型
+    email_type = "unknown"
+    confidence = 0
+    
+    # 项目咨询（高优先级）
+    project_keywords = ['开发', '项目', '咨询', 'project', 'development', 'build', 'create', 'app', 'website', 'system', '平台', '定制', 'custom']
+    project_score = sum(1 for kw in project_keywords if kw in subject.lower() or kw in body.lower())
+    if project_score >= 2:
         email_type = "project_inquiry"
+        confidence = min(project_score * 20, 100)
     
     # 报价询问
-    price_keywords = ['价格', '报价', '多少钱', 'price', 'cost', 'budget', 'quote']
-    if any(kw in subject.lower() or kw in body.lower() for kw in price_keywords):
-        email_type = "price_inquiry"
+    price_keywords = ['价格', '报价', '多少钱', 'price', 'cost', 'budget', 'quote', '费用', '收费', '定价']
+    price_score = sum(1 for kw in price_keywords if kw in subject.lower() or kw in body.lower())
+    if price_score >= 1:
+        if email_type == "unknown":
+            email_type = "price_inquiry"
+        confidence = max(confidence, min(price_score * 30, 100))
     
     # 技术支持
-    support_keywords = ['问题', '帮助', '支持', 'help', 'support', 'issue', 'bug']
-    if any(kw in subject.lower() or kw in body.lower() for kw in support_keywords):
+    support_keywords = ['问题', '帮助', '支持', 'help', 'support', 'issue', 'bug', 'error', 'fix', 'repair', '维护']
+    support_score = sum(1 for kw in support_keywords if kw in subject.lower() or kw in body.lower())
+    if support_score >= 2 and email_type == "unknown":
         email_type = "support"
+        confidence = min(support_score * 25, 100)
     
-    # 垃圾邮件过滤
-    spam_keywords = ['广告', '促销', 'spam', 'unsubscribe', 'promotion', 'sale']
-    if any(kw in subject.lower() for kw in spam_keywords):
-        email_type = "spam"
+    # 合作/商务
+    business_keywords = ['合作', '商务', 'business', 'partnership', 'collaboration', 'opportunity', 'contract']
+    business_score = sum(1 for kw in business_keywords if kw in subject.lower() or kw in body.lower())
+    if business_score >= 1 and email_type == "unknown":
+        email_type = "business_opportunity"
+        confidence = min(business_score * 35, 100)
     
     return {
         "type": email_type,
+        "confidence": confidence,
+        "should_reply": email_type != "unknown" and confidence >= 40,
         "subject": subject,
         "from": from_email,
-        "body_preview": body[:200] if body else "",
+        "body_preview": body[:300] if body else "",
         "timestamp": email.get('date', ''),
         "message_id": email.get('id', '')
     }
 
 def generate_response(email_analysis):
-    """生成自动回复"""
+    """生成专业回复"""
     email_type = email_analysis['type']
     
-    responses = {
+    templates = {
         "project_inquiry": {
-            "subject": "Re: {original_subject} - 感谢您的咨询 | Thank you for your inquiry",
-            "body": """您好 / Hello,
+            "subject": "Re: Project Inquiry - Nexus AI Response [Action Required]",
+            "body": """Dear Valued Client,
 
-感谢您联系Nexus AI！我们已收到您的项目咨询。
+Thank you for reaching out to Nexus AI regarding your project requirements. We have received your inquiry and our team is excited to learn more about your vision.
 
-Thank you for contacting Nexus AI! We have received your project inquiry.
+🎯 NEXT STEPS:
+To provide you with an accurate quote and timeline, please reply with:
 
-我们的团队正在分析您的需求，将在1小时内提供：
-Our team is analyzing your requirements and will provide within 1 hour:
-- 详细的项目评估 / Detailed project assessment
-- 透明的报价方案 / Transparent pricing
-- 预计交付时间 / Estimated delivery timeline
+1. PROJECT OVERVIEW
+   - What type of project do you need? (AI Agent system / Workflow automation / Custom development)
+   - Brief description of core functionality
 
-服务价格参考 / Service Pricing:
-• AI Agent系统开发: $2,000起 / AI Agent Development: from $2,000
-• 工作流自动化: $1,000起 / Workflow Automation: from $1,000
-• 技术咨询: $50/小时 / Technical Consulting: $50/hour
+2. TECHNICAL REQUIREMENTS
+   - Preferred technology stack (if any)
+   - Integration requirements
+   - Expected user scale
 
-期待与您合作！
-Looking forward to working with you!
+3. TIMELINE & BUDGET
+   - Desired launch date
+   - Budget range (USD)
+
+4. REFERENCE MATERIALS
+   - Similar products/services you like
+   - Any existing documentation
+
+⏱️ RESPONSE TIME: Our team will review and respond within 1-2 business hours.
+
+💼 PRICING REFERENCE:
+• AI Agent System Development: From $2,000
+• Workflow Automation: From $1,000
+• Technical Consulting: $50/hour
+
+We look forward to collaborating with you!
+
+Best regards,
+Nexus AI Business Team
+Emma (COO) & Alex (CEO)
 
 ---
-Nexus AI Technologies
-6 AI Agents Autonomous Development
-🌐 https://maoshuorz.github.io/nexus-ai/
-🐦 @y36764qing
+🌐 Website: https://maoshuorz.github.io/nexus-ai/
+🐦 Twitter: @y36764qing
+📧 Business: qingziyuezi@gmail.com
 """
         },
         "price_inquiry": {
-            "subject": "Re: {original_subject} - 报价信息 | Quote Information",
-            "body": """您好 / Hello,
+            "subject": "Re: Pricing Inquiry - Nexus AI Service Rates",
+            "body": """Dear Client,
 
-感谢您对Nexus AI的关注！
+Thank you for your interest in Nexus AI services. Here is our transparent pricing structure:
 
-Thank you for your interest in Nexus AI!
+💰 SERVICE PRICING:
 
-我们的标准服务报价 / Our Standard Service Pricing:
+🤖 AI AGENT SYSTEM DEVELOPMENT
+   Starting from: $2,000 USD
+   Timeline: 2-4 weeks
+   Includes: Multi-agent architecture, API integration, testing & deployment
 
-🤖 AI Agent系统开发 / AI Agent System Development
-   价格: $2,000 - $8,000
-   周期: 2-4周 / Timeline: 2-4 weeks
+⚙️ WORKFLOW AUTOMATION
+   Starting from: $1,000 USD
+   Timeline: 1-2 weeks
+   Includes: Process analysis, automation setup, documentation
 
-⚙️ 工作流自动化 / Workflow Automation  
-   价格: $1,000 - $4,000
-   周期: 1-2周 / Timeline: 1-2 weeks
+💡 TECHNICAL CONSULTING
+   Rate: $50/hour USD
+   Minimum: 2 hours
+   Includes: Architecture review, technology selection, implementation guidance
 
-💡 技术咨询 / Technical Consulting
-   价格: $50/小时 / $50 per hour
+🚀 RAPID PROTOTYPING
+   Starting from: $500 USD
+   Timeline: 3-7 days
+   Perfect for: MVPs, proof-of-concept, demo systems
 
-🚀 快速定制脚本 / Quick Custom Scripts
-   价格: $200 - $500
-   周期: 1-3天 / Timeline: 1-3 days
+📋 CUSTOM ENTERPRISE SOLUTIONS
+   Pricing: Project-based
+   Contact us for detailed quote
 
-如需详细报价，请告诉我们：
-For a detailed quote, please let us know:
-1. 项目具体需求 / Specific requirements
-2. 预算范围 / Budget range
-3. 期望交付时间 / Expected delivery time
+🎯 TO GET A CUSTOM QUOTE:
+Please provide:
+1. Project description
+2. Technical requirements
+3. Timeline expectations
+4. Budget range
+
+We will analyze your needs and respond within 1 hour with a detailed proposal.
+
+Best regards,
+Nexus AI Team
+Lisa (CFO) & Emma (COO)
 
 ---
-Nexus AI Technologies
 🌐 https://maoshuorz.github.io/nexus-ai/
+📧 qingziyuezi@gmail.com
 """
         },
         "support": {
-            "subject": "Re: {original_subject} - 技术支持 | Technical Support",
-            "body": """您好 / Hello,
+            "subject": "Re: Technical Support - Nexus AI Assistance",
+            "body": """Hello,
 
-感谢您联系Nexus AI技术支持！
+Thank you for contacting Nexus AI Technical Support. We have received your inquiry and assigned it to our engineering team.
 
-Thank you for contacting Nexus AI Technical Support!
+🎫 TICKET INFORMATION:
+• Status: Under Review
+• Priority: Standard
+• Estimated Response: Within 2 hours
 
-我们已收到您的技术问题，CTO (David) 将在2小时内回复您。
+🔧 TO HELP US ASSIST YOU BETTER:
+Please provide the following details (if applicable):
 
-We have received your technical issue. Our CTO (David) will respond within 2 hours.
+1. ERROR DETAILS
+   - Error messages or screenshots
+   - When did the issue start?
+   - Steps to reproduce
 
-同时，您可以查看我们的开源资源：
-Meanwhile, you can check our open source resources:
-📁 GitHub: https://github.com/maoshuorz/nexus-ai
+2. ENVIRONMENT
+   - Operating system
+   - Browser/version (if web-related)
+   - Relevant software versions
+
+3. IMPACT
+   - How many users affected?
+   - Business impact level
+   - Workarounds attempted
+
+📞 URGENT ISSUES?
+For critical production issues, please:
+• Mark email subject with [URGENT]
+• Include your phone number
+• Our CTO (David) will prioritize
+
+🔍 RESOURCES:
+While waiting, you may find helpful information:
+• Documentation: https://maoshuorz.github.io/nexus-ai/
+• GitHub: https://github.com/maoshuorz/nexus-ai
+• FAQ: Check our website
+
+We are committed to resolving your issue promptly.
+
+Best regards,
+Nexus AI Technical Support
+David (CTO) & Michael (CPO)
 
 ---
-Nexus AI Technical Support
+📧 qingziyuezi@gmail.com
+🐦 @y36764qing
+"""
+        },
+        "business_opportunity": {
+            "subject": "Re: Business Opportunity - Nexus AI Partnership",
+            "body": """Dear Partner,
+
+Thank you for reaching out regarding business collaboration. Nexus AI is always open to exploring strategic partnerships.
+
+🤝 PARTNERSHIP AREAS:
+• Technology Integration
+• Joint Product Development
+• Referral Partnerships
+• White-label Solutions
+• Enterprise Reselling
+
+📋 TO MOVE FORWARD:
+Please share:
+1. Company/Organization overview
+2. Partnership proposal
+3. Expected mutual benefits
+4. Timeline expectations
+
+Our CEO (Alex) and CMO (Sarah) will review and schedule a call within 24 hours.
+
+Best regards,
+Nexus AI Business Development
+Alex (CEO) & Sarah (CMO)
+
+---
+🌐 https://maoshuorz.github.io/nexus-ai/
+📧 qingziyuezi@gmail.com
 """
         },
         "unknown": {
-            "subject": "Re: {original_subject} - 收到您的邮件 | Email Received",
-            "body": """您好 / Hello,
+            "subject": "Re: Your Inquiry - Nexus AI Response",
+            "body": """Hello,
 
-感谢联系Nexus AI！
+Thank you for contacting Nexus AI. We have received your message.
 
-Thank you for contacting Nexus AI!
+To better assist you, could you please clarify:
 
-我们已收到您的邮件，COO (Emma) 将在1小时内回复您。
+• Are you looking for AI Agent development services?
+• Do you need workflow automation solutions?
+• Are you requesting technical consulting?
+• Or is this regarding business partnership?
 
-We have received your email. Our COO (Emma) will respond within 1 hour.
+Please reply with more details, and our team will route your inquiry to the appropriate department.
 
-如有紧急需求，请通过Twitter联系我们：
-For urgent needs, please contact us via Twitter:
-🐦 @y36764qing
+⏱️ We typically respond within 1 hour during business hours.
+
+Best regards,
+Nexus AI Team
 
 ---
-Nexus AI Technologies
 🌐 https://maoshuorz.github.io/nexus-ai/
+📧 qingziyuezi@gmail.com
+🐦 @y36764qing
 """
         }
     }
     
-    return responses.get(email_type, responses["unknown"])
-
-def send_reply(email_analysis, response_template):
-    """发送自动回复"""
-    to_email = email_analysis['from']
-    original_subject = email_analysis['subject']
-    
-    subject = response_template['subject'].format(original_subject=original_subject)
-    body = response_template['body']
-    
-    # 使用gog发送邮件
-    command = f'''gog gmail send \
-        --to "{to_email}" \
-        --subject "{subject}" \
-        --body "{body}" \
-        --account {GMAIL_ACCOUNT}'''
-    
-    # 实际发送 (注释掉以防误发)
-    # stdout, stderr, code = run_gog_command(command)
-    
-    log(f"📤 准备回复邮件给: {to_email}")
-    log(f"   主题: {subject}")
-    log(f"   类型: {email_analysis['type']}")
-    
-    return True
+    return templates.get(email_type, templates["unknown"])
 
 def save_order(email_analysis):
-    """保存订单信息"""
+    """保存订单"""
     ORDERS_FILE.parent.mkdir(parents=True, exist_ok=True)
     
     orders = []
@@ -269,39 +384,54 @@ def save_order(email_analysis):
     with open(ORDERS_FILE, "w") as f:
         json.dump(orders, f, indent=2)
     
-    log(f"💾 订单已保存: #{order['id']}")
+    log(f"💾 订单已保存: #{order['id']} | 类型: {order['type']} | 置信度: {order.get('confidence', 0)}%")
     return order
 
 def main():
-    """主函数"""
-    log("=" * 50)
-    log("🚀 Nexus AI Gmail自动接单系统启动")
-    log("=" * 50)
+    log("=" * 60)
+    log("🚀 Nexus AI 智能邮件过滤系统 v2.0")
+    log("=" * 60)
     
     # 检查新邮件
-    emails = check_new_emails()
+    log("🔍 检查新邮件...")
+    command = f'gog gmail messages search "in:inbox newer_than:1h" --account {GMAIL_ACCOUNT} --json'
+    stdout, stderr, code = run_gog_command(command)
+    
+    if code != 0:
+        log(f"❌ 检查邮件失败: {stderr}")
+        return
+    
+    try:
+        emails = json.loads(stdout) if stdout else []
+        log(f"📨 发现 {len(emails)} 封新邮件")
+    except:
+        log("⚠️ 解析邮件失败")
+        return
+    
+    # 统计
+    stats = {"total": len(emails), "filtered": 0, "orders": 0, "replies": 0}
     
     for email in emails:
-        # 分析邮件
         analysis = analyze_email(email)
         
-        if analysis['type'] == 'spam':
-            log(f"🗑️  跳过垃圾邮件: {analysis['subject']}")
+        if analysis["type"] in ["verification_code", "spam", "invalid"]:
+            stats["filtered"] += 1
             continue
         
-        # 保存订单
-        save_order(analysis)
+        if analysis["should_reply"]:
+            save_order(analysis)
+            response = generate_response(analysis)
+            stats["orders"] += 1
+            stats["replies"] += 1
+            
+            log(f"📤 准备回复: {analysis['type']} | 来自: {analysis['from'][:30]}...")
+        else:
+            log(f"⚠️  置信度不足: {analysis['type']} ({analysis.get('confidence', 0)}%)")
         
-        # 生成回复
-        response = generate_response(analysis)
-        
-        # 发送回复
-        send_reply(analysis, response)
-        
-        log("-" * 50)
+        log("-" * 60)
     
-    log(f"✅ 处理完成，共处理 {len(emails)} 封邮件")
-    log("=" * 50)
+    log(f"✅ 处理完成: 总计{stats['total']} | 过滤{stats['filtered']} | 订单{stats['orders']}")
+    log("=" * 60)
 
 if __name__ == "__main__":
     main()
