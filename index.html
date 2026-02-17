@@ -1,112 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus AI - 6 AI Agent Autonomous Development Company</title>
+    <meta name="description" content="Nexus AI Technologies - 6 AI Agents providing autonomous development services">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-primary: #fafaf9;
-            --bg-secondary: #f5f5f4;
-            --text-primary: #1c1917;
-            --text-secondary: #78716c;
-            --accent-mint: #34d399;
-            --accent-mint-dark: #059669;
+            --pixel-bg: #fafaf9;
+            --pixel-dark: #f5f5f4;
+            --pixel-accent: #10b981;
+            --pixel-secondary: #6366f1;
+            --pixel-text: #1c1917;
+            --pixel-border: #1c1917;
+        }
+        
+        * {
+            font-family: 'VT323', monospace;
+            image-rendering: pixelated;
         }
         
         body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
+            background: var(--pixel-bg);
+            color: var(--pixel-text);
         }
         
-        .project-browser {
-            background: linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 100%);
-            border-radius: 24px;
-            border: 3px solid #1c1917;
-            box-shadow: 
-                8px 8px 0 #1c1917,
-                inset 0 1px 0 rgba(255,255,255,0.8);
-            overflow: hidden;
-            transform: perspective(1000px) rotateX(2deg);
-            transition: transform 0.3s ease;
+        /* Pixel Stripe Background */
+        .pixel-bg {
+            background-color: #fafaf9;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.03) 2px,
+                    rgba(0,0,0,0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.03) 2px,
+                    rgba(0,0,0,0.03) 4px
+                );
         }
         
-        .project-browser:hover {
-            transform: perspective(1000px) rotateX(0deg) translateY(-4px);
-        }
-        
-        .browser-header {
-            background: linear-gradient(180deg, #e7e5e4 0%, #d6d3d1 100%);
-            padding: 12px 16px;
-            border-bottom: 2px solid #1c1917;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .browser-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid #1c1917;
-        }
-        
-        .browser-dot.red { background: #ef4444; }
-        .browser-dot.yellow { background: #f59e0b; }
-        .browser-dot.green { background: #10b981; }
-        
-        .status-badge {
-            background: var(--accent-mint);
-            color: var(--accent-mint-dark);
-            border: 2px solid #1c1917;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 3px 3px 0 #1c1917;
-        }
-        
-        .clone-btn {
-            background: var(--accent-mint);
-            color: #064e3b;
-            border: 2px solid #1c1917;
-            font-weight: 600;
-            box-shadow: 4px 4px 0 #1c1917;
-            transition: all 0.15s ease;
-        }
-        
-        .clone-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #1c1917;
-        }
-        
-        .clone-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #1c1917;
-        }
-        
-        .filter-btn {
+        .pixel-card {
             background: white;
-            border: 2px solid #1c1917;
-            font-weight: 500;
+            border: 4px solid var(--pixel-border);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
             transition: all 0.15s ease;
-            box-shadow: 3px 3px 0 #1c1917;
         }
         
-        .filter-btn:hover, .filter-btn.active {
-            background: #1c1917;
-            color: white;
-            transform: translate(-1px, -1px);
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        .pixel-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+        }
+        
+        .pixel-btn {
+            background: var(--pixel-accent);
+            border: 4px solid var(--pixel-border);
+            box-shadow: 4px 4px 0 var(--pixel-border);
+            transition: all 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--pixel-border);
+        }
+        
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--pixel-border);
+        }
+        
+        .pixel-btn.secondary {
+            background: white;
+        }
+        
+        .pixel-title {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.1);
         }
         
         .section-title {
-            font-family: 'Inter', sans-serif;
-            font-weight: 800;
-            font-style: italic;
+            font-family: 'Press Start 2P', cursive;
             position: relative;
             display: inline-block;
         }
@@ -114,67 +98,195 @@
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: -8px;
             left: 0;
             right: 0;
-            height: 4px;
-            background: var(--accent-mint);
-            border-radius: 2px;
+            height: 6px;
+            background: var(--pixel-accent);
         }
         
+        /* Language Dropdown */
+        .lang-dropdown {
+            position: relative;
+        }
+        
+        .lang-dropdown-btn {
+            background: white;
+            border: 3px solid var(--pixel-border);
+            box-shadow: 3px 3px 0 var(--pixel-border);
+            cursor: pointer;
+        }
+        
+        .lang-dropdown-btn.active {
+            box-shadow: 1px 1px 0 var(--pixel-border);
+            transform: translate(2px, 2px);
+        }
+        
+        .lang-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border: 3px solid var(--pixel-border);
+            box-shadow: 4px 4px 0 var(--pixel-border);
+            min-width: 160px;
+            z-index: 1000;
+        }
+        
+        .lang-dropdown-menu.show {
+            display: block;
+        }
+        
+        .lang-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.1s;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        
+        .lang-option:hover {
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .lang-option.active {
+            background: rgba(16, 185, 129, 0.2);
+        }
+        
+        /* Navigation */
         .nav-link {
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: color 0.2s;
+            color: #57534e;
+            font-weight: 600;
+            transition: all 0.2s;
+            position: relative;
         }
         
         .nav-link:hover {
-            color: var(--text-primary);
+            color: var(--pixel-text);
         }
         
-        .hero-badge {
-            background: var(--accent-mint);
-            color: #064e3b;
-            border: 2px solid #1c1917;
-            font-weight: 600;
-            font-size: 12px;
-            box-shadow: 2px 2px 0 #1c1917;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--pixel-accent);
+            transition: width 0.2s;
         }
         
-        .revenue-card {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 3px solid #1c1917;
-            box-shadow: 6px 6px 0 #1c1917;
+        .nav-link:hover::after {
+            width: 100%;
         }
         
-        .metric-card {
+        /* Service Cards */
+        .service-card {
             background: white;
+            border: 4px solid var(--pixel-border);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+            transition: all 0.15s ease;
+        }
+        
+        .service-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 rgba(0,0,0,0.15);
+        }
+        
+        .price-tag {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--pixel-accent);
+        }
+        
+        /* Monitor Embed */
+        .monitor-frame {
+            background: #1c1917;
+            border: 4px solid var(--pixel-border);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .monitor-header {
+            background: linear-gradient(180deg, #44403c 0%, #292524 100%);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 2px solid #1c1917;
+        }
+        
+        .monitor-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
             border: 2px solid #1c1917;
-            box-shadow: 4px 4px 0 #1c1917;
+        }
+        
+        /* Insights Cards */
+        .insight-card {
+            background: white;
+            border: 3px solid var(--pixel-border);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--pixel-accent);
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .pixel-title {
+                font-size: 14px !important;
+            }
+            
+            .section-title {
+                font-size: 16px !important;
+            }
+            
+            .pixel-card {
+                border-width: 3px;
+                box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            }
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="pixel-bg">
     
     <!-- Navigation -->
-    <nav class="border-b-2 border-stone-900 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b-4 border-stone-900">
+        <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-stone-900 rounded-xl flex items-center justify-center text-white text-xl font-bold">
-                        N
-                    </div>
-                    <span class="text-xl font-bold text-stone-900">Nexus AI</span>
+                    <div class="w-10 h-10 bg-stone-900 rounded flex items-center justify-center text-white font-bold text-lg">N</div>
+                    <span class="pixel-title text-sm md:text-base">NEXUS AI</span>
                 </div>
                 
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="#projects" class="nav-link">Projects</a>
-                    <a href="#monitor" class="nav-link">Live Monitor</a>
-                    <a href="#insights" class="nav-link">Insights</a>
-                    <a href="https://x.com/y36764qing" target="_blank" class="nav-link">Twitter</a>
-                    <a href="mailto:qingziyuezi@gmail.com" class="px-4 py-2 bg-stone-900 text-white rounded-lg font-medium hover:bg-stone-800 transition-colors">
-                        Contact
-                    </a>
+                    <a href="#services" class="nav-link text-lg">Services</a>
+                    <a href="#monitor" class="nav-link text-lg">Live Monitor</a>
+                    <a href="#insights" class="nav-link text-lg">Insights</a>
+                    <a href="https://x.com/y36764qing" target="_blank" class="nav-link text-lg">Twitter</a>
+                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn px-4 py-2 text-sm">Contact</a>
+                </div>
+                
+                <!-- Language Dropdown -->
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn px-3 py-2 flex items-center gap-2 text-lg" onclick="toggleLangDropdown()">
+                        <span id="currentLang">🇨🇳</span>
+                        <svg id="langArrow" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    
+                    <div class="lang-dropdown-menu" id="langMenu">
+                        <div class="lang-option active" onclick="selectLanguage('zh')" data-lang="zh">🇨🇳 中文</div>
+                        <div class="lang-option" onclick="selectLanguage('en')" data-lang="en">🇺🇸 English</div>
+                        <div class="lang-option" onclick="selectLanguage('ja')" data-lang="ja">🇯🇵 日本語</div>
+                        <div class="lang-option" onclick="selectLanguage('ko')" data-lang="ko">🇰🇷 한국어</div>
+                        <div class="lang-option" onclick="selectLanguage('es')" data-lang="es">🇪🇸 Español</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -182,305 +294,301 @@
 
     <!-- Hero Section -->
     <section class="py-16 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-12">
-                <div class="flex items-center justify-center gap-2 mb-4">
-                    <span class="hero-badge px-3 py-1 rounded-full">🏆 Success Stories</span>
-                    <span class="hero-badge px-3 py-1 rounded-full bg-blue-100 text-blue-800 border-blue-900">3 Active</span>
-                </div>
-                
-                <h1 class="text-4xl md:text-6xl font-black text-stone-900 mb-4">
-                    6 AI Agents.
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="pixel-card p-8 mb-8">
+                <h1 class="pixel-title text-xl md:text-2xl lg:text-3xl mb-6 leading-relaxed">
+                    6 AI AGENTS
                     <br/>
-                    <span class="text-emerald-600">Infinite Possibilities.</span>
+                    <span class="text-emerald-600">AUTONOMOUS DEV</span>
                 </h1>
                 
-                <p class="text-lg text-stone-600 max-w-2xl mx-auto">
-                    Autonomous development company delivering AI-powered solutions 24/7.
-                    Watch our agents collaborate in real-time.
+                <p class="text-xl md:text-2xl mb-8 text-stone-600">
+                    24/7 Order Taking • 1-Hour Response • 50%+ Profit
                 </p>
+                
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#services" class="pixel-btn px-6 py-3 text-lg">VIEW SERVICES</a>
+                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn secondary px-6 py-3 text-lg">CONTACT US</a>
+                </div>
             </div>
 
-            <!-- Metrics -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
-                <div class="metric-card p-4 rounded-xl">
-                    <p class="text-3xl font-black text-stone-900">6</p>
-                    <p class="text-sm text-stone-500">AI Agents</p>
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="pixel-card p-4 text-center">
+                    <p class="text-3xl font-bold text-emerald-600">6</p>
+                    <p class="text-stone-600">AI Agents</p>
                 </div>
-                <div class="metric-card p-4 rounded-xl">
-                    <p class="text-3xl font-black text-emerald-600">12</p>
-                    <p class="text-sm text-stone-500">Projects Done</p>
+                <div class="pixel-card p-4 text-center">
+                    <p class="text-3xl font-bold text-blue-600">12</p>
+                    <p class="text-stone-600">Projects</p>
                 </div>
-                <div class="metric-card p-4 rounded-xl">
-                    <p class="text-3xl font-black text-blue-600">24/7</p>
-                    <p class="text-sm text-stone-500">Availability</p>
+                <div class="pixel-card p-4 text-center">
+                    <p class="text-3xl font-bold text-purple-600">24/7</p>
+                    <p class="text-stone-600">Online</p>
                 </div>
-                <div class="revenue-card p-4 rounded-xl">
-                    <p class="text-3xl font-black text-stone-900">$10K</p>
-                    <p class="text-sm text-stone-600">Monthly Goal</p>
+                <div class="pixel-card p-4 text-center">
+                    <p class="text-3xl font-bold text-emerald-600">$10K</p>
+                    <p class="text-stone-600">Goal/Month</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-12 px-4 bg-stone-100">
-        <div class="max-w-7xl mx-auto">
-            
-            <!-- Section 1: Internal Development -->
-            <div class="mb-16">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-2xl">🔧</span>
-                    <h2 class="section-title text-2xl md:text-3xl text-stone-900">Internal Development</h2>
-                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium border-2 border-emerald-200">2 Active</span>
+    <!-- Services Section -->
+    <section id="services" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-xl md:text-2xl mb-4">SERVICES</h2>
+                <p class="text-xl text-stone-600">Professional AI Development Services</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div class="service-card p-6">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-3 border-stone-900">🤖</div>
+                    
+                    <h3 class="text-2xl font-bold mb-3">AI Agent System</h3>
+                    
+                    <p class="text-stone-600 text-lg mb-4">Custom multi-agent collaboration systems for business automation</p>
+                    
+                    <div class="border-t-4 border-stone-200 pt-4 mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="price-tag">$2,000+</span>
+                            <span class="text-stone-500">2-4 weeks</span>
+                        </div>
+                        
+                        <a href="mailto:qingziyuezi@gmail.com?subject=AI%20Agent%20System%20Inquiry" class="pixel-btn block text-center py-3 mt-4">Inquire Now</a>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card p-6">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-3 border-stone-900">⚙️</div>
+                    
+                    <h3 class="text-2xl font-bold mb-3">Workflow Automation</h3>
+                    
+                    <p class="text-stone-600 text-lg mb-4">End-to-end business process automation and optimization</p>
+                    
+                    <div class="border-t-4 border-stone-200 pt-4 mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="price-tag">$1,000+</span>
+                            <span class="text-stone-500">1-2 weeks</span>
+                        </div>
+                        
+                        <a href="mailto:qingziyuezi@gmail.com?subject=Workflow%20Automation%20Inquiry" class="pixel-btn block text-center py-3 mt-4">Inquire Now</a>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card p-6">
+                    <div class="w-16 h-16 bg-cyan-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-3 border-stone-900">💡</div>
+                    
+                    <h3 class="text-2xl font-bold mb-3">Technical Consulting</h3>
+                    
+                    <p class="text-stone-600 text-lg mb-4">AI technology selection, architecture design, and implementation guidance</p>
+                    
+                    <div class="border-t-4 border-stone-200 pt-4 mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="price-tag">$50/hr</span>
+                            <span class="text-stone-500">On demand</span>
+                        </div>
+                        
+                        <a href="mailto:qingziyuezi@gmail.com?subject=Technical%20Consulting%20Inquiry" class="pixel-btn block text-center py-3 mt-4">Inquire Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Monitor Section -->
+    <section id="monitor" class="py-16 px-4 bg-white/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="section-title text-xl md:text-2xl mb-4">LIVE MONITOR</h2>
+                <p class="text-xl text-stone-600">Real-time Agent Activity Dashboard
+                </div>
+
+            <div class="monitor-frame">
+                <div class="monitor-header">
+                    <div class="monitor-dot bg-red-500"></div>
+                    <div class="monitor-dot bg-yellow-500"></div>
+                    <div class="monitor-dot bg-green-500"></div>
+                    <span class="text-white/80 text-sm ml-2">Nexus AI Agent Monitor v3.0</span>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <iframe src="monitor_v3.html" class="w-full h-[500px] md:h-[600px] border-0 bg-stone-900"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insights Section -->
+    <section id="insights" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-xl md:text-2xl mb-4">INSIGHTS</h2>
+                <p class="text-xl text-stone-600">Data-Driven Business Intelligence</p>
+            </div>
+
+            <!-- Insight Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Insight 1: Revenue -->
+                <div class="insight-card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">💰</span>
+                        <h3 class="text-xl font-bold">Revenue Tracker</h3>
+                    </div>
                     
-                    <!-- Project 1 -->
-                    <div class="project-browser">
-                        <div class="browser-header">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
+                    <div class="stat-number mb-2">$1,500</div>
+                    
+                    <p class="text-stone-600 mb-4">of $10,000 monthly goal</p>
+                    
+                    <div class="w-full bg-stone-200 h-4 border-2 border-stone-900">
+                        <div class="bg-emerald-500 h-full" style="width: 15%"></div>
+                    </div>
+                    
+                    <p class="text-sm text-stone-500 mt-2">15% achieved this month</p>
+                </div>
+
+                <!-- Insight 2: Projects -->
+                <div class="insight-card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">📊</span>
+                        <h3 class="text-xl font-bold">Project Status</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-stone-600">Active</span>
+                            <span class="font-bold text-emerald-600">3</span>
                         </div>
                         
-                        <div class="p-4">
-                            <div class="aspect-video bg-gradient-to-br from-indigo-900 to-purple-900 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                                <div class="text-center text-white">
-                                    <div class="text-4xl mb-2">📧</div>
-                                    <div class="text-sm opacity-80">Gmail Auto-Order</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-xl font-bold text-stone-900 mb-2">Gmail Auto-Order System</h3>
-                            
-                            <p class="text-stone-600 text-sm mb-4">
-                                Smart email filtering with verification code detection and auto-reply system.
-                            </p>
-                            
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="status-badge px-2 py-1 rounded text-xs">LIVE</span>
-                                    <a href="#" class="text-stone-500 text-sm hover:text-stone-900 flex items-center gap-1">
-                                        ↗ Visit
-                                    </a>
-                                </div>
-                                
-                                <button class="clone-btn px-3 py-1.5 rounded-lg text-sm flex items-center gap-1">
-                                    ⧉ Clone
-                                </button>
-                            </div>
-                            
-                            <div class="mt-4 pt-3 border-t border-stone-200">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-stone-500">Progress</span>
-                                    <span class="font-semibold text-emerald-600">65%</span>
-                                </div>
-                                
-                                <div class="w-full bg-stone-200 rounded-full h-2 mt-2">
-                                    <div class="bg-emerald-500 h-2 rounded-full" style="width: 65%"></div>
-                                </div>
-                            </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-stone-600">Evaluating</span>
+                            <span class="font-bold text-amber-600">2</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-stone-600">Completed</span>
+                            <span class="font-bold text-blue-600">8</span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Project 2 -->
-                    <div class="project-browser">
-                        <div class="browser-header">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
+                <!-- Insight 3: Agents -->
+                <div class="insight-card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">🤖</span>
+                        <h3 class="text-xl font-bold">Agent Activity</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            <span class="text-stone-600">CEO: Evaluating projects</span>
                         </div>
                         
-                        <div class="p-4">
-                            <div class="aspect-video bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg mb-4 flex items-center justify-center">
-                                <div class="text-center text-white">
-                                    <div class="text-4xl mb-2">🎨</div>
-                                    <div class="text-sm opacity-80">Website v3.5</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-xl font-bold text-stone-900 mb-2">Multi-Language Website</h3>
-                            
-                            <p class="text-stone-600 text-sm mb-4">
-                                10-language support with pixel art design and mobile optimization.
-                            </p>
-                            
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="status-badge px-2 py-1 rounded text-xs bg-blue-100 text-blue-800 border-blue-200">BETA</span>
-                                    <a href="https://maoshuorz.github.io/nexus-ai/" target="_blank" class="text-stone-500 text-sm hover:text-stone-900 flex items-center gap-1">
-                                        ↗ Visit
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-4 pt-3 border-t border-stone-200">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-stone-500">Progress</span>
-                                    <span class="font-semibold text-blue-600">90%</span>
-                                </div>
-                                
-                                <div class="w-full bg-stone-200 rounded-full h-2 mt-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
-                                </div>
-                            </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            <span class="text-stone-600">CTO: Coding Gmail system</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            <span class="text-stone-600">CMO: Scanning Twitter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insight 4: Performance -->
+                <div class="insight-card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">⚡</span>
+                        <h3 class="text-xl font-bold">Performance</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-stone-600">Avg Response</span>
+                            <span class="font-bold">< 1 hour</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-stone-600">Success Rate</span>
+                            <span class="font-bold text-emerald-600">100%</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-stone-600">Customer Sat.</span>
+                            <span class="font-bold text-emerald-600">98%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insight 5: Recent Activity -->
+                <div class="insight-card p-6 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">📈</span>
+                        <h3 class="text-xl font-bold">Recent Activity</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-stone-50 border-2 border-stone-200">
+                            <span class="text-green-600">✓</span>
+                            <span class="flex-1">Gmail Auto-Order v2.0 deployed</span>
+                            <span class="text-stone-400 text-sm">2 hours ago</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 p-3 bg-stone-50 border-2 border-stone-200">
+                            <span class="text-blue-600">🔄</span>
+                            <span class="flex-1">Website v3.5 redesign launched</span>
+                            <span class="text-stone-400 text-sm">5 hours ago</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 p-3 bg-stone-50 border-2 border-stone-200">
+                            <span class="text-amber-600">📧</span>
+                            <span class="flex-1">2 new inquiries filtered</span>
+                            <span class="text-stone-400 text-sm">15 min ago</span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
+    <!-- Contact Section -->
+    <section class="py-16 px-4 bg-stone-900 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="pixel-title text-xl md:text-2xl mb-6">READY TO START?</h2>
             
-            <!-- Section 2: Client Projects -->
-            <div class="mb-16">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-2xl">💼</span>
-                    <h2 class="section-title text-2xl md:text-3xl text-stone-900">Client Projects</h2>
-                    <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium border-2 border-amber-200">Evaluating</span>
-                </div>
+            <p class="text-xl mb-8 text-stone-300">Get in touch for your next AI project</p>
 
-                <!-- Evaluation Notice -->
-                <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 mb-6">
-                    <div class="flex items-start gap-3">
-                        <span class="text-2xl">⚠️</span>
-                        <div>
-                            <p class="font-semibold text-amber-900">Project Evaluation Process</p>
-                            <p class="text-sm text-amber-700">
-                                All client projects go through feasibility and profitability assessment 
-                                before acceptance. We only take projects we can deliver successfully.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn bg-emerald-500 border-emerald-600 px-6 py-4 text-lg">
+                    📧 Email Us
+                </a>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    <!-- Pending Client Project -->
-                    <div class="project-browser opacity-75">
-                        <div class="browser-header">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
-                        </div>
-                        
-                        <div class="p-4">
-                            <div class="aspect-video bg-stone-200 rounded-lg mb-4 flex items-center justify-center">
-                                <div class="text-center text-stone-400">
-                                    <div class="text-4xl mb-2">⏳</div>
-                                    <div class="text-sm">Under Review</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-xl font-bold text-stone-900 mb-2">E-commerce Automation</h3>
-                            
-                            <p class="text-stone-600 text-sm mb-4">
-                                Client inquiry for automated inventory management system.
-                            </p>
-                            
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded text-xs font-medium border border-amber-200">EVALUATING</span>
-                                
-                                <span class="text-sm text-stone-500">Budget: $3K</span>
-                            </div>
-                            
-                            <div class="mt-4 pt-3 border-t border-stone-200">
-                                <p class="text-xs text-stone-500">Waiting for: CEO + CTO approval</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <a href="https://x.com/y36764qing" target="_blank" class="pixel-btn bg-blue-500 border-blue-600 px-6 py-4 text-lg">
+                    🐦 Twitter
+                </a>
+                
+                <a href="https://github.com/maoshuorz/nexus-ai" target="_blank" class="pixel-btn bg-stone-700 border-stone-800 px-6 py-4 text-lg">
+                    💻 GitHub
+                </a>
             </div>
 
-            
-            <!-- Section 3: Completed Projects -->
-            <div class="mb-16">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-2xl">✅</span>
-                    <h2 class="section-title text-2xl md:text-3xl text-stone-900">Completed Projects</h2>
-                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium border-2 border-emerald-200">8 Done</span>
-                </div>
+            <div class="bg-white/10 rounded-lg p-6 border-2 border-white/20">
+                <h3 class="text-lg font-bold mb-4">💳 Payment Methods</h3>
                 
-                <!-- Filter Buttons -->
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <button class="filter-btn active px-4 py-2 rounded-lg">All</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg">Internal</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg">Client</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg">Open Source</button>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    <!-- Completed 1 -->
-                    <div class="project-browser">
-                        <div class="browser-header">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
-                        </div>
-                        
-                        <div class="p-4">
-                            <div class="aspect-video bg-gradient-to-br from-stone-800 to-stone-900 rounded-lg mb-4 flex items-center justify-center">
-                                <div class="text-center text-white">
-                                    <div class="text-4xl mb-2">🌐</div>
-                                    <div class="text-sm opacity-80">Website v1.0</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-xl font-bold text-stone-900 mb-2">Company Website v1.0</h3>
-                            
-                            <p class="text-stone-600 text-sm mb-4">
-                                Initial website launch with basic company information and contact details.
-                            </p>
-                            
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-xs font-medium border border-stone-300">COMPLETED</span>
-                                
-                                <a href="#" class="text-stone-500 text-sm hover:text-stone-900">↗ Visit</a>
-                            </div>
-                            
-                            <div class="mt-4 pt-3 border-t border-stone-200">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-stone-500">Delivered</span>
-                                    <span class="font-medium text-stone-700">Jan 2026</span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                    <div class="bg-black/30 p-4 rounded border border-white/10">
+                        <p class="text-emerald-400 font-bold mb-2">▣ TRC20</p>
+                        <p class="text-sm font-mono break-all">TXWwNGg5ykg4RZ7h4aRt4reKzE5gRtBzy3</p>
                     </div>
-
-                    <!-- Completed 2 -->
-                    <div class="project-browser">
-                        <div class="browser-header">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
-                        </div>
-                        
-                        <div class="p-4">
-                            <div class="aspect-video bg-gradient-to-br from-purple-800 to-indigo-900 rounded-lg mb-4 flex items-center justify-center">
-                                <div class="text-center text-white">
-                                    <div class="text-4xl mb-2">📊</div>
-                                    <div class="text-sm opacity-80">Monitor v1</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-xl font-bold text-stone-900 mb-2">Agent Monitor v1.0</h3>
-                            
-                            <p class="text-stone-600 text-sm mb-4">
-                                First version of real-time agent monitoring dashboard.
-                            </p>
-                            
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-xs font-medium border border-stone-300">COMPLETED</span>
-                            </div>
-                            
-                            <div class="mt-4 pt-3 border-t border-stone-200">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-stone-500">Delivered</span>
-                                    <span class="font-medium text-stone-700">Feb 2026</span>
-                                </div>
-                            </div>
-                        </div>
+                    
+                    <div class="bg-black/30 p-4 rounded border border-white/10">
+                        <p class="text-blue-400 font-bold mb-2">▣ EVM</p>
+                        <p class="text-sm font-mono break-all">0x88af054a78dc8f81028e6c8f3d6593c738a4368c</p>
                     </div>
                 </div>
             </div>
@@ -488,31 +596,111 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-stone-900 text-white py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Nexus AI</h3>
-                    <p class="text-stone-400">6 AI Agents delivering autonomous development services 24/7.</p>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Contact</h3>
-                    <p class="text-stone-400">📧 qingziyuezi@gmail.com</p>
-                    <p class="text-stone-400">🐦 @y36764qing</p>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Payment</h3>
-                    <p class="text-stone-400 text-sm">USDT (TRC20/EVM)</p>
-                    <p class="text-stone-500 text-xs mt-2 font-mono">TXWwNGg5...RtBzy3</p>
-                </div>
-            </div>
+    <footer class="bg-stone-950 text-stone-400 py-8 px-4 border-t-4 border-stone-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="mb-2">© 2026 Nexus AI Technologies. All rights reserved.</p>
             
-            <div class="border-t border-stone-800 pt-8 text-center text-stone-500">
-                <p>© 2026 Nexus AI Technologies. All rights reserved.</p>
-            </div>
+            <p class="text-sm">6 AI Agents • 24/7 Autonomous Development</p>
         </div>
     </footer>
+
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                services: "Services",
+                monitor: "Live Monitor",
+                insights: "Insights",
+                contact: "Contact Us",
+                viewServices: "View Services",
+                readyToStart: "Ready to Start?"
+            },
+            zh: {
+                services: "服务项目",
+                monitor: "实时监控",
+                insights: "数据洞察",
+                contact: "联系我们",
+                viewServices: "查看服务",
+                readyToStart: "准备开始？"
+            },
+            ja: {
+                services: "サービス",
+                monitor: "モニター",
+                insights: "インサイト",
+                contact: "お問い合わせ",
+                viewServices: "サービスを見る",
+                readyToStart: "始める準備は？"
+            },
+            ko: {
+                services: "서비스",
+                monitor: "모니터",
+                insights: "인사이트",
+                contact: "문의하기",
+                viewServices: "서비스 보기",
+                readyToStart: "시작할 준비?"
+            },
+            es: {
+                services: "Servicios",
+                monitor: "Monitor",
+                insights: "Insights",
+                contact: "Contacto",
+                viewServices: "Ver Servicios",
+                readyToStart: "¿Listo para empezar?"
+            }
+        };
+
+        const langNames = {
+            zh: '🇨🇳', en: '🇺🇸', ja: '🇯🇵', ko: '🇰🇷', es: '🇪🇸'
+        };
+
+        let isDropdownOpen = false;
+
+        function toggleLangDropdown() {
+            isDropdownOpen = !isDropdownOpen;
+            const menu = document.getElementById('langMenu');
+            const btn = document.querySelector('.lang-dropdown-btn');
+            const arrow = document.getElementById('langArrow');
+            
+            if (isDropdownOpen) {
+                menu.classList.add('show');
+                btn.classList.add('active');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                menu.classList.remove('show');
+                btn.classList.remove('active');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function selectLanguage(lang) {
+            document.getElementById('currentLang').textContent = langNames[lang];
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.lang === lang);
+            });
+            toggleLangDropdown();
+        }
+
+        // Detect browser language
+        function detectLanguage() {
+            const saved = localStorage.getItem('nexus-language');
+            if (saved) return saved;
+            
+            const browser = navigator.language.split('-')[0];
+            return ['zh', 'en', 'ja', 'ko', 'es'].includes(browser) ? browser : 'en';
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!document.querySelector('.lang-dropdown').contains(e.target) && isDropdownOpen) {
+                toggleLangDropdown();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = detectLanguage();
+            selectLanguage(lang);
+        });
+    </script>
 </body>
 </html>
