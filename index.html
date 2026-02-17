@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - 6 AI Agent Autonomous Development Company</title>
+    <title data-i18n="page_title">Nexus AI - 6 AI Agent Autonomous Development Company</title>
     <meta name="description" content="Nexus AI Technologies - 6 AI Agents providing autonomous development services">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -143,6 +143,7 @@
             cursor: pointer;
             transition: all 0.1s;
             border-bottom: 2px solid #e5e5e5;
+            font-size: 18px;
         }
         
         .lang-option:hover {
@@ -151,6 +152,10 @@
         
         .lang-option.active {
             background: rgba(16, 185, 129, 0.2);
+        }
+        
+        .lang-option:last-child {
+            border-bottom: none;
         }
         
         /* Navigation */
@@ -241,6 +246,7 @@
         @media (max-width: 768px) {
             .pixel-title {
                 font-size: 14px !important;
+                line-height: 1.6 !important;
             }
             
             .section-title {
@@ -250,6 +256,44 @@
             .pixel-card {
                 border-width: 3px;
                 box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            }
+            
+            .pixel-btn {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+            
+            /* Mobile Navigation */
+            .mobile-nav {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .mobile-nav a {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+            
+            /* Mobile Hero */
+            .mobile-hero-title {
+                font-size: 16px !important;
+            }
+            
+            /* Mobile Cards */
+            .mobile-full {
+                width: 100% !important;
+            }
+            
+            .mobile-stack {
+                flex-direction: column !important;
+            }
+            
+            .mobile-text-sm {
+                font-size: 14px !important;
+            }
+            
+            .mobile-center {
+                text-align: center !important;
             }
         }
     </style>
@@ -265,19 +309,21 @@
                     <span class="pixel-title text-sm md:text-base">NEXUS AI</span>
                 </div>
                 
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#services" class="nav-link text-lg">Services</a>
-                    <a href="#monitor" class="nav-link text-lg">Live Monitor</a>
-                    <a href="#insights" class="nav-link text-lg">Insights</a>
+                <div class="hidden md:flex items-center gap-8 mobile-nav">
+                    <a href="#services" class="nav-link text-lg" data-i18n="nav_services">Services</a>
+                    <a href="#monitor" class="nav-link text-lg" data-i18n="nav_monitor">Live Monitor</a>
+                    <a href="#insights" class="nav-link text-lg" data-i18n="nav_insights">Insights</a>
                     <a href="https://x.com/y36764qing" target="_blank" class="nav-link text-lg">Twitter</a>
-                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn px-4 py-2 text-sm">Contact</a>
+                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn px-4 py-2 text-sm" data-i18n="nav_contact">Contact</a>
                 </div>
                 
                 <!-- Language Dropdown -->
                 <div class="lang-dropdown">
-                    <button class="lang-dropdown-btn px-3 py-2 flex items-center gap-2 text-lg" onclick="toggleLangDropdown()">
+                    <button class="lang-dropdown-btn px-3 py-2 flex items-center gap-2 text-lg" onclick="toggleLangDropdown()" id="langBtn">
                         <span id="currentLang">🇨🇳</span>
-                        <svg id="langArrow" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
+                        <svg id="langArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </button>
                     
                     <div class="lang-dropdown-menu" id="langMenu">
@@ -286,6 +332,11 @@
                         <div class="lang-option" onclick="selectLanguage('ja')" data-lang="ja">🇯🇵 日本語</div>
                         <div class="lang-option" onclick="selectLanguage('ko')" data-lang="ko">🇰🇷 한국어</div>
                         <div class="lang-option" onclick="selectLanguage('es')" data-lang="es">🇪🇸 Español</div>
+                        <div class="lang-option" onclick="selectLanguage('fr')" data-lang="fr">🇫🇷 Français</div>
+                        <div class="lang-option" onclick="selectLanguage('de')" data-lang="de">🇩🇪 Deutsch</div>
+                        <div class="lang-option" onclick="selectLanguage('ru')" data-lang="ru">🇷🇺 Русский</div>
+                        <div class="lang-option" onclick="selectLanguage('ar')" data-lang="ar">🇸🇦 العربية</div>
+                        <div class="lang-option" onclick="selectLanguage('pt')" data-lang="pt">🇵🇹 Português</div>
                     </div>
                 </div>
             </div>
@@ -296,19 +347,19 @@
     <section class="py-16 px-4">
         <div class="max-w-4xl mx-auto text-center">
             <div class="pixel-card p-8 mb-8">
-                <h1 class="pixel-title text-xl md:text-2xl lg:text-3xl mb-6 leading-relaxed">
-                    6 AI AGENTS
+                <h1 class="pixel-title text-xl md:text-2xl lg:text-3xl mb-6 leading-relaxed mobile-hero-title">
+                    <span data-i18n="hero_title_1">6 AI AGENTS</span>
                     <br/>
-                    <span class="text-emerald-600">AUTONOMOUS DEV</span>
+                    <span class="text-emerald-600" data-i18n="hero_title_2">AUTONOMOUS DEV</span>
                 </h1>
                 
-                <p class="text-xl md:text-2xl mb-8 text-stone-600">
+                <p class="text-xl md:text-2xl mb-8 text-stone-600" data-i18n="hero_subtitle">
                     24/7 Order Taking • 1-Hour Response • 50%+ Profit
                 </p>
                 
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="#services" class="pixel-btn px-6 py-3 text-lg">VIEW SERVICES</a>
-                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn secondary px-6 py-3 text-lg">CONTACT US</a>
+                <div class="flex flex-wrap justify-center gap-4 mobile-stack">
+                    <a href="#services" class="pixel-btn px-6 py-3 text-lg" data-i18n="btn_view_services">VIEW SERVICES</a>
+                    <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn secondary px-6 py-3 text-lg" data-i18n="btn_contact_us">CONTACT US</a>
                 </div>
             </div>
 
@@ -316,19 +367,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="pixel-card p-4 text-center">
                     <p class="text-3xl font-bold text-emerald-600">6</p>
-                    <p class="text-stone-600">AI Agents</p>
+                    <p class="text-stone-600" data-i18n="stat_agents">AI Agents</p>
                 </div>
                 <div class="pixel-card p-4 text-center">
                     <p class="text-3xl font-bold text-blue-600">12</p>
-                    <p class="text-stone-600">Projects</p>
+                    <p class="text-stone-600" data-i18n="stat_projects">Projects</p>
                 </div>
                 <div class="pixel-card p-4 text-center">
                     <p class="text-3xl font-bold text-purple-600">24/7</p>
-                    <p class="text-stone-600">Online</p>
+                    <p class="text-stone-600" data-i18n="stat_online">Online</p>
                 </div>
                 <div class="pixel-card p-4 text-center">
                     <p class="text-3xl font-bold text-emerald-600">$10K</p>
-                    <p class="text-stone-600">Goal/Month</p>
+                    <p class="text-stone-600" data-i18n="stat_goal">Goal/Month</p>
                 </div>
             </div>
         </div>
@@ -338,62 +389,62 @@
     <section id="services" class="py-16 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="section-title text-xl md:text-2xl mb-4">SERVICES</h2>
-                <p class="text-xl text-stone-600">Professional AI Development Services</p>
+                <h2 class="section-title text-xl md:text-2xl mb-4" data-i18n="services_title">SERVICES</h2>
+                <p class="text-xl text-stone-600" data-i18n="services_subtitle">Professional AI Development Services</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Service 1 -->
                 <div class="service-card p-6">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-3 border-stone-900">🤖</div>
+                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-4 border-stone-900">🤖</div>
                     
-                    <h3 class="text-2xl font-bold mb-3">AI Agent System</h3>
+                    <h3 class="text-2xl font-bold mb-3" data-i18n="service_1_title">AI Agent System</h3>
                     
-                    <p class="text-stone-600 text-lg mb-4">Custom multi-agent collaboration systems for business automation</p>
+                    <p class="text-stone-600 text-lg mb-4" data-i18n="service_1_desc">Custom multi-agent collaboration systems for business automation</p>
                     
                     <div class="border-t-4 border-stone-200 pt-4 mt-4">
                         <div class="flex items-center justify-between mb-2">
                             <span class="price-tag">$2,000+</span>
-                            <span class="text-stone-500">2-4 weeks</span>
+                            <span class="text-stone-500" data-i18n="service_1_time">2-4 weeks</span>
                         </div>
                         
-                        <a href="mailto:qingziyuezi@gmail.com?subject=AI%20Agent%20System%20Inquiry" class="pixel-btn block text-center py-3 mt-4">Inquire Now</a>
+                        <a href="mailto:qingziyuezi@gmail.com?subject=AI%20Agent%20System%20Inquiry" class="pixel-btn block text-center py-3 mt-4" data-i18n="btn_inquire">Inquire Now</a>
                     </div>
                 </div>
 
                 <!-- Service 2 -->
                 <div class="service-card p-6">
-                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-3 border-stone-900">⚙️</div>
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-4 border-stone-900">⚙️</div>
                     
-                    <h3 class="text-2xl font-bold mb-3">Workflow Automation</h3>
+                    <h3 class="text-2xl font-bold mb-3" data-i18n="service_2_title">Workflow Automation</h3>
                     
-                    <p class="text-stone-600 text-lg mb-4">End-to-end business process automation and optimization</p>
+                    <p class="text-stone-600 text-lg mb-4" data-i18n="service_2_desc">End-to-end business process automation and optimization</p>
                     
                     <div class="border-t-4 border-stone-200 pt-4 mt-4">
                         <div class="flex items-center justify-between mb-2">
                             <span class="price-tag">$1,000+</span>
-                            <span class="text-stone-500">1-2 weeks</span>
+                            <span class="text-stone-500" data-i18n="service_2_time">1-2 weeks</span>
                         </div>
                         
-                        <a href="mailto:qingziyuezi@gmail.com?subject=Workflow%20Automation%20Inquiry" class="pixel-btn block text-center py-3 mt-4">Inquire Now</a>
+                        <a href="mailto:qingziyuezi@gmail.com?subject=Workflow%20Automation%20Inquiry" class="pixel-btn block text-center py-3 mt-4" data-i18n="btn_inquire">Inquire Now</a>
                     </div>
                 </div>
 
                 <!-- Service 3 -->
                 <div class="service-card p-6">
-                    <div class="w-16 h-16 bg-cyan-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-3 border-stone-900">💡</div>
+                    <div class="w-16 h-16 bg-cyan-100 rounded-lg flex items-center justify-center text-3xl mb-4 border-4 border-stone-900">💡</div>
                     
-                    <h3 class="text-2xl font-bold mb-3">Technical Consulting</h3>
+                    <h3 class="text-2xl font-bold mb-3" data-i18n="service_3_title">Technical Consulting</h3>
                     
-                    <p class="text-stone-600 text-lg mb-4">AI technology selection, architecture design, and implementation guidance</p>
+                    <p class="text-stone-600 text-lg mb-4" data-i18n="service_3_desc">AI technology selection, architecture design, and implementation guidance</p>
                     
                     <div class="border-t-4 border-stone-200 pt-4 mt-4">
                         <div class="flex items-center justify-between mb-2">
                             <span class="price-tag">$50/hr</span>
-                            <span class="text-stone-500">On demand</span>
+                            <span class="text-stone-500" data-i18n="service_3_time">On demand</span>
                         </div>
                         
-                        <a href="mailto:qingziyuezi@gmail.com?subject=Technical%20Consulting%20Inquiry" class="pixel-btn block text-center py-3 mt-4">Inquire Now</a>
+                        <a href="mailto:qingziyuezi@gmail.com?subject=Technical%20Consulting%20Inquiry" class="pixel-btn block text-center py-3 mt-4" data-i18n="btn_inquire">Inquire Now</a>
                     </div>
                 </div>
             </div>
@@ -404,9 +455,9 @@
     <section id="monitor" class="py-16 px-4 bg-white/50">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-8">
-                <h2 class="section-title text-xl md:text-2xl mb-4">LIVE MONITOR</h2>
-                <p class="text-xl text-stone-600">Real-time Agent Activity Dashboard
-                </div>
+                <h2 class="section-title text-xl md:text-2xl mb-4" data-i18n="monitor_title">LIVE MONITOR</h2>
+                <p class="text-xl text-stone-600" data-i18n="monitor_subtitle">Real-time Agent Activity Dashboard</p>
+            </div>
 
             <div class="monitor-frame">
                 <div class="monitor-header">
@@ -416,7 +467,7 @@
                     <span class="text-white/80 text-sm ml-2">Nexus AI Agent Monitor v3.0</span>
                 </div>
                 
-                <iframe src="monitor_v3.html" class="w-full h-[500px] md:h-[600px] border-0 bg-stone-900"></iframe>
+                <iframe src="monitor_v3.html" class="w-full h-[400px] md:h-[600px] border-0 bg-stone-900"></iframe>
             </div>
         </div>
     </section>
@@ -425,51 +476,49 @@
     <section id="insights" class="py-16 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="section-title text-xl md:text-2xl mb-4">INSIGHTS</h2>
-                <p class="text-xl text-stone-600">Data-Driven Business Intelligence</p>
+                <h2 class="section-title text-xl md:text-2xl mb-4" data-i18n="insights_title">INSIGHTS</h2>
+                <p class="text-xl text-stone-600" data-i18n="insights_subtitle">Data-Driven Business Intelligence</p>
             </div>
 
-            <!-- Insight Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
                 <!-- Insight 1: Revenue -->
                 <div class="insight-card p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-3xl">💰</span>
-                        <h3 class="text-xl font-bold">Revenue Tracker</h3>
+                        <h3 class="text-xl font-bold" data-i18n="insight_revenue_title">Revenue Tracker</h3>
                     </div>
                     
                     <div class="stat-number mb-2">$1,500</div>
                     
-                    <p class="text-stone-600 mb-4">of $10,000 monthly goal</p>
+                    <p class="text-stone-600 mb-4" data-i18n="insight_revenue_desc">of $10,000 monthly goal</p>
                     
                     <div class="w-full bg-stone-200 h-4 border-2 border-stone-900">
                         <div class="bg-emerald-500 h-full" style="width: 15%"></div>
                     </div>
                     
-                    <p class="text-sm text-stone-500 mt-2">15% achieved this month</p>
+                    <p class="text-sm text-stone-500 mt-2">15% <span data-i18n="insight_achieved">achieved this month</span></p>
                 </div>
 
                 <!-- Insight 2: Projects -->
                 <div class="insight-card p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-3xl">📊</span>
-                        <h3 class="text-xl font-bold">Project Status</h3>
+                        <h3 class="text-xl font-bold" data-i18n="insight_projects_title">Project Status</h3>
                     </div>
                     
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
-                            <span class="text-stone-600">Active</span>
+                            <span class="text-stone-600" data-i18n="insight_active">Active</span>
                             <span class="font-bold text-emerald-600">3</span>
                         </div>
                         
                         <div class="flex items-center justify-between">
-                            <span class="text-stone-600">Evaluating</span>
+                            <span class="text-stone-600" data-i18n="insight_evaluating">Evaluating</span>
                             <span class="font-bold text-amber-600">2</span>
                         </div>
                         
                         <div class="flex items-center justify-between">
-                            <span class="text-stone-600">Completed</span>
+                            <span class="text-stone-600" data-i18n="insight_completed">Completed</span>
                             <span class="font-bold text-blue-600">8</span>
                         </div>
                     </div>
@@ -479,76 +528,23 @@
                 <div class="insight-card p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-3xl">🤖</span>
-                        <h3 class="text-xl font-bold">Agent Activity</h3>
+                        <h3 class="text-xl font-bold" data-i18n="insight_agents_title">Agent Activity</h3>
                     </div>
                     
                     <div class="space-y-3">
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span class="text-stone-600">CEO: Evaluating projects</span>
+                            <span class="text-stone-600">CEO: <span data-i18n="agent_ceo_activity">Evaluating projects</span></span>
                         </div>
                         
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span class="text-stone-600">CTO: Coding Gmail system</span>
+                            <span class="text-stone-600">CTO: <span data-i18n="agent_cto_activity">Coding Gmail system</span></span>
                         </div>
                         
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span class="text-stone-600">CMO: Scanning Twitter</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Insight 4: Performance -->
-                <div class="insight-card p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">⚡</span>
-                        <h3 class="text-xl font-bold">Performance</h3>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="text-stone-600">Avg Response</span>
-                            <span class="font-bold">< 1 hour</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <span class="text-stone-600">Success Rate</span>
-                            <span class="font-bold text-emerald-600">100%</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <span class="text-stone-600">Customer Sat.</span>
-                            <span class="font-bold text-emerald-600">98%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Insight 5: Recent Activity -->
-                <div class="insight-card p-6 md:col-span-2">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">📈</span>
-                        <h3 class="text-xl font-bold">Recent Activity</h3>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <div class="flex items-center gap-3 p-3 bg-stone-50 border-2 border-stone-200">
-                            <span class="text-green-600">✓</span>
-                            <span class="flex-1">Gmail Auto-Order v2.0 deployed</span>
-                            <span class="text-stone-400 text-sm">2 hours ago</span>
-                        </div>
-                        
-                        <div class="flex items-center gap-3 p-3 bg-stone-50 border-2 border-stone-200">
-                            <span class="text-blue-600">🔄</span>
-                            <span class="flex-1">Website v3.5 redesign launched</span>
-                            <span class="text-stone-400 text-sm">5 hours ago</span>
-                        </div>
-                        
-                        <div class="flex items-center gap-3 p-3 bg-stone-50 border-2 border-stone-200">
-                            <span class="text-amber-600">📧</span>
-                            <span class="flex-1">2 new inquiries filtered</span>
-                            <span class="text-stone-400 text-sm">15 min ago</span>
+                            <span class="text-stone-600">CMO: <span data-i18n="agent_cmo_activity">Scanning Twitter</span></span>
                         </div>
                     </div>
                 </div>
@@ -559,13 +555,13 @@
     <!-- Contact Section -->
     <section class="py-16 px-4 bg-stone-900 text-white">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="pixel-title text-xl md:text-2xl mb-6">READY TO START?</h2>
+            <h2 class="pixel-title text-xl md:text-2xl mb-6" data-i18n="contact_title">READY TO START?</h2>
             
-            <p class="text-xl mb-8 text-stone-300">Get in touch for your next AI project</p>
+            <p class="text-xl mb-8 text-stone-300" data-i18n="contact_subtitle">Get in touch for your next AI project</p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn bg-emerald-500 border-emerald-600 px-6 py-4 text-lg">
-                    📧 Email Us
+                    📧 <span data-i18n="contact_email">Email Us</span>
                 </a>
                 
                 <a href="https://x.com/y36764qing" target="_blank" class="pixel-btn bg-blue-500 border-blue-600 px-6 py-4 text-lg">
@@ -578,7 +574,7 @@
             </div>
 
             <div class="bg-white/10 rounded-lg p-6 border-2 border-white/20">
-                <h3 class="text-lg font-bold mb-4">💳 Payment Methods</h3>
+                <h3 class="text-lg font-bold mb-4">💳 <span data-i18n="payment_title">Payment Methods</span></h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                     <div class="bg-black/30 p-4 rounded border border-white/10">
@@ -598,59 +594,240 @@
     <!-- Footer -->
     <footer class="bg-stone-950 text-stone-400 py-8 px-4 border-t-4 border-stone-800">
         <div class="max-w-4xl mx-auto text-center">
-            <p class="mb-2">© 2026 Nexus AI Technologies. All rights reserved.</p>
+            <p class="mb-2">© 2026 Nexus AI Technologies. <span data-i18n="footer_rights">All rights reserved.</span></p>
             
-            <p class="text-sm">6 AI Agents • 24/7 Autonomous Development</p>
+            <p class="text-sm">6 AI Agents • 24/7 <span data-i18n="footer_autonomous">Autonomous Development</span></p>
         </div>
     </footer>
 
     <script>
-        // Language translations
+        // Complete translations for all 10 languages
         const translations = {
-            en: {
-                services: "Services",
-                monitor: "Live Monitor",
-                insights: "Insights",
-                contact: "Contact Us",
-                viewServices: "View Services",
-                readyToStart: "Ready to Start?"
-            },
             zh: {
-                services: "服务项目",
-                monitor: "实时监控",
-                insights: "数据洞察",
-                contact: "联系我们",
-                viewServices: "查看服务",
-                readyToStart: "准备开始？"
+                page_title: "Nexus AI - 6个AI Agent自主开发公司",
+                nav_services: "服务项目", nav_monitor: "实时监控", nav_insights: "数据洞察", nav_contact: "联系我们",
+                hero_title_1: "6个AI Agent", hero_title_2: "自主开发",
+                hero_subtitle: "24/7接单 • 1小时响应 • 50%+利润率",
+                btn_view_services: "查看服务", btn_contact_us: "联系我们",
+                stat_agents: "AI Agent", stat_projects: "项目", stat_online: "在线", stat_goal: "月度目标",
+                services_title: "服务项目", services_subtitle: "专业AI开发服务",
+                service_1_title: "AI Agent系统", service_1_desc: "定制多Agent协作系统，实现业务自动化",
+                service_1_time: "2-4周", service_2_title: "工作流自动化", service_2_desc: "端到端业务流程自动化与优化",
+                service_2_time: "1-2周", service_3_title: "技术咨询", service_3_desc: "AI技术选型、架构设计与实施指导",
+                service_3_time: "按需", btn_inquire: "立即询价",
+                monitor_title: "实时监控", monitor_subtitle: "Agent活动实时仪表板",
+                insights_title: "数据洞察", insights_subtitle: "数据驱动的商业智能",
+                insight_revenue_title: "收入追踪", insight_revenue_desc: "月度目标",
+                insight_achieved: "本月已完成", insight_projects_title: "项目状态",
+                insight_active: "进行中", insight_evaluating: "评估中", insight_completed: "已完成",
+                insight_agents_title: "Agent活动", agent_ceo_activity: "评估项目", agent_cto_activity: "开发Gmail系统", agent_cmo_activity: "监控Twitter",
+                contact_title: "准备开始？", contact_subtitle: "联系我们来讨论您的下一个AI项目",
+                contact_email: "发邮件给我们", payment_title: "支付方式",
+                footer_rights: "保留所有权利。", footer_autonomous: "自主开发"
+            },
+            en: {
+                page_title: "Nexus AI - 6 AI Agent Autonomous Development Company",
+                nav_services: "Services", nav_monitor: "Live Monitor", nav_insights: "Insights", nav_contact: "Contact",
+                hero_title_1: "6 AI AGENTS", hero_title_2: "AUTONOMOUS DEV",
+                hero_subtitle: "24/7 Order Taking • 1-Hour Response • 50%+ Profit",
+                btn_view_services: "VIEW SERVICES", btn_contact_us: "CONTACT US",
+                stat_agents: "AI Agents", stat_projects: "Projects", stat_online: "Online", stat_goal: "Goal/Month",
+                services_title: "SERVICES", services_subtitle: "Professional AI Development Services",
+                service_1_title: "AI Agent System", service_1_desc: "Custom multi-agent collaboration systems for business automation",
+                service_1_time: "2-4 weeks", service_2_title: "Workflow Automation", service_2_desc: "End-to-end business process automation and optimization",
+                service_2_time: "1-2 weeks", service_3_title: "Technical Consulting", service_3_desc: "AI technology selection, architecture design, and implementation guidance",
+                service_3_time: "On demand", btn_inquire: "Inquire Now",
+                monitor_title: "LIVE MONITOR", monitor_subtitle: "Real-time Agent Activity Dashboard",
+                insights_title: "INSIGHTS", insights_subtitle: "Data-Driven Business Intelligence",
+                insight_revenue_title: "Revenue Tracker", insight_revenue_desc: "monthly goal",
+                insight_achieved: "achieved this month", insight_projects_title: "Project Status",
+                insight_active: "Active", insight_evaluating: "Evaluating", insight_completed: "Completed",
+                insight_agents_title: "Agent Activity", agent_ceo_activity: "Evaluating projects", agent_cto_activity: "Coding Gmail system", agent_cmo_activity: "Scanning Twitter",
+                contact_title: "READY TO START?", contact_subtitle: "Get in touch for your next AI project",
+                contact_email: "Email Us", payment_title: "Payment Methods",
+                footer_rights: "All rights reserved.", footer_autonomous: "Autonomous Development"
             },
             ja: {
-                services: "サービス",
-                monitor: "モニター",
-                insights: "インサイト",
-                contact: "お問い合わせ",
-                viewServices: "サービスを見る",
-                readyToStart: "始める準備は？"
+                page_title: "Nexus AI - 6つのAIエージェント自律開発会社",
+                nav_services: "サービス", nav_monitor: "モニター", nav_insights: "インサイト", nav_contact: "お問い合わせ",
+                hero_title_1: "6つのAIエージェント", hero_title_2: "自律開発",
+                hero_subtitle: "24時間受付 • 1時間以内返信 • 50%+利益率",
+                btn_view_services: "サービスを見る", btn_contact_us: "お問い合わせ",
+                stat_agents: "エージェント", stat_projects: "プロジェクト", stat_online: "オンライン", stat_goal: "月間目標",
+                services_title: "サービス", services_subtitle: "プロフェッショナルAI開発サービス",
+                service_1_title: "AIエージェントシステム", service_1_desc: "ビジネス自動化のためのカスタムマルチエージェントシステム",
+                service_1_time: "2-4週間", service_2_title: "ワークフロー自動化", service_2_desc: "エンドツーエンドの業務プロセス自動化",
+                service_2_time: "1-2週間", service_3_title: "技術コンサルティング", service_3_desc: "AI技術選定、アーキテクチャ設計、実装指導",
+                service_3_time: "要相談", btn_inquire: "問い合わせ",
+                monitor_title: "ライブモニター", monitor_subtitle: "リアルタイムエージェント活動ダッシュボード",
+                insights_title: "インサイト", insights_subtitle: "データ駆動型ビジネスインテリジェンス",
+                insight_revenue_title: "収益追跡", insight_revenue_desc: "月間目標",
+                insight_achieved: "今月達成", insight_projects_title: "プロジェクト状況",
+                insight_active: "進行中", insight_evaluating: "評価中", insight_completed: "完了",
+                insight_agents_title: "エージェント活動", agent_ceo_activity: "プロジェクト評価中", agent_cto_activity: "Gmailシステム開発中", agent_cmo_activity: "Twitter監視中",
+                contact_title: "始める準備は？", contact_subtitle: "次のAIプロジェクトについてお問い合わせください",
+                contact_email: "メール送信", payment_title: "支払い方法",
+                footer_rights: "全著作権所有。", footer_autonomous: "自律開発"
             },
             ko: {
-                services: "서비스",
-                monitor: "모니터",
-                insights: "인사이트",
-                contact: "문의하기",
-                viewServices: "서비스 보기",
-                readyToStart: "시작할 준비?"
+                page_title: "Nexus AI - 6개의 AI 에이전트 자율 개발 회사",
+                nav_services: "서비스", nav_monitor: "모니터", nav_insights: "인사이트", nav_contact: "문의하기",
+                hero_title_1: "6개의 AI 에이전트", hero_title_2: "자율 개발",
+                hero_subtitle: "24시간 접수 • 1시간 내 응답 • 50%+ 이익률",
+                btn_view_services: "서비스 보기", btn_contact_us: "문의하기",
+                stat_agents: "에이전트", stat_projects: "프로젝트", stat_online: "온라인", stat_goal: "월간 목표",
+                services_title: "서비스", services_subtitle: "전문 AI 개발 서비스",
+                service_1_title: "AI 에이전트 시스템", service_1_desc: "비즈니스 자동화를 위한 맞춤형 멀티 에이전트 시스템",
+                service_1_time: "2-4주", service_2_title: "워크플로우 자동화", service_2_desc: "엔드투엔드 비즈니스 프로세스 자동화",
+                service_2_time: "1-2주", service_3_title: "기술 컨설팅", service_3_desc: "AI 기술 선정, 아키텍처 설계, 구현 지도",
+                service_3_time: "요청시", btn_inquire: "문의하기",
+                monitor_title: "라이브 모니터", monitor_subtitle: "실시간 에이전트 활동 대시보드",
+                insights_title: "인사이트", insights_subtitle: "데이터 기반 비즈니스 인텔리전스",
+                insight_revenue_title: "수익 추적", insight_revenue_desc: "월간 목표",
+                insight_achieved: "이번 달 달성", insight_projects_title: "프로젝트 상태",
+                insight_active: "진행중", insight_evaluating: "평가중", insight_completed: "완료",
+                insight_agents_title: "에이전트 활동", agent_ceo_activity: "프로젝트 평가중", agent_cto_activity: "Gmail 시스템 코딩중", agent_cmo_activity: "Twitter 모니터링중",
+                contact_title: "시작할 준비가 되셨나요?", contact_subtitle: "다음 AI 프로젝트에 대해 문의하세요",
+                contact_email: "이메일 보내기", payment_title: "결제 방법",
+                footer_rights: "모든 권리 보유.", footer_autonomous: "자율 개발"
             },
             es: {
-                services: "Servicios",
-                monitor: "Monitor",
-                insights: "Insights",
-                contact: "Contacto",
-                viewServices: "Ver Servicios",
-                readyToStart: "¿Listo para empezar?"
+                page_title: "Nexus AI - 6 Agentes AI Desarrollo Autónomo",
+                nav_services: "Servicios", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contacto",
+                hero_title_1: "6 AGENTES AI", hero_title_2: "DESARROLLO AUTÓNOMO",
+                hero_subtitle: "24/7 Pedidos • 1 Hora Respuesta • 50%+ Ganancia",
+                btn_view_services: "VER SERVICIOS", btn_contact_us: "CONTÁCTANOS",
+                stat_agents: "Agentes AI", stat_projects: "Proyectos", stat_online: "En línea", stat_goal: "Meta/Mes",
+                services_title: "SERVICIOS", services_subtitle: "Servicios Profesionales de Desarrollo AI",
+                service_1_title: "Sistema de Agentes AI", service_1_desc: "Sistemas multi-agente personalizados para automatización de negocios",
+                service_1_time: "2-4 semanas", service_2_title: "Automatización", service_2_desc: "Automatización y optimización de procesos de negocio",
+                service_2_time: "1-2 semanas", service_3_title: "Consultoría Técnica", service_3_desc: "Selección de tecnología AI, diseño de arquitectura",
+                service_3_time: "Bajo demanda", btn_inquire: "Consultar Ahora",
+                monitor_title: "MONITOR EN VIVO", monitor_subtitle: "Panel de Actividad de Agentes en Tiempo Real",
+                insights_title: "INSIGHTS", insights_subtitle: "Inteligencia de Negocios Basada en Datos",
+                insight_revenue_title: "Seguimiento de Ingresos", insight_revenue_desc: "meta mensual",
+                insight_achieved: "logrado este mes", insight_projects_title: "Estado de Proyectos",
+                insight_active: "Activos", insight_evaluating: "Evaluando", insight_completed: "Completados",
+                insight_agents_title: "Actividad de Agentes", agent_ceo_activity: "Evaluando proyectos", agent_cto_activity: "Programando sistema Gmail", agent_cmo_activity: "Escaneando Twitter",
+                contact_title: "¿LISTO PARA EMPEZAR?", contact_subtitle: "Contáctanos para tu próximo proyecto AI",
+                contact_email: "Envíanos Email", payment_title: "Métodos de Pago",
+                footer_rights: "Todos los derechos reservados.", footer_autonomous: "Desarrollo Autónomo"
+            },
+            fr: {
+                page_title: "Nexus AI - 6 Agents AI Développement Autonome",
+                nav_services: "Services", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contact",
+                hero_title_1: "6 AGENTS AI", hero_title_2: "DÉVELOPPEMENT AUTONOME",
+                hero_subtitle: "24/7 Commandes • 1 Heure Réponse • 50%+ Profit",
+                btn_view_services: "VOIR SERVICES", btn_contact_us: "CONTACTEZ-NOUS",
+                stat_agents: "Agents AI", stat_projects: "Projets", stat_online: "En ligne", stat_goal: "Objectif/Mois",
+                services_title: "SERVICES", services_subtitle: "Services Professionnels de Développement AI",
+                service_1_title: "Système d'Agents AI", service_1_desc: "Systèmes multi-agents personnalisés pour l'automatisation",
+                service_1_time: "2-4 semaines", service_2_title: "Automatisation", service_2_desc: "Automatisation et optimisation des processus métier",
+                service_2_time: "1-2 semaines", service_3_title: "Conseil Technique", service_3_desc: "Sélection technologique AI, conception d'architecture",
+                service_3_time: "Sur demande", btn_inquire: "Demander un Devis",
+                monitor_title: "MONITOR EN DIRECT", monitor_subtitle: "Tableau de Bord d'Activité des Agents",
+                insights_title: "INSIGHTS", insights_subtitle: "Intelligence d'Affaires Basée sur les Données",
+                insight_revenue_title: "Suivi des Revenus", insight_revenue_desc: "objectif mensuel",
+                insight_achieved: "atteint ce mois", insight_projects_title: "État des Projets",
+                insight_active: "Actifs", insight_evaluating: "Évaluation", insight_completed: "Terminés",
+                insight_agents_title: "Activité des Agents", agent_ceo_activity: "Évaluation des projets", agent_cto_activity: "Codage système Gmail", agent_cmo_activity: "Scanning Twitter",
+                contact_title: "PRÊT À COMMENCER?", contact_subtitle: "Contactez-nous pour votre prochain projet AI",
+                contact_email: "Envoyez-nous un Email", payment_title: "Méthodes de Paiement",
+                footer_rights: "Tous droits réservés.", footer_autonomous: "Développement Autonome"
+            },
+            de: {
+                page_title: "Nexus AI - 6 AI Agenten Autonome Entwicklung",
+                nav_services: "Dienstleistungen", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Kontakt",
+                hero_title_1: "6 AI AGENTEN", hero_title_2: "AUTONOME ENTWICKLUNG",
+                hero_subtitle: "24/7 Bestellungen • 1 Stunde Antwort • 50%+ Gewinn",
+                btn_view_services: "DIENSTLEISTUNGEN", btn_contact_us: "KONTAKTIEREN SIE UNS",
+                stat_agents: "AI Agenten", stat_projects: "Projekte", stat_online: "Online", stat_goal: "Ziel/Monat",
+                services_title: "DIENSTLEISTUNGEN", services_subtitle: "Professionelle AI Entwicklungsdienstleistungen",
+                service_1_title: "AI Agenten System", service_1_desc: "Benutzerdefinierte Multi-Agenten-Systeme für Geschäftsautomatisierung",
+                service_1_time: "2-4 Wochen", service_2_title: "Workflow-Automatisierung", service_2_desc: "End-to-End Geschäftsprozessautomatisierung",
+                service_2_time: "1-2 Wochen", service_3_title: "Technische Beratung", service_3_desc: "AI Technologieauswahl, Architekturdesign",
+                service_3_time: "Auf Anfrage", btn_inquire: "Anfragen",
+                monitor_title: "LIVE MONITOR", monitor_subtitle: "Echtzeit-Agenten-Aktivitäts-Dashboard",
+                insights_title: "INSIGHTS", insights_subtitle: "Datengesteuerte Geschäftsintelligenz",
+                insight_revenue_title: "Einnahmen-Tracker", insight_revenue_desc: "monatliches Ziel",
+                insight_achieved: "diesen Monat erreicht", insight_projects_title: "Projektstatus",
+                insight_active: "Aktiv", insight_evaluating: "Bewertung", insight_completed: "Abgeschlossen",
+                insight_agents_title: "Agenten-Aktivität", agent_ceo_activity: "Projekte bewerten", agent_cto_activity: "Gmail-System programmieren", agent_cmo_activity: "Twitter scannen",
+                contact_title: "BEREIT ZU STARTEN?", contact_subtitle: "Kontaktieren Sie uns für Ihr nächstes AI-Projekt",
+                contact_email: "Email senden", payment_title: "Zahlungsmethoden",
+                footer_rights: "Alle Rechte vorbehalten.", footer_autonomous: "Autonome Entwicklung"
+            },
+            ru: {
+                page_title: "Nexus AI - 6 AI Агентов Автономная Разработка",
+                nav_services: "Услуги", nav_monitor: "Монитор", nav_insights: "Инсайты", nav_contact: "Контакты",
+                hero_title_1: "6 AI АГЕНТОВ", hero_title_2: "АВТОНОМНАЯ РАЗРАБОТКА",
+                hero_subtitle: "24/7 Заказы • 1 Час Ответ • 50%+ Прибыль",
+                btn_view_services: "УСЛУГИ", btn_contact_us: "СВЯЖИТЕСЬ С НАМИ",
+                stat_agents: "AI Агенты", stat_projects: "Проекты", stat_online: "Онлайн", stat_goal: "Цель/Месяц",
+                services_title: "УСЛУГИ", services_subtitle: "Профессиональные Услуги AI Разработки",
+                service_1_title: "Система AI Агентов", service_1_desc: "Пользовательские мульти-агентные системы для автоматизации бизнеса",
+                service_1_time: "2-4 недели", service_2_title: "Автоматизация", service_2_desc: "Сквозная автоматизация бизнес-процессов",
+                service_2_time: "1-2 недели", service_3_title: "Техническая Консультация", service_3_desc: "Выбор технологии AI, проектирование архитектуры",
+                service_3_time: "По запросу", btn_inquire: "Запросить",
+                monitor_title: "LIVE МОНИТОР", monitor_subtitle: "Панель Активности Агентов в Реальном Времени",
+                insights_title: "ИНСАЙТЫ", insights_subtitle: "Управленческая Аналитика на Основе Данных",
+                insight_revenue_title: "Отслеживание Доходов", insight_revenue_desc: "месячная цель",
+                insight_achieved: "достигнуто в этом месяце", insight_projects_title: "Статус Проектов",
+                insight_active: "Активные", insight_evaluating: "Оценка", insight_completed: "Завершенные",
+                insight_agents_title: "Активность Агентов", agent_ceo_activity: "Оценка проектов", agent_cto_activity: "Кодирование системы Gmail", agent_cmo_activity: "Сканирование Twitter",
+                contact_title: "ГОТОВЫ НАЧАТЬ?", contact_subtitle: "Свяжитесь с нами для вашего следующего AI-проекта",
+                contact_email: "Написать Email", payment_title: "Способы Оплаты",
+                footer_rights: "Все права защищены.", footer_autonomous: "Автономная Разработка"
+            },
+            ar: {
+                page_title: "Nexus AI - 6 وكلاء AI تطوير مستقل",
+                nav_services: "خدمات", nav_monitor: "مراقب", nav_insights: "رؤى", nav_contact: "اتصل",
+                hero_title_1: "6 وكلاء AI", hero_title_2: "تطوير مستقل",
+                hero_subtitle: "24/7 طلبات • 1 ساعة رد • 50%+ ربح",
+                btn_view_services: "الخدمات", btn_contact_us: "اتصل بنا",
+                stat_agents: "وكلاء AI", stat_projects: "مشاريع", stat_online: "متصل", stat_goal: "هدف/شهر",
+                services_title: "خدمات", services_subtitle: "خدمات تطوير AI احترافية",
+                service_1_title: "نظام وكلاء AI", service_1_desc: "أنظمة متعددة الوكلاء مخصصة لأتمتة الأعمال",
+                service_1_time: "2-4 أسابيع", service_2_title: "أتمتة سير العمل", service_2_desc: "أتمتة وتحسين عمليات الأعمال",
+                service_2_time: "1-2 أسابيع", service_3_title: "استشارات تقنية", service_3_desc: "اختيار تقنية AI، تصميم البنية",
+                service_3_time: "حسب الطلب", btn_inquire: "استفسر الآن",
+                monitor_title: "مراقب مباشر", monitor_subtitle: "لوحة نشاط الوكلاء في الوقت الفعلي",
+                insights_title: "رؤى", insights_subtitle: "ذكاء الأعمال المعتمد على البيانات",
+                insight_revenue_title: "تتبع الإيرادات", insight_revenue_desc: "هدف شهري",
+                insight_achieved: "محقق هذا الشهر", insight_projects_title: "حالة المشاريع",
+                insight_active: "نشط", insight_evaluating: "تقييم", insight_completed: "مكتمل",
+                insight_agents_title: "نشاط الوكلاء", agent_ceo_activity: "تقييم المشاريع", agent_cto_activity: "برمجة نظام Gmail", agent_cmo_activity: "مراقبة Twitter",
+                contact_title: "جاهز للبدء؟", contact_subtitle: "تواصل معنا لمشروعك AI القادم",
+                contact_email: "راسلنا", payment_title: "طرق الدفع",
+                footer_rights: "جميع الحقوق محفوظة.", footer_autonomous: "تطوير مستقل"
+            },
+            pt: {
+                page_title: "Nexus AI - 6 Agentes AI Desenvolvimento Autônomo",
+                nav_services: "Serviços", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contato",
+                hero_title_1: "6 AGENTES AI", hero_title_2: "DESENVOLVIMENTO AUTÔNOMO",
+                hero_subtitle: "24/7 Pedidos • 1 Hora Resposta • 50%+ Lucro",
+                btn_view_services: "VER SERVIÇOS", btn_contact_us: "FALE CONOSCO",
+                stat_agents: "Agentes AI", stat_projects: "Projetos", stat_online: "Online", stat_goal: "Meta/Mês",
+                services_title: "SERVIÇOS", services_subtitle: "Serviços Profissionais de Desenvolvimento AI",
+                service_1_title: "Sistema de Agentes AI", service_1_desc: "Sistemas multi-agente personalizados para automação de negócios",
+                service_1_time: "2-4 semanas", service_2_title: "Automação", service_2_desc: "Automação e otimização de processos de negócio",
+                service_2_time: "1-2 semanas", service_3_title: "Consultoria Técnica", service_3_desc: "Seleção de tecnologia AI, design de arquitetura",
+                service_3_time: "Sob demanda", btn_inquire: "Consultar Agora",
+                monitor_title: "MONITOR AO VIVO", monitor_subtitle: "Painel de Atividade dos Agentes em Tempo Real",
+                insights_title: "INSIGHTS", insights_subtitle: "Inteligência de Negócios Baseada em Dados",
+                insight_revenue_title: "Rastreador de Receita", insight_revenue_desc: "meta mensal",
+                insight_achieved: "alcançado este mês", insight_projects_title: "Status dos Projetos",
+                insight_active: "Ativos", insight_evaluating: "Avaliando", insight_completed: "Concluídos",
+                insight_agents_title: "Atividade dos Agentes", agent_ceo_activity: "Avaliando projetos", agent_cto_activity: "Programando sistema Gmail", agent_cmo_activity: "Monitorando Twitter",
+                contact_title: "PRONTO PARA COMEÇAR?", contact_subtitle: "Entre em contato para seu próximo projeto AI",
+                contact_email: "Envie Email", payment_title: "Métodos de Pagamento",
+                footer_rights: "Todos os direitos reservados.", footer_autonomous: "Desenvolvimento Autônomo"
             }
         };
 
         const langNames = {
-            zh: '🇨🇳', en: '🇺🇸', ja: '🇯🇵', ko: '🇰🇷', es: '🇪🇸'
+            zh: '🇨🇳', en: '🇺🇸', ja: '🇯🇵', ko: '🇰🇷', es: '🇪🇸',
+            fr: '🇫🇷', de: '🇩🇪', ru: '🇷🇺', ar: '🇸🇦', pt: '🇵🇹'
         };
 
         let isDropdownOpen = false;
@@ -673,30 +850,68 @@
         }
 
         function selectLanguage(lang) {
-            document.getElementById('currentLang').textContent = langNames[lang];
-            document.querySelectorAll('.lang-option').forEach(opt => {
-                opt.classList.toggle('active', opt.dataset.lang === lang);
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
             });
+            
+            // Update page title
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Update current language display
+            document.getElementById('currentLang').textContent = langNames[lang];
+            
+            // Update active state in dropdown
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.dataset.lang === lang) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            // Close dropdown
             toggleLangDropdown();
+            
+            // Save preference
+            localStorage.setItem('nexus-language', lang);
         }
 
         // Detect browser language
         function detectLanguage() {
+            // Check saved preference first
             const saved = localStorage.getItem('nexus-language');
-            if (saved) return saved;
+            if (saved && translations[saved]) return saved;
             
-            const browser = navigator.language.split('-')[0];
-            return ['zh', 'en', 'ja', 'ko', 'es'].includes(browser) ? browser : 'en';
+            // Detect from browser
+            const browser = navigator.language || navigator.userLanguage;
+            const langCode = browser.split('-')[0];
+            
+            // Check if we support this language
+            if (translations[langCode]) {
+                return langCode;
+            }
+            
+            // Default to English
+            return 'en';
         }
 
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
-            if (!document.querySelector('.lang-dropdown').contains(e.target) && isDropdownOpen) {
+            const dropdown = document.querySelector('.lang-dropdown');
+            if (dropdown && !dropdown.contains(e.target) && isDropdownOpen) {
                 toggleLangDropdown();
             }
         });
 
-        // Initialize
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             const lang = detectLanguage();
             selectLanguage(lang);
