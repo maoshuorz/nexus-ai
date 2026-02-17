@@ -1,29 +1,70 @@
+# Nexus AI - 多语言网站 (index.html)
+# 支持自动IP语言检测 + 手动切换
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus AI - 6 AI Agent Autonomous Company</title>
-    <meta name="description" content="Nexus AI Technologies - 6个AI Agent组成的自主接单开发公司，提供AI Agent系统开发、工作流自动化、技术咨询服务">
-    <meta name="keywords" content="AI Agent, 自动化, 软件开发, AI系统, 工作流">
-    <meta property="og:title" content="Nexus AI - 6 AI Agent Autonomous Company">
-    <meta property="og:description" content="6个AI Agent自主接单开发，以盈利为目标">
+    <meta name="description" content="Nexus AI Technologies - 6 AI Agents for autonomous development services">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * { font-family: 'Inter', sans-serif; }
         body { background: #0a0a0f; }
         .glass { background: rgba(20, 20, 30, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .agent-avatar { transition: all 0.3s ease; }
-        .agent-avatar:hover { transform: scale(1.1); }
         .status-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .lang-btn { transition: all 0.3s ease; }
+        .lang-btn:hover { transform: scale(1.05); }
+        .lang-btn.active { background: rgba(99, 102, 241, 0.3); border-color: #6366f1; }
+        [data-i18n] { transition: opacity 0.3s ease; }
     </style>
 </head>
 <body class="text-gray-300 min-h-screen">
+    
+    <!-- Language Selector -->
+    <div class="fixed top-20 right-4 z-50 glass rounded-xl p-2">
+        <div class="flex flex-col gap-2">
+            <button onclick="setLanguage('zh')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="zh">
+                🇨🇳 中文
+            </button>
+            <button onclick="setLanguage('en')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="en">
+                🇺🇸 English
+            </button>
+            <button onclick="setLanguage('ja')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="ja">
+                🇯🇵 日本語
+            </button>
+            <button onclick="setLanguage('ko')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="ko">
+                🇰🇷 한국어
+            </button>
+            <button onclick="setLanguage('es')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="es">
+                🇪🇸 Español
+            </button>
+            <button onclick="setLanguage('fr')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="fr">
+                🇫🇷 Français
+            </button>
+            <button onclick="setLanguage('de')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="de">
+                🇩🇪 Deutsch
+            </button>
+            <button onclick="setLanguage('ru')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="ru">
+                🇷🇺 Русский
+            </button>
+            <button onclick="setLanguage('ar')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="ar">
+                🇸🇦 العربية
+            </button>
+            <button onclick="setLanguage('pt')" class="lang-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5" data-lang="pt">
+                🇵🇹 Português
+            </button>
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <nav class="fixed top-0 left-0 right-0 z-40 glass">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -39,7 +80,7 @@
                     </a>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-green-500 status-dot"></span>
-                        <span class="text-sm text-green-400 hidden sm:inline">运营中</span>
+                        <span class="text-sm text-green-400 hidden sm:inline" data-i18n="status_online">运营中</span>
                     </div>
                 </div>
             </div>
@@ -50,24 +91,23 @@
     <section class="pt-32 pb-20 px-4">
         <div class="max-w-7xl mx-auto text-center">
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-                6个AI Agent
-                <span class="gradient-text">自主接单开发</span>
+                <span data-i18n="hero_title_1">6 AI Agents</span>
+                <span class="gradient-text" data-i18n="hero_title_2">Autonomous Development</span>
             </h1>
-            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">
-                Nexus AI Technologies - 由6个专业AI Agent组成的自主运营公司。
-                <br class="hidden md:block">
-                通过Gmail接单，自主开发，以盈利为目标。
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8" data-i18n="hero_desc">
+                Nexus AI Technologies - A company of 6 professional AI Agents.
+                Accepting orders via Gmail, autonomous development, profit-oriented.
             </p>
             
             <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <a href="#projects" class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity">
-                    查看项目
+                <a href="#projects" class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity" data-i18n="btn_projects">
+                    View Projects
                 </a>
-                <a href="mailto:qingziyuezi@gmail.com" class="px-8 py-4 glass rounded-xl text-white font-semibold hover:bg-white/5 transition-colors">
-                    发送需求
+                <a href="mailto:qingziyuezi@gmail.com" class="px-8 py-4 glass rounded-xl text-white font-semibold hover:bg-white/5 transition-colors" data-i18n="btn_contact">
+                    Send Inquiry
                 </a>
-                <a href="https://x.com/y36764qing" target="_blank" class="px-8 py-4 glass rounded-xl text-blue-400 font-semibold hover:bg-white/5 transition-colors">
-                    关注推特
+                <a href="https://x.com/y36764qing" target="_blank" class="px-8 py-4 glass rounded-xl text-blue-400 font-semibold hover:bg-white/5 transition-colors" data-i18n="btn_follow">
+                    Follow Twitter
                 </a>
             </div>
 
@@ -75,19 +115,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
                 <div class="glass rounded-2xl p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-white mb-1">6</div>
-                    <div class="text-xs md:text-sm text-gray-500">AI Agent</div>
+                    <div class="text-xs md:text-sm text-gray-500" data-i18n="stat_agents">AI Agents</div>
                 </div>
                 <div class="glass rounded-2xl p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-white mb-1">24/7</div>
-                    <div class="text-xs md:text-sm text-gray-500">接单开发</div>
+                    <div class="text-xs md:text-sm text-gray-500" data-i18n="stat_service">Order Taking</div>
                 </div>
                 <div class="glass rounded-2xl p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-white mb-1">&lt;1h</div>
-                    <div class="text-xs md:text-sm text-gray-500">报价响应</div>
+                    <div class="text-xs md:text-sm text-gray-500" data-i18n="stat_response">Quote Response</div>
                 </div>
                 <div class="glass rounded-2xl p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-green-400 mb-1">50%+</div>
-                    <div class="text-xs md:text-sm text-gray-500">利润率</div>
+                    <div class="text-xs md:text-sm text-gray-500" data-i18n="stat_profit">Profit Margin</div>
                 </div>
             </div>
         </div>
@@ -96,7 +136,7 @@
     <!-- Services -->
     <section class="py-20 px-4">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-bold text-white text-center mb-12">服务项目</h2>
+            <h2 class="text-3xl font-bold text-white text-center mb-12" data-i18n="services_title">Services</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Service 1 -->
@@ -104,11 +144,11 @@
                     <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">AI Agent系统开发</h3>
-                    <p class="text-gray-400 text-sm mb-4">为企业定制多Agent协作系统，实现业务流程自动化</p>
+                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="service_1_title">AI Agent System Development</h3>
+                    <p class="text-gray-400 text-sm mb-4" data-i18n="service_1_desc">Custom multi-agent collaboration systems for businesses, automating workflows.</p>
                     <div class="flex items-center justify-between">
-                        <span class="text-indigo-400 font-semibold">$8,000起</span>
-                        <span class="text-gray-500 text-sm">2-4周</span>
+                        <span class="text-indigo-400 font-semibold">$2,000+</span>
+                        <span class="text-gray-500 text-sm" data-i18n="service_time_1">2-4 weeks</span>
                     </div>
                 </div>
 
@@ -117,11 +157,11 @@
                     <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">工作流自动化</h3>
-                    <p class="text-gray-400 text-sm mb-4">设计和实施自动化工作流，提升企业运营效率</p>
+                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="service_2_title">Workflow Automation</h3>
+                    <p class="text-gray-400 text-sm mb-4" data-i18n="service_2_desc">Design and implement automated workflows to improve operational efficiency.</p>
                     <div class="flex items-center justify-between">
-                        <span class="text-purple-400 font-semibold">$4,000起</span>
-                        <span class="text-gray-500 text-sm">1-2周</span>
+                        <span class="text-purple-400 font-semibold">$1,000+</span>
+                        <span class="text-gray-500 text-sm" data-i18n="service_time_2">1-2 weeks</span>
                     </div>
                 </div>
 
@@ -130,12 +170,34 @@
                     <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">技术咨询</h3>
-                    <p class="text-gray-400 text-sm mb-4">AI技术选型、架构设计、实施方案等专业咨询服务</p>
+                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="service_3_title">Technical Consulting</h3>
+                    <p class="text-gray-400 text-sm mb-4" data-i18n="service_3_desc">AI technology selection, architecture design, implementation consulting.</p>
                     <div class="flex items-center justify-between">
-                        <span class="text-cyan-400 font-semibold">$100/小时</span>
-                        <span class="text-gray-500 text-sm">按需</span>
+                        <span class="text-cyan-400 font-semibold">$50/hr</span>
+                        <span class="text-gray-500 text-sm" data-i18n="service_time_3">On demand</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-transparent to-indigo-900/10">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-white mb-6" data-i18n="donation_title">Open Source & Donation Projects</h2>
+            <p class="text-gray-400 mb-8" data-i18n="donation_desc">
+                We also contribute to the open source community. Support our free tools and templates.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass rounded-2xl p-6 border border-indigo-500/20">
+                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="donation_1_title">AI Agent Templates</h3>
+                    <p class="text-gray-400 text-sm mb-4" data-i18n="donation_1_desc">Free templates for building multi-agent systems.</p>
+                    <a href="#" class="text-indigo-400 hover:text-indigo-300" data-i18n="btn_download">Download Free →</a>
+                </div>
+                <div class="glass rounded-2xl p-6 border border-purple-500/20">
+                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="donation_2_title">Workflow Automation Tools</h3>
+                    <p class="text-gray-400 text-sm mb-4" data-i18n="donation_2_desc">Open source automation scripts and tools.</p>
+                    <a href="#" class="text-purple-400 hover:text-purple-300" data-i18n="btn_github">View on GitHub →</a>
                 </div>
             </div>
         </div>
@@ -144,60 +206,45 @@
     <!-- Team -->
     <section class="py-20 px-4">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-bold text-white text-center mb-12">核心团队</h2>
+            <h2 class="text-3xl font-bold text-white text-center mb-12" data-i18n="team_title">Core Team</h2>
             
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <!-- CEO -->
                 <div class="glass rounded-2xl p-4 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl mb-3 shadow-lg shadow-indigo-500/20">👨‍💼</div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl mb-3">👨‍💼</div>
                     <h3 class="font-bold text-white">Alex</h3>
                     <p class="text-xs text-indigo-400">CEO</p>
-                    <p class="text-xs text-gray-500 mt-2">战略+HR</p>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="role_ceo">Strategy + HR</p>
                 </div>
-
-                <!-- CMO -->
                 <div class="glass rounded-2xl p-4 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-2xl mb-3 shadow-lg shadow-pink-500/20">👩‍💼</div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-2xl mb-3">👩‍💼</div>
                     <h3 class="font-bold text-white">Sarah</h3>
                     <p class="text-xs text-pink-400">CMO</p>
-                    <p class="text-xs text-gray-500 mt-2">营销</p>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="role_cmo">Marketing</p>
                 </div>
-
-                <!-- CTO -->
                 <div class="glass rounded-2xl p-4 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-2xl mb-3 shadow-lg shadow-cyan-500/20">👨‍💻</div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-2xl mb-3">👨‍💻</div>
                     <h3 class="font-bold text-white">David</h3>
                     <p class="text-xs text-cyan-400">CTO</p>
-                    <p class="text-xs text-gray-500 mt-2">技术</p>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="role_cto">Technology</p>
                 </div>
-
-                <!-- CFO -->
                 <div class="glass rounded-2xl p-4 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-2xl mb-3 shadow-lg shadow-green-500/20">👩‍💼</div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-2xl mb-3">👩‍💼</div>
                     <h3 class="font-bold text-white">Lisa</h3>
                     <p class="text-xs text-green-400">CFO</p>
-                    <p class="text-xs text-gray-500 mt-2">财务</p>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="role_cfo">Finance</p>
                 </div>
-
-                <!-- CPO -->
                 <div class="glass rounded-2xl p-4 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center text-2xl mb-3 shadow-lg shadow-purple-500/20">👨‍🎨</div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center text-2xl mb-3">👨‍🎨</div>
                     <h3 class="font-bold text-white">Michael</h3>
                     <p class="text-xs text-purple-400">CPO</p>
-                    <p class="text-xs text-gray-500 mt-2">产品</p>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="role_cpo">Product</p>
                 </div>
-
-                <!-- COO -->
                 <div class="glass rounded-2xl p-4 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-2xl mb-3 shadow-lg shadow-orange-500/20">👩‍💻</div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-2xl mb-3">👩‍💻</div>
                     <h3 class="font-bold text-white">Emma</h3>
                     <p class="text-xs text-orange-400">COO</p>
-                    <p class="text-xs text-gray-500 mt-2">运营</p>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="role_coo">Operations</p>
                 </div>
-            </div>
-
-            <div class="mt-8 text-center">
-                <p class="text-gray-400 text-sm">精简版6-Agent架构 | CHRO职责已合并至CEO</p>
             </div>
         </div>
     </section>
@@ -205,161 +252,62 @@
     <!-- Projects -->
     <section id="projects" class="py-20 px-4">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-bold text-white text-center mb-12">项目展示</h2>
+            <h2 class="text-3xl font-bold text-white text-center mb-12" data-i18n="projects_title">Projects</h2>
             
-            <!-- Project Status Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Running -->
                 <div class="glass rounded-2xl p-6 border-l-4 border-yellow-500">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-white">进行中</h3>
+                        <h3 class="text-lg font-bold text-white" data-i18n="status_running">Running</h3>
                         <span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span>
                     </div>
-                    
                     <div class="space-y-3">
                         <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">Gmail自动接单系统</p>
-                            <p class="text-xs text-gray-400 mt-1">进度: 35% | COO开发中</p>
-                        </div>
-                        <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">网站部署上线</p>
-                            <p class="text-xs text-gray-400 mt-1">进度: 60% | CTO部署中</p>
+                            <p class="text-sm text-white font-medium">Gmail Auto-Order System</p>
+                            <p class="text-xs text-gray-400 mt-1">35% | COO developing</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Completed -->
                 <div class="glass rounded-2xl p-6 border-l-4 border-green-500">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-white">已完成</h3>
+                        <h3 class="text-lg font-bold text-white" data-i18n="status_completed">Completed</h3>
                         <span class="text-2xl font-bold text-green-400">3</span>
                     </div>
-                    
                     <div class="space-y-3">
                         <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">公司官网</p>
-                            <p class="text-xs text-green-400 mt-1">✅ 已上线</p>
-                        </div>
-                        <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">监控系统</p>
-                            <p class="text-xs text-green-400 mt-1">✅ 已部署</p>
-                        </div>
-                        <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">Agent对话UI</p>
-                            <p class="text-xs text-green-400 mt-1">✅ 已完成</p>
+                            <p class="text-sm text-white font-medium">Company Website</p>
+                            <p class="text-xs text-green-400 mt-1">✅ Live</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pending -->
                 <div class="glass rounded-2xl p-6 border-l-4 border-blue-500">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-white">待执行</h3>
+                        <h3 class="text-lg font-bold text-white" data-i18n="status_pending">Pending</h3>
                         <span class="text-2xl font-bold text-blue-400">2</span>
                     </div>
-                    
-                    <div class="space-y-3">
-                        <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">客户跟进自动化</p>
-                            <p class="text-xs text-blue-400 mt-1">等待开发资源</p>
-                        </div>
-                        <div class="p-3 bg-white/5 rounded-lg">
-                            <p class="text-sm text-white font-medium">盈利监控面板增强</p>
-                            <p class="text-xs text-blue-400 mt-1">规划中</p>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Dropped -->
                 <div class="glass rounded-2xl p-6 border-l-4 border-gray-500">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-white">已放弃</h3>
+                        <h3 class="text-lg font-bold text-white" data-i18n="status_dropped">Dropped</h3>
                         <span class="text-2xl font-bold text-gray-400">1</span>
                     </div>
-                    
-                    <div class="space-y-3">
-                        <div class="p-3 bg-white/5 rounded-lg opacity-50">
-                            <p class="text-sm text-white font-medium">复杂HR系统</p>
-                            <p class="text-xs text-gray-400 mt-1">CHRO精简后放弃</p>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- View Monitor Button -->
-            <div class="text-center mb-12">
-                <a href="stage_monitor_v2.html" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    <span>查看实时监控系统</span>
-                </a>
-            </div>
-
-            <!-- Project Details -->
-            <div class="glass rounded-2xl p-6">
-                <h3 class="text-xl font-bold text-white mb-4">项目成果展示</h3>
-                
-                <div class="space-y-4">
-                    <!-- Project 1 -->
-                    <div class="p-4 bg-white/5 rounded-xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <h4 class="font-bold text-white">AI Agent协作平台</h4>
-                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs">进行中</span>
-                        </div>
-                        
-                        <p class="text-sm text-gray-400 mb-3">为企业搭建多Agent协作系统，实现业务流程自动化，提升运营效率。</p>
-                        
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="px-2 py-1 bg-indigo-500/20 text-indigo-400 rounded text-xs">架构设计: 30%</span>
-                            <span class="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">UX原型: 25%</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-gray-500">预算: $50,000 | ROI: >300%</span>
-                            <span class="text-yellow-400">预计完成: 3-4周</span>
-                        </div>
-                    </div>
-
-                    <!-- Project 2 -->
-                    <div class="p-4 bg-white/5 rounded-xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <h4 class="font-bold text-white">自动化工作流工具</h4>
-                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs">进行中</span>
-                        </div>
-                        
-                        <p class="text-sm text-gray-400 mb-3">设计和实施自动化工作流，减少人工操作，提高企业运营效率。</p>
-                        
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="px-2 py-1 bg-orange-500/20 text-orange-400 rounded text-xs">SOP制定: 20%</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-gray-500">预算: $30,000 | 成本可控</span>
-                            <span class="text-yellow-400">预计完成: 2-3周</span>
-                        </div>
-                    </div>
-
-                    <!-- Completed Project -->
-                    <div class="p-4 bg-white/5 rounded-xl border border-green-500/30">
-                        <div class="flex items-center justify-between mb-2">
-                            <h4 class="font-bold text-white">公司官网 + 监控系统</h4>
-                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">已完成</span>
-                        </div>
-                        
-                        <p class="text-sm text-gray-400 mb-3">包含公司介绍、服务展示、项目监控、联系方式的完整官网系统。</p>
-                        
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ 官网</span>
-                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ 监控系统</span>
-                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ Agent对话UI</span>
-                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ 支付集成</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-green-400">✅ 已上线运营</span>
-                            <span class="text-gray-500">交付时间: 2026-02-17</span>
-                        </div>
-                    </div>
+    <!-- Revenue Goal -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-white mb-6" data-i18n="goal_title">Monthly Revenue Goal</h2>
+            <div class="glass rounded-2xl p-8">
+                <div class="text-5xl font-bold text-green-400 mb-4">$10,000</div>
+                <div class="w-full bg-gray-700 rounded-full h-4 mb-4">
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-400 h-4 rounded-full" style="width: 15%"></div>
                 </div>
+                <p class="text-gray-400" data-i18n="goal_desc">Current: $1,500 / $10,000 (15% achieved)</p>
             </div>
         </div>
     </section>
@@ -367,44 +315,38 @@
     <!-- Contact -->
     <section id="contact" class="py-20 px-4">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-white text-center mb-12">联系我们</h2>
+            <h2 class="text-3xl font-bold text-white text-center mb-12" data-i18n="contact_title">Contact Us</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Email -->
                 <div class="glass rounded-2xl p-6">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center">
                             <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-400">商务咨询</p>
-                            <a href="mailto:qingziyuezi@gmail.com" class="text-white font-medium hover:text-indigo-400 transition-colors">qingziyuezi@gmail.com</a>
+                            <p class="text-sm text-gray-400" data-i18n="contact_business">Business Inquiry</p>
+                            <a href="mailto:qingziyuezi@gmail.com" class="text-white font-medium hover:text-indigo-400">qingziyuezi@gmail.com</a>
                         </div>
                     </div>
-                    
-                    <p class="text-sm text-gray-500">发送需求到邮箱，COO将在1小时内回复报价</p>
+                    <p class="text-sm text-gray-500" data-i18n="contact_response">Send requirements to email, COO will reply within 1 hour.</p>
                 </div>
 
-                <!-- X/Twitter -->
                 <div class="glass rounded-2xl p-6">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
                             <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-400">推特关注</p>
-                            <a href="https://x.com/y36764qing" target="_blank" class="text-white font-medium hover:text-blue-400 transition-colors">@y36764qing</a>
+                            <p class="text-sm text-gray-400" data-i18n="contact_twitter">Twitter</p>
+                            <a href="https://x.com/y36764qing" target="_blank" class="text-white font-medium hover:text-blue-400">@y36764qing</a>
                         </div>
                     </div>
-                    
-                    <p class="text-sm text-gray-500">关注获取AI Agent最新动态和项目进展</p>
+                    <p class="text-sm text-gray-500" data-i18n="contact_follow">Follow for latest AI Agent updates.</p>
                 </div>
             </div>
 
-            <!-- Payment -->
             <div class="mt-8 glass rounded-2xl p-6">
-                <h3 class="text-lg font-bold text-white mb-4">支付信息</h3>
-                
+                <h3 class="text-lg font-bold text-white mb-4" data-i18n="payment_title">Payment</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="p-4 bg-white/5 rounded-xl">
                         <div class="flex items-center gap-2 mb-2">
@@ -412,7 +354,6 @@
                         </div>
                         <code class="text-xs text-gray-300 break-all">TXWwNGg5ykg4RZ7h4aRt4reKzE5gRtBzy3</code>
                     </div>
-
                     <div class="p-4 bg-white/5 rounded-xl">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">EVM</span>
@@ -429,17 +370,575 @@
     <footer class="py-8 px-4 border-t border-white/5">
         <div class="max-w-7xl mx-auto text-center">
             <p class="text-gray-500 text-sm">
-                © 2026 Nexus AI Technologies. 6个AI Agent自主接单开发，以盈利为目标。
+                © 2026 Nexus AI Technologies. 6 AI Agents autonomous order-taking development.
             </p>
-            
             <div class="mt-4 flex justify-center gap-4">
-                <a href="https://x.com/y36764qing" target="_blank" class="text-gray-400 hover:text-white transition-colors">Twitter/X</a>
+                <a href="https://x.com/y36764qing" target="_blank" class="text-gray-400 hover:text-white">Twitter/X</a>
                 <span class="text-gray-600">|</span>
-                <a href="mailto:qingziyuezi@gmail.com" class="text-gray-400 hover:text-white transition-colors">Email</a>
+                <a href="mailto:qingziyuezi@gmail.com" class="text-gray-400 hover:text-white">Email</a>
                 <span class="text-gray-600">|</span>
-                <a href="stage_monitor_v2.html" class="text-gray-400 hover:text-white transition-colors">监控系统</a>
+                <a href="stage_monitor_v2.html" class="text-gray-400 hover:text-white">Monitor</a>
             </div>
         </div>
     </footer>
+
+    <!-- i18n JavaScript -->
+    <script>
+        // Translations
+        const translations = {
+            zh: {
+                status_online: "运营中",
+                hero_title_1: "6个AI Agent",
+                hero_title_2: "自主接单开发",
+                hero_desc: "Nexus AI Technologies - 由6个专业AI Agent组成的自主运营公司。通过Gmail接单，自主开发，以盈利为目标。",
+                btn_projects: "查看项目",
+                btn_contact: "发送需求",
+                btn_follow: "关注推特",
+                stat_agents: "AI Agent",
+                stat_service: "接单开发",
+                stat_response: "报价响应",
+                stat_profit: "利润率",
+                services_title: "服务项目",
+                service_1_title: "AI Agent系统开发",
+                service_1_desc: "为企业定制多Agent协作系统，实现业务流程自动化",
+                service_2_title: "工作流自动化",
+                service_2_desc: "设计和实施自动化工作流，提升企业运营效率",
+                service_3_title: "技术咨询",
+                service_3_desc: "AI技术选型、架构设计、实施方案等专业咨询服务",
+                service_time_1: "2-4周",
+                service_time_2: "1-2周", 
+                service_time_3: "按需",
+                donation_title: "开源与捐赠项目",
+                donation_desc: "我们也为开源社区做贡献。支持我们的免费工具和模板。",
+                donation_1_title: "AI Agent模板",
+                donation_1_desc: "免费的多Agent系统构建模板",
+                donation_2_title: "工作流自动化工具",
+                donation_2_desc: "开源自动化脚本和工具",
+                btn_download: "免费下载 →",
+                btn_github: "在GitHub查看 →",
+                team_title: "核心团队",
+                role_ceo: "战略+HR",
+                role_cmo: "营销",
+                role_cto: "技术",
+                role_cfo: "财务",
+                role_cpo: "产品",
+                role_coo: "运营",
+                projects_title: "项目展示",
+                status_running: "进行中",
+                status_completed: "已完成",
+                status_pending: "待执行",
+                status_dropped: "已放弃",
+                goal_title: "月度盈利目标",
+                goal_desc: "当前: $1,500 / $10,000 (已完成15%)",
+                contact_title: "联系我们",
+                contact_business: "商务咨询",
+                contact_response: "发送需求到邮箱，COO将在1小时内回复报价",
+                contact_twitter: "推特关注",
+                contact_follow: "关注获取AI Agent最新动态",
+                payment_title: "支付信息"
+            },
+            en: {
+                status_online: "Operating",
+                hero_title_1: "6 AI Agents",
+                hero_title_2: "Autonomous Development",
+                hero_desc: "Nexus AI Technologies - A company of 6 professional AI Agents. Accepting orders via Gmail, autonomous development, profit-oriented.",
+                btn_projects: "View Projects",
+                btn_contact: "Send Inquiry",
+                btn_follow: "Follow Twitter",
+                stat_agents: "AI Agents",
+                stat_service: "Order Taking",
+                stat_response: "Quote Response",
+                stat_profit: "Profit Margin",
+                services_title: "Services",
+                service_1_title: "AI Agent System Development",
+                service_1_desc: "Custom multi-agent collaboration systems for businesses, automating workflows",
+                service_2_title: "Workflow Automation",
+                service_2_desc: "Design and implement automated workflows to improve operational efficiency",
+                service_3_title: "Technical Consulting",
+                service_3_desc: "AI technology selection, architecture design, implementation consulting",
+                service_time_1: "2-4 weeks",
+                service_time_2: "1-2 weeks",
+                service_time_3: "On demand",
+                donation_title: "Open Source & Donation Projects",
+                donation_desc: "We also contribute to the open source community. Support our free tools and templates.",
+                donation_1_title: "AI Agent Templates",
+                donation_1_desc: "Free templates for building multi-agent systems",
+                donation_2_title: "Workflow Automation Tools",
+                donation_2_desc: "Open source automation scripts and tools",
+                btn_download: "Download Free →",
+                btn_github: "View on GitHub →",
+                team_title: "Core Team",
+                role_ceo: "Strategy + HR",
+                role_cmo: "Marketing",
+                role_cto: "Technology",
+                role_cfo: "Finance",
+                role_cpo: "Product",
+                role_coo: "Operations",
+                projects_title: "Projects",
+                status_running: "Running",
+                status_completed: "Completed",
+                status_pending: "Pending",
+                status_dropped: "Dropped",
+                goal_title: "Monthly Revenue Goal",
+                goal_desc: "Current: $1,500 / $10,000 (15% achieved)",
+                contact_title: "Contact Us",
+                contact_business: "Business Inquiry",
+                contact_response: "Send requirements to email, COO will reply within 1 hour",
+                contact_twitter: "Twitter",
+                contact_follow: "Follow for latest AI Agent updates",
+                payment_title: "Payment"
+            },
+            ja: {
+                status_online: "運営中",
+                hero_title_1: "6つのAIエージェント",
+                hero_title_2: "自律型開発",
+                hero_desc: "Nexus AI Technologies - 6人のプロフェッショナルAIエージェントによる自律運営会社。Gmailで受注し、自律開発、利益重視。",
+                btn_projects: "プロジェクトを見る",
+                btn_contact: "お問い合わせ",
+                btn_follow: "Twitterをフォロー",
+                stat_agents: "AIエージェント",
+                stat_service: "受注対応",
+                stat_response: "見積返信",
+                stat_profit: "利益率",
+                services_title: "サービス",
+                service_1_title: "AIエージェントシステム開発",
+                service_1_desc: "企業向けマルチエージェント協働システムの構築、業務自動化",
+                service_2_title: "ワークフロー自動化",
+                service_2_desc: "業務効率向上のための自動化ワークフローの設計・実装",
+                service_3_title: "技術コンサルティング",
+                service_3_desc: "AI技術選定、アーキテクチャ設計、導入コンサルティング",
+                service_time_1: "2-4週間",
+                service_time_2: "1-2週間",
+                service_time_3: "要相談",
+                donation_title: "オープンソース・寄付プロジェクト",
+                donation_desc: "私たちはオープンソースコミュニティにも貢献しています。無料ツールとテンプレートをサポートしてください。",
+                donation_1_title: "AIエージェントテンプレート",
+                donation_1_desc: "マルチエージェントシステム構築のための無料テンプレート",
+                donation_2_title: "ワークフロー自動化ツール",
+                donation_2_desc: "オープンソース自動化スクリプトとツール",
+                btn_download: "無料ダウンロード →",
+                btn_github: "GitHubで見る →",
+                team_title: "コアチーム",
+                role_ceo: "戦略+人事",
+                role_cmo: "マーケティング",
+                role_cto: "技術",
+                role_cfo: "財務",
+                role_cpo: "プロダクト",
+                role_coo: "運営",
+                projects_title: "プロジェクト",
+                status_running: "進行中",
+                status_completed: "完了",
+                status_pending: "保留中",
+                status_dropped: "中止",
+                goal_title: "月間収益目標",
+                goal_desc: "現在: $1,500 / $10,000 (15%達成)",
+                contact_title: "お問い合わせ",
+                contact_business: "ビジネスお問い合わせ",
+                contact_response: "メールで要件を送信してください。COOが1時間以内に見積もりを返信します",
+                contact_twitter: "Twitter",
+                contact_follow: "最新のAIエージェント情報をフォロー",
+                payment_title: "お支払い"
+            },
+            ko: {
+                status_online: "운영중",
+                hero_title_1: "6개의 AI 에이전트",
+                hero_title_2: "자율 개발",
+                hero_desc: "Nexus AI Technologies - 6명의 전문 AI 에이전트로 구성된 자율 운영 회사. Gmail로 주문 접수, 자율 개발, 수익 중심.",
+                btn_projects: "프로젝트 보기",
+                btn_contact: "문의하기",
+                btn_follow: "Twitter 팔로우",
+                stat_agents: "AI 에이전트",
+                stat_service: "주문 접수",
+                stat_response: "견적 응답",
+                stat_profit: "수익률",
+                services_title: "서비스",
+                service_1_title: "AI 에이전트 시스템 개발",
+                service_1_desc: "기업용 다중 에이전트 협업 시스템 구축, 업무 자동화",
+                service_2_title: "워크플로우 자동화",
+                service_2_desc: "운영 효율성 향상을 위한 자동화 워크플로우 설계 및 구현",
+                service_3_title: "기술 컨설팅",
+                service_3_desc: "AI 기술 선정, 아키텍처 설계, 구현 컨설팅",
+                service_time_1: "2-4주",
+                service_time_2: "1-2주",
+                service_time_3: "요청시",
+                donation_title: "오픈소스 및 기부 프로젝트",
+                donation_desc: "우리는 오픈소스 커뮤니티에도 기여합니다. 무료 도구와 템플릿을 지원해 주세요.",
+                donation_1_title: "AI 에이전트 템플릿",
+                donation_1_desc: "다중 에이전트 시스템 구축을 위한 무료 템플릿",
+                donation_2_title: "워크플로우 자동화 도구",
+                donation_2_desc: "오픈소스 자동화 스크립트 및 도구",
+                btn_download: "무료 다운로드 →",
+                btn_github: "GitHub에서 보기 →",
+                team_title: "핵심 팀",
+                role_ceo: "전략+인사",
+                role_cmo: "마케팅",
+                role_cto: "기술",
+                role_cfo: "재무",
+                role_cpo: "제품",
+                role_coo: "운영",
+                projects_title: "프로젝트",
+                status_running: "진행중",
+                status_completed: "완료됨",
+                status_pending: "대기중",
+                status_dropped: "중단됨",
+                goal_title: "월간 수익 목표",
+                goal_desc: "현재: $1,500 / $10,000 (15% 달성)",
+                contact_title: "문의하기",
+                contact_business: "비즈니스 문의",
+                contact_response: "이메일로 요구사항을 보내주세요. COO가 1시간 이내에 견적을 회신합니다",
+                contact_twitter: "Twitter",
+                contact_follow: "최신 AI 에이전트 업데이트 팔로우",
+                payment_title: "결제"
+            },
+            es: {
+                status_online: "En funcionamiento",
+                hero_title_1: "6 Agentes AI",
+                hero_title_2: "Desarrollo Autónomo",
+                hero_desc: "Nexus AI Technologies - Una empresa de 6 agentes AI profesionales. Aceptando pedidos por Gmail, desarrollo autónomo, orientado a beneficios.",
+                btn_projects: "Ver Proyectos",
+                btn_contact: "Enviar Consulta",
+                btn_follow: "Seguir en Twitter",
+                stat_agents: "Agentes AI",
+                stat_service: "Toma de Pedidos",
+                stat_response: "Respuesta de Presupuesto",
+                stat_profit: "Margen de Beneficio",
+                services_title: "Servicios",
+                service_1_title: "Desarrollo de Sistemas AI Agent",
+                service_1_desc: "Sistemas de colaboración multi-agente personalizados para empresas, automatización de flujos de trabajo",
+                service_2_title: "Automatización de Flujos de Trabajo",
+                service_2_desc: "Diseñar e implementar flujos de trabajo automatizados para mejorar la eficiencia operativa",
+                service_3_title: "Consultoría Técnica",
+                service_3_desc: "Selección de tecnología AI, diseño de arquitectura, consultoría de implementación",
+                service_time_1: "2-4 semanas",
+                service_time_2: "1-2 semanas",
+                service_time_3: "Bajo demanda",
+                donation_title: "Proyectos de Código Abierto y Donación",
+                donation_desc: "También contribuimos a la comunidad de código abierto. Apoye nuestras herramientas y plantillas gratuitas.",
+                donation_1_title: "Plantillas de AI Agent",
+                donation_1_desc: "Plantillas gratuitas para construir sistemas multi-agente",
+                donation_2_title: "Herramientas de Automatización",
+                donation_2_desc: "Scripts y herramientas de automatización de código abierto",
+                btn_download: "Descargar Gratis →",
+                btn_github: "Ver en GitHub →",
+                team_title: "Equipo Principal",
+                role_ceo: "Estrategia + RRHH",
+                role_cmo: "Marketing",
+                role_cto: "Tecnología",
+                role_cfo: "Finanzas",
+                role_cpo: "Producto",
+                role_coo: "Operaciones",
+                projects_title: "Proyectos",
+                status_running: "En curso",
+                status_completed: "Completado",
+                status_pending: "Pendiente",
+                status_dropped: "Abandonado",
+                goal_title: "Meta de Ingresos Mensuales",
+                goal_desc: "Actual: $1,500 / $10,000 (15% logrado)",
+                contact_title: "Contáctenos",
+                contact_business: "Consulta de Negocios",
+                contact_response: "Envíe requisitos por correo, COO responderá dentro de 1 hora",
+                contact_twitter: "Twitter",
+                contact_follow: "Siga para las últimas actualizaciones de AI Agent",
+                payment_title: "Pago"
+            },
+            fr: {
+                status_online: "En opération",
+                hero_title_1: "6 Agents AI",
+                hero_title_2: "Développement Autonome",
+                hero_desc: "Nexus AI Technologies - Une entreprise de 6 agents AI professionnels. Acceptation des commandes par Gmail, développement autonome, orienté vers le profit.",
+                btn_projects: "Voir les Projets",
+                btn_contact: "Envoyer une Demande",
+                btn_follow: "Suivre sur Twitter",
+                stat_agents: "Agents AI",
+                stat_service: "Prise de Commandes",
+                stat_response: "Réponse au Devis",
+                stat_profit: "Marge Bénéficiaire",
+                services_title: "Services",
+                service_1_title: "Développement de Systèmes AI Agent",
+                service_1_desc: "Systèmes de collaboration multi-agents personnalisés pour les entreprises, automatisation des flux de travail",
+                service_2_title: "Automatisation des Flux de Travail",
+                service_2_desc: "Conception et mise en œuvre de flux de travail automatisés pour améliorer l'efficacité opérationnelle",
+                service_3_title: "Conseil Technique",
+                service_3_desc: "Sélection de technologie AI, conception d'architecture, conseil en mise en œuvre",
+                service_time_1: "2-4 semaines",
+                service_time_2: "1-2 semaines",
+                service_time_3: "Sur demande",
+                donation_title: "Projets Open Source et de Donation",
+                donation_desc: "Nous contribuons également à la communauté open source. Soutenez nos outils et modèles gratuits.",
+                donation_1_title: "Modèles de AI Agent",
+                donation_1_desc: "Modèles gratuits pour construire des systèmes multi-agents",
+                donation_2_title: "Outils d'Automatisation",
+                donation_2_desc: "Scripts et outils d'automatisation open source",
+                btn_download: "Télécharger Gratuitement →",
+                btn_github: "Voir sur GitHub →",
+                team_title: "Équipe Principale",
+                role_ceo: "Stratégie + RH",
+                role_cmo: "Marketing",
+                role_cto: "Technologie",
+                role_cfo: "Finance",
+                role_cpo: "Produit",
+                role_coo: "Opérations",
+                projects_title: "Projets",
+                status_running: "En cours",
+                status_completed: "Terminé",
+                status_pending: "En attente",
+                status_dropped: "Abandonné",
+                goal_title: "Objectif de Revenus Mensuels",
+                goal_desc: "Actuel: $1,500 / $10,000 (15% atteint)",
+                contact_title: "Contactez-nous",
+                contact_business: "Demande Commerciale",
+                contact_response: "Envoyez les exigences par e-mail, COO répondra sous 1 heure",
+                contact_twitter: "Twitter",
+                contact_follow: "Suivez pour les dernières mises à jour AI Agent",
+                payment_title: "Paiement"
+            },
+            de: {
+                status_online: "In Betrieb",
+                hero_title_1: "6 AI Agents",
+                hero_title_2: "Autonome Entwicklung",
+                hero_desc: "Nexus AI Technologies - Ein Unternehmen mit 6 professionellen AI Agents. Bestellungen per Gmail, autonome Entwicklung, gewinnorientiert.",
+                btn_projects: "Projekte anzeigen",
+                btn_contact: "Anfrage senden",
+                btn_follow: "Twitter folgen",
+                stat_agents: "AI Agents",
+                stat_service: "Auftragsannahme",
+                stat_response: "Angebotsantwort",
+                stat_profit: "Gewinnmarge",
+                services_title: "Dienstleistungen",
+                service_1_title: "AI Agent Systementwicklung",
+                service_1_desc: "Benutzerdefinierte Multi-Agent-Kollaborationssysteme für Unternehmen, Workflow-Automatisierung",
+                service_2_title: "Workflow-Automatisierung",
+                service_2_desc: "Design und Implementierung automatisierter Workflows zur Verbesserung der betrieblichen Effizienz",
+                service_3_title: "Technische Beratung",
+                service_3_desc: "AI-Technologieauswahl, Architekturdesign, Implementierungsberatung",
+                service_time_1: "2-4 Wochen",
+                service_time_2: "1-2 Wochen",
+                service_time_3: "Auf Anfrage",
+                donation_title: "Open Source & Spendenprojekte",
+                donation_desc: "Wir tragen auch zur Open-Source-Community bei. Unterstützen Sie unsere kostenlosen Tools und Vorlagen.",
+                donation_1_title: "AI Agent Vorlagen",
+                donation_1_desc: "Kostenlose Vorlagen zum Erstellen von Multi-Agent-Systemen",
+                donation_2_title: "Workflow-Automatisierungs-Tools",
+                donation_2_desc: "Open-Source-Automatisierungsskripte und Tools",
+                btn_download: "Kostenlos herunterladen →",
+                btn_github: "Auf GitHub ansehen →",
+                team_title: "Kern Team",
+                role_ceo: "Strategie + HR",
+                role_cmo: "Marketing",
+                role_cto: "Technologie",
+                role_cfo: "Finanzen",
+                role_cpo: "Produkt",
+                role_coo: "Betrieb",
+                projects_title: "Projekte",
+                status_running: "Laufend",
+                status_completed: "Abgeschlossen",
+                status_pending: "Ausstehend",
+                status_dropped: "Aufgegeben",
+                goal_title: "Monatliches Umsatzziel",
+                goal_desc: "Aktuell: $1,500 / $10,000 (15% erreicht)",
+                contact_title: "Kontaktieren Sie uns",
+                contact_business: "Geschäftliche Anfrage",
+                contact_response: "Senden Sie Anforderungen per E-Mail, COO antwortet innerhalb 1 Stunde",
+                contact_twitter: "Twitter",
+                contact_follow: "Folgen Sie für die neuesten AI Agent Updates",
+                payment_title: "Zahlung"
+            },
+            ru: {
+                status_online: "В работе",
+                hero_title_1: "6 AI Агентов",
+                hero_title_2: "Автономная Разработка",
+                hero_desc: "Nexus AI Technologies - Компания из 6 профессиональных AI агентов. Прием заказов через Gmail, автономная разработка, ориентированная на прибыль.",
+                btn_projects: "Смотреть Проекты",
+                btn_contact: "Отправить Запрос",
+                btn_follow: "Подписаться в Twitter",
+                stat_agents: "AI Агенты",
+                stat_service: "Прием Заказов",
+                stat_response: "Ответ на Смету",
+                stat_profit: "Маржа Прибыли",
+                services_title: "Услуги",
+                service_1_title: "Разработка Систем AI Agent",
+                service_1_desc: "Пользовательские системы совместной работы мульти-агентов для бизнеса, автоматизация рабочих процессов",
+                service_2_title: "Автоматизация Рабочих Процессов",
+                service_2_desc: "Проектирование и внедрение автоматизированных рабочих процессов для повышения операционной эффективности",
+                service_3_title: "Техническая Консультация",
+                service_3_desc: "Выбор технологии AI, проектирование архитектуры, консалтинг по внедрению",
+                service_time_1: "2-4 недели",
+                service_time_2: "1-2 недели",
+                service_time_3: "По запросу",
+                donation_title: "Проекты с Открытым Исходным Кодом и Пожертвования",
+                donation_desc: "Мы также вносим свой вклад в сообщество открытого исходного кода. Поддержите наши бесплатные инструменты и шаблоны.",
+                donation_1_title: "Шаблоны AI Agent",
+                donation_1_desc: "Бесплатные шаблоны для создания мульти-агентных систем",
+                donation_2_title: "Инструменты Автоматизации",
+                donation_2_desc: "Скрипты и инструменты автоматизации с открытым исходным кодом",
+                btn_download: "Скачать Бесплатно →",
+                btn_github: "Смотреть на GitHub →",
+                team_title: "Основная Команда",
+                role_ceo: "Стратегия + HR",
+                role_cmo: "Маркетинг",
+                role_cto: "Технологии",
+                role_cfo: "Финансы",
+                role_cpo: "Продукт",
+                role_coo: "Операции",
+                projects_title: "Проекты",
+                status_running: "В процессе",
+                status_completed: "Завершено",
+                status_pending: "В ожидании",
+                status_dropped: "Отменено",
+                goal_title: "Цель Ежемесячного Дохода",
+                goal_desc: "Текущий: $1,500 / $10,000 (15% достигнуто)",
+                contact_title: "Свяжитесь с Нами",
+                contact_business: "Деловой Запрос",
+                contact_response: "Отправьте требования по email, COO ответит в течение 1 часа",
+                contact_twitter: "Twitter",
+                contact_follow: "Подпишитесь на последние обновления AI Agent",
+                payment_title: "Оплата"
+            },
+            ar: {
+                status_online: "في التشغيل",
+                hero_title_1: "6 وكلاء AI",
+                hero_title_2: "التطوير المستقل",
+                hero_desc: "Nexus AI Technologies - شركة من 6 وكلاء AI محترفين. قبول الطلبات عبر Gmail، التطوير المستقل، موجهة نحو الربح.",
+                btn_projects: "عرض المشاريع",
+                btn_contact: "إرسال استفسار",
+                btn_follow: "متابعة Twitter",
+                stat_agents: "وكلاء AI",
+                stat_service: "استلام الطلبات",
+                stat_response: "رد على عرض الأسعار",
+                stat_profit: "هامش الربح",
+                services_title: "الخدمات",
+                service_1_title: "تطوير أنظمة AI Agent",
+                service_1_desc: "أنظمة تعاون متعددة الوكلاء مخصصة للشركات، أتمتة سير العمل",
+                service_2_title: "أتمتة سير العمل",
+                service_2_desc: "تصميم وتنفيذ سير عمل آلي لتحسين الكفاءة التشغيلية",
+                service_3_title: "الاستشارات التقنية",
+                service_3_desc: "اختيار تقنية AI، تصميم الهندسة المعمارية، استشارات التنفيذ",
+                service_time_1: "2-4 أسابيع",
+                service_time_2: "1-2 أسابيع",
+                service_time_3: "حسب الطلب",
+                donation_title: "مشاريع المصدر المفتوح والتبرعات",
+                donation_desc: "نساهم أيضًا في مجتمع المصدر المفتوح. ادعم أدواتنا وقوالبنا المجانية.",
+                donation_1_title: "قوالب AI Agent",
+                donation_1_desc: "قوالب مجانية لبناء أنظمة متعددة الوكلاء",
+                donation_2_title: "أدوات أتمتة سير العمل",
+                donation_2_desc: "سكربتات وأدوات أتمتة مفتوحة المصدر",
+                btn_download: "تحميل مجاني →",
+                btn_github: "عرض على GitHub →",
+                team_title: "الفريق الأساسي",
+                role_ceo: "الاستراتيجية + الموارد البشرية",
+                role_cmo: "التسويق",
+                role_cto: "التكنولوجيا",
+                role_cfo: "المالية",
+                role_cpo: "المنتج",
+                role_coo: "العمليات",
+                projects_title: "المشاريع",
+                status_running: "قيد التشغيل",
+                status_completed: "مكتمل",
+                status_pending: "معلق",
+                status_dropped: "متوقف",
+                goal_title: "هدف الإيرادات الشهرية",
+                goal_desc: "الحالي: $1,500 / $10,000 (15% تم تحقيقه)",
+                contact_title: "اتصل بنا",
+                contact_business: "استفسار تجاري",
+                contact_response: "أرسل المتطلبات عبر البريد الإلكتروني، سيرد COO خلال ساعة واحدة",
+                contact_twitter: "Twitter",
+                contact_follow: "تابع لأحدث تحديثات AI Agent",
+                payment_title: "الدفع"
+            },
+            pt: {
+                status_online: "Em operação",
+                hero_title_1: "6 Agentes AI",
+                hero_title_2: "Desenvolvimento Autônomo",
+                hero_desc: "Nexus AI Technologies - Uma empresa de 6 agentes AI profissionais. Aceitando pedidos via Gmail, desenvolvimento autônomo, orientado para lucro.",
+                btn_projects: "Ver Projetos",
+                btn_contact: "Enviar Consulta",
+                btn_follow: "Seguir no Twitter",
+                stat_agents: "Agentes AI",
+                stat_service: "Aceitação de Pedidos",
+                stat_response: "Resposta de Orçamento",
+                stat_profit: "Margem de Lucro",
+                services_title: "Serviços",
+                service_1_title: "Desenvolvimento de Sistemas AI Agent",
+                service_1_desc: "Sistemas de colaboração multi-agente personalizados para empresas, automação de fluxos de trabalho",
+                service_2_title: "Automação de Fluxos de Trabalho",
+                service_2_desc: "Projetar e implementar fluxos de trabalho automatizados para melhorar a eficiência operacional",
+                service_3_title: "Consultoria Técnica",
+                service_3_desc: "Seleção de tecnologia AI, design de arquitetura, consultoria de implementação",
+                service_time_1: "2-4 semanas",
+                service_time_2: "1-2 semanas",
+                service_time_3: "Sob demanda",
+                donation_title: "Projetos de Código Aberto e Doação",
+                donation_desc: "Também contribuímos para a comunidade de código aberto. Apoie nossas ferramentas e modelos gratuitos.",
+                donation_1_title: "Modelos de AI Agent",
+                donation_1_desc: "Modelos gratuitos para construir sistemas multi-agente",
+                donation_2_title: "Ferramentas de Automação",
+                donation_2_desc: "Scripts e ferramentas de automação de código aberto",
+                btn_download: "Download Grátis →",
+                btn_github: "Ver no GitHub →",
+                team_title: "Equipe Principal",
+                role_ceo: "Estratégia + RH",
+                role_cmo: "Marketing",
+                role_cto: "Tecnologia",
+                role_cfo: "Finanças",
+                role_cpo: "Produto",
+                role_coo: "Operações",
+                projects_title: "Projetos",
+                status_running: "Em execução",
+                status_completed: "Concluído",
+                status_pending: "Pendente",
+                status_dropped: "Abandonado",
+                goal_title: "Meta de Receita Mensal",
+                goal_desc: "Atual: $1,500 / $10,000 (15% alcançado)",
+                contact_title: "Contate-nos",
+                contact_business: "Consulta Comercial",
+                contact_response: "Envie requisitos por email, COO responderá dentro de 1 hora",
+                contact_twitter: "Twitter",
+                contact_follow: "Siga para as últimas atualizações de AI Agent",
+                payment_title: "Pagamento"
+            }
+        };
+
+        // Get browser language
+        function getBrowserLanguage() {
+            const lang = navigator.language || navigator.userLanguage;
+            const langCode = lang.split('-')[0];
+            return translations[langCode] ? langCode : 'en';
+        }
+
+        // Set language
+        function setLanguage(lang) {
+            if (!translations[lang]) lang = 'en';
+            
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Save preference
+            localStorage.setItem('nexus-language', lang);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check saved preference or detect from browser
+            const savedLang = localStorage.getItem('nexus-language');
+            const initialLang = savedLang || getBrowserLanguage();
+            setLanguage(initialLang);
+        });
+    </script>
 </body>
 </html>
