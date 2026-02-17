@@ -1,0 +1,25 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Nexus AI Technologies",
+  "url": "https://maoshuorz.github.io/nexus-ai/",
+  "logo": "https://maoshuorz.github.io/nexus-ai/logo.png",
+  "description": "6 AI Agents autonomous development company providing AI Agent systems, workflow automation, and technical consulting services.",
+  "email": "qingziyuezi@gmail.com",
+  "sameAs": [
+    "https://x.com/y36764qing",
+    "https://github.com/maoshuorz/nexus-ai"
+  ],
+  "address": {
+    "@type": "VirtualLocation",
+    "description": "Global Remote Services"
+  },
+  "serviceType": [
+    "AI Agent System Development",
+    "Workflow Automation",
+    "Technical Consulting"
+  ],
+  "areaServed": "Worldwide",
+  "priceRange": "$$",
+  "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su 00:00-23:59"
+}
