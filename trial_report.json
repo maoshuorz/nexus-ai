@@ -1,0 +1,84 @@
+{
+  "company": {
+    "name": "Nexus AI Technologies",
+    "email": "qingziyuezi@gmail.com",
+    "website": "https://nexus-ai.example.com",
+    "wallets": {
+      "usdt_trc20": "TXWwNGg5ykg4RZ7h4aRt4reKzE5gRtBzy3",
+      "usdt_evm": "0x88af054a78dc8f81028e6c8f3d6593c738a4368c",
+      "networks": [
+        "TRC20",
+        "Arbitrum",
+        "AVAX",
+        "BSC",
+        "Polygon"
+      ]
+    },
+    "trial_duration": 30
+  },
+  "trial": {
+    "start_time": "2026-02-17T20:33:44.399532",
+    "end_time": "2026-02-17T20:34:07.931840",
+    "duration_minutes": 30,
+    "revenue": 15000,
+    "expenses": 80000.0,
+    "events": [
+      {
+        "timestamp": "2026-02-17T20:33:47.908214",
+        "type": "startup",
+        "description": "\u516c\u53f8\u542f\u52a8\u5b8c\u6210",
+        "data": {
+          "agents": 7
+        }
+      },
+      {
+        "timestamp": "2026-02-17T20:33:52.913660",
+        "type": "market_scan",
+        "description": "\u53d1\u73b03\u4e2a\u673a\u4f1a",
+        "data": {
+          "opportunities": [
+            {
+              "name": "AI Agent\u5e73\u53f0",
+              "market_size": "$50B",
+              "potential": "High"
+            },
+            {
+              "name": "\u81ea\u52a8\u5316\u5de5\u4f5c\u6d41",
+              "market_size": "$20B",
+              "potential": "Medium"
+            },
+            {
+              "name": "\u667a\u80fd\u5ba2\u670d\u7cfb\u7edf",
+              "market_size": "$15B",
+              "potential": "High"
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-02-17T20:33:57.418455",
+        "type": "project_approved",
+        "description": "\u9879\u76ee\u6279\u51c6: AI Agent\u534f\u4f5c\u5e73\u53f0",
+        "data": {
+          "budget": 50000
+        }
+      },
+      {
+        "timestamp": "2026-02-17T20:34:00.923908",
+        "type": "project_approved",
+        "description": "\u9879\u76ee\u6279\u51c6: \u81ea\u52a8\u5316\u5de5\u4f5c\u6d41\u5de5\u5177",
+        "data": {
+          "budget": 30000
+        }
+      },
+      {
+        "timestamp": "2026-02-17T20:34:04.930244",
+        "type": "execution",
+        "description": "\u9879\u76ee\u6267\u884c\u4e2d",
+        "data": {
+          "revenue": 15000
+        }
+      }
+    ]
+  }
+}

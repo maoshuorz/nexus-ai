@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Multi-Agent Company Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        body { background: #050505; }
+        .glass {
+            background: rgba(20, 20, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow {
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+        }
+        .agent-avatar {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .agent-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+        }
+        .status-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .typing::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .progress-gradient {
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        }
+    </style>
+</head>
+<body class="text-gray-300 min-h-screen overflow-x-hidden">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
+        <div class="max-w-[1920px] mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    
+                    <div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
+                            Nexus AI Technologies
+                        </h1>
+                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                System Operational
+                            </span>
+                            <span>•</span>
+                            <span>8 Agents Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <!-- Day Counter -->
+                    <div class="glass px-4 py-2 rounded-xl">
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Day</span>
+                        <span class="ml-2 text-lg font-bold text-white mono" id="day-counter">1</span>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleSimulation()" id="sim-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
+                            </svg>
+                            Start Simulation
+                        </button>
+                        
+                        <button onclick="nextDay()" class="px-4 py-2 glass hover:bg-white/5 rounded-lg text-sm font-medium transition-all">
+                            Next Day →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-8 px-6 max-w-[1920px] mx-auto">
+        <div class="grid grid-cols-12 gap-6">
+            <!-- Left Sidebar: Agent Grid -->
+            <div class="col-span-3 space-y-4">
+                <div class="glass rounded-2xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Agent Team</h2>
+                        <span class="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded-full">8 Active</span>
+                    </div>
+
+                    <div id="agent-grid" class="grid grid-cols-2 gap-3">
+                        <!-- Agents populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Skills Panel -->
+                <div class="glass rounded-2xl p-5">
+                    <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Team Skills</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Technical</span>
+                                <span class="text-indigo-400">Lv.8.5</span>
+                            </div>
+                            <div class="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-[85%] progress-gradient rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Business</span>
+                                <span class="text-purple-400">Lv.7.8</span>
+                            </div>
+                            <div class="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-[78%] progress-gradient rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Creativity</span>
+                                <span class="text-pink-400">Lv.8.2</span>
+                            </div>
+                            <div class="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-[82%] progress-gradient rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Main Content -->
+            <div class="col-span-6 space-y-6">
+                <!-- Financial Dashboard -->
+                <div class="glass rounded-2xl p-6 glow">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-white">Financial Overview</h2>
+                        <button class="text-xs px-3 py-1.5 glass hover:bg-white/5 rounded-lg transition-colors">
+                            View Details
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-center p-4 rounded-xl bg-gradient-to-b from-white/5 to-transparent">
+                            <p class="text-xs text-gray-500 mb-1">Cash Flow</p>
+                            <p class="text-2xl font-bold text-white mono">¥2M</p>
+                            <span class="text-xs text-green-400">+0%</span>
+                        </div>
+                        
+                        <div class="text-center p-4 rounded-xl bg-gradient-to-b from-white/5 to-transparent">
+                            <p class="text-xs text-gray-500 mb-1">Revenue</p>
+                            <p class="text-2xl font-bold text-green-400 mono">¥0</p>
+                            <span class="text-xs text-gray-500">Pre-launch</span>
+                        </div>
+                        
+                        <div class="text-center p-4 rounded-xl bg-gradient-to-b from-white/5 to-transparent">
+                            <p class="text-xs text-gray-500 mb-1">Expenses</p>
+                            <p class="text-2xl font-bold text-red-400 mono" id="expenses">¥0</p>
+                            <span class="text-xs text-red-400">-Burn</span>
+                        </div>
+                        
+                        <div class="text-center p-4 rounded-xl bg-gradient-to-b from-white/5 to-transparent">
+                            <p class="text-xs text-gray-500 mb-1">Runway</p>
+                            <p class="text-2xl font-bold text-indigo-400 mono">24m</p>
+                            <span class="text-xs text-gray-500">Healthy</span>
+                        </div>
+                    </div>
+
+                    <!-- Mini Chart -->
+                    <div class="mt-6 h-32">
+                        <canvas id="cashflow-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Active Projects -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-white">Active Projects</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-500">Total:</span>
+                            <span class="text-sm font-semibold text-white px-2 py-1 bg-indigo-500/20 rounded-lg" id="project-count">0</span>
+                        </div>
+                    </div>
+
+                    <div id="projects-list" class="space-y-4">
+                        <div class="text-center py-12 text-gray-500">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full glass flex items-center justify-center">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                            <p>No active projects</p>
+                            <p class="text-sm mt-1">Start simulation to discover opportunities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: Activity & Chat -->
+            <div class="col-span-3 space-y-4">
+                <!-- Live Activity Feed -->
+                <div class="glass rounded-2xl p-5 h-[500px] flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Live Activity</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500 status-pulse"></span>
+                            <span class="text-xs text-gray-500">Live</span>
+                        </div>
+                    </div>
+
+                    <div id="activity-feed" class="flex-1 overflow-y-auto space-y-3 pr-2">
+                        <div class="p-3 rounded-lg bg-white/5 text-sm">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-indigo-400 font-medium">System</span>
+                                <span class="text-xs text-gray-600">12:00 PM</span>
+                            </div>
+                            <p class="text-gray-400">Welcome to Nexus AI Technologies. All agents are ready.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Metrics -->
+                <div class="glass rounded-2xl p-5">
+                    <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Team Health</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Satisfaction</span>
+                                <span class="text-green-400 font-medium">100%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Productivity</span>
+                                <span class="text-indigo-400 font-medium">85%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-[85%] progress-gradient rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Collaboration</span>
+                                <span class="text-purple-400 font-medium">92%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-[92%] bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Agent data
+        const agents = [
+            { id: 'ceo', name: 'Alex Chen', role: 'CEO', avatar: '👨‍💼', status: 'idle', specialty: 'Strategy' },
+            { id: 'cmo', name: 'Sarah Miller', role: 'CMO', avatar: '👩‍💼', status: 'idle', specialty: 'Marketing' },
+            { id: 'cto', name: 'David Kim', role: 'CTO', avatar: '👨‍💻', status: 'idle', specialty: 'Tech' },
+            { id: 'coo', name: 'Emma Wilson', role: 'COO', avatar: '👩‍💻', status: 'idle', specialty: 'Ops' },
+            { id: 'cpo', name: 'Michael Zhang', role: 'CPO', avatar: '👨‍🎨', status: 'idle', specialty: 'Product' },
+            { id: 'cfo', name: 'Lisa Wang', role: 'CFO', avatar: '👩‍💼', status: 'idle', specialty: 'Finance' },
+            { id: 'chro', name: 'James Brown', role: 'CHRO', avatar: '👨‍💼', status: 'idle', specialty: 'HR' },
+            { id: 'observer', name: 'System AI', role: 'AI', avatar: '🤖', status: 'active', specialty: 'Monitor' }
+        ];
+
+        let day = 1;
+        let simulationRunning = false;
+
+        function renderAgents() {
+            const grid = document.getElementById('agent-grid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-avatar glass rounded-xl p-3 cursor-pointer relative overflow-hidden group"
+                     onclick="showAgentDetails('${agent.id}')">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-purple-500/0 group-hover:from-indigo-500/10 group-hover:to-purple-500/10 transition-all"></div>
+                    
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-2xl">${agent.avatar}</span>
+                            ${agent.status === 'active' ? '<span class="w-2 h-2 rounded-full bg-green-500"></span>' : ''}
+                        </div>
+                        
+                        <p class="font-medium text-sm text-white truncate">${agent.name}</p>
+                        <p class="text-xs text-gray-500">${agent.role}</p>
+                        
+                        <div class="mt-2 flex items-center gap-1">
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-gray-400">${agent.specialty}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addActivity(message, type = 'info') {
+            const feed = document.getElementById('activity-feed');
+            const colors = {
+                info: 'text-gray-300',
+                success: 'text-green-400',
+                warning: 'text-yellow-400',
+                decision: 'text-indigo-400',
+                opportunity: 'text-purple-400'
+            };
+            
+            const div = document.createElement('div');
+            div.className = 'p-3 rounded-lg bg-white/5 text-sm animate-fade-in border border-white/5';
+            div.innerHTML = `
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[10px] text-gray-600">${new Date().toLocaleTimeString()}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/5 ${colors[type]}">${type}</span>
+                </div>
+                <p class="${colors[type]}">${message}</p>
+            `;
+            
+            feed.insertBefore(div, feed.firstChild);
+        }
+
+        function toggleSimulation() {
+            simulationRunning = !simulationRunning;
+            const btn = document.getElementById('sim-btn');
+            
+            if (simulationRunning) {
+                btn.innerHTML = `
+                    <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    Running...
+                `;
+                startSimulation();
+            } else {
+                btn.innerHTML = `
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
+                    </svg>
+                    Start Simulation
+                `;
+            }
+        }
+
+        function startSimulation() {
+            addActivity('🚀 Simulation started', 'info');
+            
+            // Simulate CMO scanning
+            setTimeout(() => {
+                addActivity('📊 CMO Sarah Miller scanning market trends...', 'info');
+                
+                setTimeout(() => {
+                    addActivity('💡 New opportunity discovered: AI Content Platform', 'opportunity');
+                    addProject('AI Content Platform', 'discovery', 35);
+                }, 1500);
+            }, 1000);
+        }
+
+        function nextDay() {
+            day++;
+            document.getElementById('day-counter').textContent = day;
+            addActivity(`📅 Day ${day} started`, 'info');
+        }
+
+        function addProject(name, phase, progress) {
+            const list = document.getElementById('projects-list');
+            const count = document.getElementById('project-count');
+            
+            const projectDiv = document.createElement('div');
+            projectDiv.className = 'p-4 rounded-xl bg-white/5 border border-white/10';
+            projectDiv.innerHTML = `
+                <div class="flex items-start justify-between mb-3">
+                    <div>
+                        <h3 class="font-semibold text-white">${name}</h3>
+                        <p class="text-xs text-gray-500 mt-1">Phase: ${phase} • Team: 4 agents</p>
+                    </div>
+                    <span class="px-2 py-1 rounded-lg text-xs bg-indigo-500/20 text-indigo-400">${phase}</span>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">Progress</span>
+                        <span class="text-white">${progress}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full progress-gradient rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove empty state if exists
+            if (list.children[0]?.classList.contains('text-center')) {
+                list.innerHTML = '';
+            }
+            
+            list.appendChild(projectDiv);
+            count.textContent = list.children.length;
+        }
+
+        function showAgentDetails(agentId) {
+            const agent = agents.find(a => a.id === agentId);
+            addActivity(`👤 Viewing ${agent.name}'s profile`, 'info');
+        }
+
+        // Initialize Chart
+        function initChart() {
+            const ctx = document.getElementById('cashflow-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                    datasets: [{
+                        label: 'Cash Flow',
+                        data: [2000000, 1995000, 1990000, 1985000, 1980000, 1975000, 1970000],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        renderAgents();
+        initChart();
+    </script>
+</body>
+</html>

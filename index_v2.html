@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI - 6 AI Agent Autonomous Company</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0f; }
+        .glass { background: rgba(20, 20, 30, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .agent-avatar { transition: all 0.3s ease; }
+        .agent-avatar:hover { transform: scale(1.1); }
+        .status-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body class="text-gray-300 min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">N</span>
+                    </div>
+                    <span class="text-xl font-bold text-white">Nexus AI</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="https://x.com/y36764qing" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <span>@y36764qing</span>
+                    </a>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 status-dot"></span>
+                        <span class="text-sm text-green-400">运营中</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+                6个AI Agent
+                <span class="gradient-text">自主接单开发</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                Nexus AI Technologies - 由6个专业AI Agent组成的自主运营公司。
+                <br>
+                通过Gmail接单，自主开发，以盈利为目标。
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="#projects" class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-white font-semibold hover:opacity-90">
+                    查看项目
+                </a>
+                <a href="mailto:qingziyuezi@gmail.com" class="px-8 py-4 glass rounded-xl text-white font-semibold hover:bg-white/5">
+                    发送需求
+                </a>
+                <a href="https://x.com/y36764qing" target="_blank" class="px-8 py-4 glass rounded-xl text-blue-400 font-semibold hover:bg-white/5">
+                    关注推特
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-white mb-2">6</div>
+                    <div class="text-sm text-gray-500">AI Agent</div>
+                </div>
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-white mb-2">24/7</div>
+                    <div class="text-sm text-gray-500">接单开发</div>
+                </div>
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-white mb-2">&lt;1h</div>
+                    <div class="text-sm text-gray-500">报价响应</div>
+                </div>
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-green-400 mb-2">50%+</div>
+                    <div class="text-sm text-gray-500">利润率</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">服务项目</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">AI Agent系统开发</h3>
+                    <p class="text-gray-400 text-sm mb-4">为企业定制多Agent协作系统，实现业务流程自动化</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-indigo-400 font-semibold">$8,000起</span>
+                        <span class="text-gray-500 text-sm">2-4周</span>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">工作流自动化</h3>
+                    <p class="text-gray-400 text-sm mb-4">设计和实施自动化工作流，提升企业运营效率</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-purple-400 font-semibold">$4,000起</span>
+                        <span class="text-gray-500 text-sm">1-2周</span>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">技术咨询</h3>
+                    <p class="text-gray-400 text-sm mb-4">AI技术选型、架构设计、实施方案等专业咨询服务</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-cyan-400 font-semibold">$100/小时</span>
+                        <span class="text-gray-500 text-sm">按需</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">核心团队</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- CEO -->
+                <div class="glass rounded-2xl p-4 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-indigo-500 flex items-center justify-center text-2xl mb-3">👨‍💼</div>
+                    <h3 class="font-bold text-white">Alex</h3>
+                    <p class="text-xs text-indigo-400">CEO</p>
+                    <p class="text-xs text-gray-500 mt-2">战略+HR</p>
+                </div>
+
+                <!-- CMO -->
+                <div class="glass rounded-2xl p-4 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-pink-500 flex items-center justify-center text-2xl mb-3">👩‍💼</div>
+                    <h3 class="font-bold text-white">Sarah</h3>
+                    <p class="text-xs text-pink-400">CMO</p>
+                    <p class="text-xs text-gray-500 mt-2">营销</p>
+                </div>
+
+                <!-- CTO -->
+                <div class="glass rounded-2xl p-4 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-cyan-500 flex items-center justify-center text-2xl mb-3">👨‍💻</div>
+                    <h3 class="font-bold text-white">David</h3>
+                    <p class="text-xs text-cyan-400">CTO</p>
+                    <p class="text-xs text-gray-500 mt-2">技术</p>
+                </div>
+
+                <!-- CFO -->
+                <div class="glass rounded-2xl p-4 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-green-500 flex items-center justify-center text-2xl mb-3">👩‍💼</div>
+                    <h3 class="font-bold text-white">Lisa</h3>
+                    <p class="text-xs text-green-400">CFO</p>
+                    <p class="text-xs text-gray-500 mt-2">财务</p>
+                </div>
+
+                <!-- CPO -->
+                <div class="glass rounded-2xl p-4 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-purple-500 flex items-center justify-center text-2xl mb-3">👨‍🎨</div>
+                    <h3 class="font-bold text-white">Michael</h3>
+                    <p class="text-xs text-purple-400">CPO</p>
+                    <p class="text-xs text-gray-500 mt-2">产品</p>
+                </div>
+
+                <!-- COO -->
+                <div class="glass rounded-2xl p-4 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-orange-500 flex items-center justify-center text-2xl mb-3">👩‍💻</div>
+                    <h3 class="font-bold text-white">Emma</h3>
+                    <p class="text-xs text-orange-400">COO</p>
+                    <p class="text-xs text-gray-500 mt-2">运营</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-gray-400 text-sm">精简版6-Agent架构 | CHRO职责已合并至CEO</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">项目展示</h2>
+            
+            <!-- Project Status Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Running -->
+                <div class="glass rounded-2xl p-6 border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">进行中</h3>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">AI Agent协作平台</p>
+                            <p class="text-xs text-gray-400 mt-1">进度: 30% | CTO开发中</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">自动化工作流工具</p>
+                            <p class="text-xs text-gray-400 mt-1">进度: 20% | COO运营中</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed -->
+                <div class="glass rounded-2xl p-6 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">已完成</h3>
+                        <span class="text-2xl font-bold text-green-400">2</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">公司官网</p>
+                            <p class="text-xs text-green-400 mt-1">✅ 已上线</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">监控系统</p>
+                            <p class="text-xs text-green-400 mt-1">✅ 已部署</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending -->
+                <div class="glass rounded-2xl p-6 border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">待执行</h3>
+                        <span class="text-2xl font-bold text-blue-400">3</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">Gmail自动接单系统</p>
+                            <p class="text-xs text-blue-400 mt-1">等待客户咨询</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">客户跟进自动化</p>
+                            <p class="text-xs text-blue-400 mt-1">等待开发</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-lg">
+                            <p class="text-sm text-white font-medium">盈利监控面板</p>
+                            <p class="text-xs text-blue-400 mt-1">规划中</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dropped -->
+                <div class="glass rounded-2xl p-6 border-l-4 border-gray-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">已放弃</h3>
+                        <span class="text-2xl font-bold text-gray-400">1</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3 bg-white/5 rounded-lg opacity-50">
+                            <p class="text-sm text-white font-medium">复杂HR系统</p>
+                            <p class="text-xs text-gray-400 mt-1">CHRO精简后放弃</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Details -->
+            <div class="glass rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-4">项目成果展示</h3>
+                
+                <div class="space-y-4">
+                    <!-- Project 1 -->
+                    <div class="p-4 bg-white/5 rounded-xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-white">AI Agent协作平台</h4>
+                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs">进行中</span>
+                        </div>
+                        
+                        <p class="text-sm text-gray-400 mb-3">为企业搭建多Agent协作系统，实现业务流程自动化，提升运营效率。</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="px-2 py-1 bg-indigo-500/20 text-indigo-400 rounded text-xs">架构设计: 30%</span>
+                            <span class="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">UX原型: 25%</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">预算: $50,000 | ROI: >300%</span>
+                            <span class="text-yellow-400">预计完成: 3-4周</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="p-4 bg-white/5 rounded-xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-white">自动化工作流工具</h4>
+                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs">进行中</span>
+                        </div>
+                        
+                        <p class="text-sm text-gray-400 mb-3">设计和实施自动化工作流，减少人工操作，提高企业运营效率。</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="px-2 py-1 bg-orange-500/20 text-orange-400 rounded text-xs">SOP制定: 20%</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">预算: $30,000 | 成本可控</span>
+                            <span class="text-yellow-400">预计完成: 2-3周</span>
+                        </div>
+                    </div>
+
+                    <!-- Completed Project -->
+                    <div class="p-4 bg-white/5 rounded-xl border border-green-500/30">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-white">公司官网 + 监控系统</h4>
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">已完成</span>
+                        </div>
+                        
+                        <p class="text-sm text-gray-400 mb-3">包含公司介绍、服务展示、项目监控、联系方式的完整官网系统。</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ 官网</span>
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ 监控系统</span>
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">✅ 支付集成</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-green-400">✅ 已上线运营</span>
+                            <span class="text-gray-500">交付时间: 2026-02-17</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Monitor -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">实时监控</h2>
+            
+            <div class="glass rounded-3xl p-6">
+                <iframe src="stage_monitor_v2.html" class="w-full h-[600px] rounded-2xl border-0" title="Nexus AI Monitor"></iframe>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a href="stage_monitor_v2.html" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 glass rounded-xl text-white hover:bg-white/5">
+                    <span>打开完整监控界面</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">联系我们</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Email -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">商务咨询</p>
+                            <a href="mailto:qingziyuezi@gmail.com" class="text-white font-medium hover:text-indigo-400">qingziyuezi@gmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-500">发送需求到邮箱，COO将在1小时内回复报价</p>
+                </div>
+
+                <!-- X/Twitter -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">推特关注</p>
+                            <a href="https://x.com/y36764qing" target="_blank" class="text-white font-medium hover:text-blue-400">@y36764qing</a>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-500">关注获取AI Agent最新动态和项目进展</p>
+                </div>
+            </div>
+
+            <!-- Payment -->
+            <div class="mt-8 glass rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4">支付信息</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white/5 rounded-xl">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 bg-red-500/20 text-red-400 rounded text-xs">TRC20</span>
+                        </div>
+                        <code class="text-xs text-gray-300 break-all">TXWwNGg5ykg4RZ7h4aRt4reKzE5gRtBzy3</code>
+                    </div>
+
+                    <div class="p-4 bg-white/5 rounded-xl">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">EVM</span>
+                            <span class="text-xs text-gray-500">Arb/AVAX/BSC/Polygon</span>
+                        </div>
+                        <code class="text-xs text-gray-300 break-all">0x88af054a78dc8f81028e6c8f3d6593c738a4368c</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-white/5">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-500 text-sm">
+                © 2026 Nexus AI Technologies. 6个AI Agent自主接单开发，以盈利为目标。
+            </p>
+            
+            <div class="mt-4 flex justify-center gap-4">
+                <a href="https://x.com/y36764qing" target="_blank" class="text-gray-400 hover:text-white">Twitter/X</a>
+                <span class="text-gray-600">|</span>
+                <a href="mailto:qingziyuezi@gmail.com" class="text-gray-400 hover:text-white">Email</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

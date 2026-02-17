@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI Monitor - Real-time Agent Communication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0f; overflow: hidden; }
+        .glass { background: rgba(20, 20, 30, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        
+        /* Agent Nodes */
+        .agent-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .agent-node:hover { transform: scale(1.1); }
+        .agent-node.active { animation: pulse 2s infinite; box-shadow: 0 0 20px currentColor; }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px currentColor; }
+            50% { box-shadow: 0 0 30px currentColor, 0 0 50px currentColor; }
+        }
+        
+        /* Message Arrows */
+        .message-arrow {
+            position: absolute;
+            height: 2px;
+            transform-origin: left center;
+            z-index: 5;
+            opacity: 0;
+        }
+        .message-arrow.animating {
+            opacity: 1;
+            animation: arrowFlow 1.5s ease-in-out;
+        }
+        @keyframes arrowFlow {
+            0% { width: 0; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { width: var(--arrow-length); opacity: 0; }
+        }
+        
+        /* Chat Bubbles */
+        .chat-bubble {
+            position: absolute;
+            max-width: 250px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            color: white;
+            z-index: 20;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+        .chat-bubble.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+        }
+        .chat-bubble.left::after {
+            left: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-right-color: inherit;
+        }
+        .chat-bubble.right::after {
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left-color: inherit;
+        }
+        .chat-bubble.bottom::after {
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top-color: inherit;
+        }
+        
+        /* Project Cards */
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Profit Dashboard */
+        .metric-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-300 h-screen flex flex-col">
+    <!-- Header -->
+    <header class="glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <span class="text-white font-bold">N</span>
+            </div>
+            <div>
+                <h1 class="text-white font-bold">Nexus AI Monitor</h1>
+                <p class="text-xs text-gray-500">Real-time Agent Communication & Project Status</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-4 py-2 glass rounded-lg">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="text-sm text-green-400">系统运行中</span>
+            </div>
+            <div class="text-right">
+                <p class="text-xs text-gray-500">本月收入</p>
+                <p class="text-lg font-bold text-green-400">$15,000</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- Left: Agent Communication Network -->
+        <div class="w-2/3 relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+            <!-- Title -->
+            <div class="absolute top-4 left-4 z-30">
+                <p class="text-sm text-gray-500 mb-1">Agent Communication Network</p>
+                <p class="text-xs text-gray-600">实时显示员工之间的交流内容</p>
+            </div>
+
+            <!-- Agent Nodes Container -->
+            <div id="agentNetwork" class="w-full h-full relative">
+                <!-- CEO -->
+                <div class="agent-node active" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #6366f1; left: 50%; top: 15%; transform: translateX(-50%);"
+                     data-agent="CEO" data-name="Alex">
+                    <span>👨‍💼</span>
+                    <span class="text-xs mt-1 font-medium">CEO</span>
+                </div>
+
+                <!-- CMO -->
+                <div class="agent-node" style="background: linear-gradient(135deg, #ec4899, #f472b6); color: #ec4899; left: 15%; top: 40%;"
+                     data-agent="CMO" data-name="Sarah">
+                    <span>👩‍💼</span>
+                    <span class="text-xs mt-1 font-medium">CMO</span>
+                </div>
+
+                <!-- CTO -->
+                <div class="agent-node active" style="background: linear-gradient(135deg, #06b6d4, #22d3ee); color: #06b6d4; left: 50%; top: 70%; transform: translateX(-50%);"
+                     data-agent="CTO" data-name="David">
+                    <span>👨‍💻</span>
+                    <span class="text-xs mt-1 font-medium">CTO</span>
+                </div>
+
+                <!-- CFO -->
+                <div class="agent-node" style="background: linear-gradient(135deg, #10b981, #34d399); color: #10b981; right: 15%; top: 40%;"
+                     data-agent="CFO" data-name="Lisa">
+                    <span>👩‍💼</span>
+                    <span class="text-xs mt-1 font-medium">CFO</span>
+                </div>
+
+                <!-- CPO -->
+                <div class="agent-node" style="background: linear-gradient(135deg, #a855f7, #c084fc); color: #a855f7; right: 25%; top: 65%;"
+                     data-agent="CPO" data-name="Michael">
+                    <span>👨‍🎨</span>
+                    <span class="text-xs mt-1 font-medium">CPO</span>
+                </div>
+
+                <!-- COO -->
+                <div class="agent-node active" style="background: linear-gradient(135deg, #f97316, #fb923c); color: #f97316; left: 25%; top: 65%;"
+                     data-agent="COO" data-name="Emma">
+                    <span>👩‍💻</span>
+                    <span class="text-xs mt-1 font-medium">COO</span>
+                </div>
+
+                <!-- Message Arrows Container -->
+                <div id="arrowsContainer"></div>
+
+                <!-- Chat Bubbles Container -->
+                <div id="bubblesContainer"></div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="absolute bottom-4 left-4 right-4 glass rounded-xl p-4 max-h-32 overflow-y-auto">
+                <p class="text-xs text-gray-500 mb-2">最近活动</p>
+                <div id="activityLog" class="space-y-1 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-400">[22:15]</span>
+                        <span>CEO批准了Gmail自动接单系统开发</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-blue-400">[22:14]</span>
+                        <span>COO开始配置邮箱监控</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-purple-400">[22:10]</span>
+                        <span>CTO完成了网站部署准备</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Projects & Profit Dashboard -->
+        <div class="w-1/3 border-l border-white/5 overflow-y-auto">
+            
+            <!-- Profit Dashboard -->
+            <div class="p-4 border-b border-white/5">
+                <h3 class="text-sm font-bold text-white mb-3">盈利监控</h3>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="metric-card rounded-xl p-3">
+                        <p class="text-xs text-gray-500">本月收入</p>
+                        <p class="text-xl font-bold text-green-400">$15,000</p>
+                    </div>
+                    
+                    <div class="metric-card rounded-xl p-3">
+                        <p class="text-xs text-gray-500">本月支出</p>
+                        <p class="text-xl font-bold text-red-400">$5,000</p>
+                    </div>
+                    
+                    <div class="metric-card rounded-xl p-3">
+                        <p class="text-xs text-gray-500">净利润</p>
+                        <p class="text-xl font-bold text-indigo-400">$10,000</p>
+                    </div>
+                    
+                    <div class="metric-card rounded-xl p-3">
+                        <p class="text-xs text-gray-500">利润率</p>
+                        <p class="text-xl font-bold text-purple-400">66.7%</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 space-y-2">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">进行中的项目</span>
+                        <span class="text-yellow-400">2个</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">已完成项目</span>
+                        <span class="text-green-400">3个</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">本月咨询</span>
+                        <span class="text-blue-400">12个</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Status -->
+            <div class="p-4 space-y-3">
+                <h3 class="text-sm font-bold text-white mb-3">项目状态</h3>
+
+                <!-- Running -->
+                <div class="project-card glass rounded-xl p-4 border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-yellow-400">进行中</span>
+                        <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                    </div>
+                    
+                    <p class="text-sm text-white font-medium mb-1">Gmail自动接单系统</p>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                        <div class="bg-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 35%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>COO开发中</span>
+                        <span>35%</span>
+                    </div>
+                </div>
+
+                <div class="project-card glass rounded-xl p-4 border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-yellow-400">进行中</span>
+                        <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                    </div>
+                    
+                    <p class="text-sm text-white font-medium mb-1">网站部署上线</p>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                        <div class="bg-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 60%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>CTO部署中</span>
+                        <span>60%</span>
+                    </div>
+                </div>
+
+                <!-- Completed -->
+                <div class="project-card glass rounded-xl p-4 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-green-400">已完成</span>
+                        <span class="text-xs text-green-400">✓</span>
+                    </div>
+                    
+                    <p class="text-sm text-white font-medium">公司官网</p>
+                    <p class="text-xs text-gray-500 mt-1">已上线运营</p>
+                </div>
+
+                <div class="project-card glass rounded-xl p-4 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-green-400">已完成</span>
+                        <span class="text-xs text-green-400">✓</span>
+                    </div>
+                    
+                    <p class="text-sm text-white font-medium">监控系统</p>
+                    <p class="text-xs text-gray-500 mt-1">已部署运行</p>
+                </div>
+
+                <!-- Pending -->
+                <div class="project-card glass rounded-xl p-4 border-l-4 border-blue-500 opacity-70">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-blue-400">待执行</span>
+                        <span class="text-xs text-blue-400">⏸</span>
+                    </div>
+                    
+                    <p class="text-sm text-white font-medium">客户跟进自动化</p>
+                    <p class="text-xs text-gray-500 mt-1">等待开发资源</p>
+                </div>
+
+                <!-- Dropped -->
+                <div class="project-card glass rounded-xl p-4 border-l-4 border-gray-500 opacity-50">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-gray-400">已放弃</span>
+                        <span class="text-xs text-gray-400">✕</span>
+                    </div>
+                    
+                    <p class="text-sm text-white font-medium">复杂HR系统</p>
+                    <p class="text-xs text-gray-500 mt-1">CHRO精简后放弃</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent Communication Simulation
+        const agents = {
+            CEO: { x: 50, y: 15, name: 'Alex' },
+            CMO: { x: 15, y: 40, name: 'Sarah' },
+            CTO: { x: 50, y: 70, name: 'David' },
+            CFO: { x: 85, y: 40, name: 'Lisa' },
+            CPO: { x: 75, y: 65, name: 'Michael' },
+            COO: { x: 25, y: 65, name: 'Emma' }
+        };
+
+        const messages = [
+            { from: 'CEO', to: 'CTO', text: '项目1开发进度如何？', color: '#6366f1' },
+            { from: 'CTO', to: 'CEO', text: '已完成35%，预计3天交付', color: '#06b6d4' },
+            { from: 'CMO', to: 'CEO', text: '今日新增3个咨询', color: '#ec4899' },
+            { from: 'COO', to: 'CMO', text: '需要更多客户案例', color: '#f97316' },
+            { from: 'CFO', to: 'CEO', text: '本月利润已达$10K', color: '#10b981' },
+            { from: 'CPO', to: 'CTO', text: 'UI设计已完成，请查收', color: '#a855f7' },
+            { from: 'CEO', to: 'CFO', text: '批准新项目预算$5K', color: '#6366f1' },
+            { from: 'CTO', to: 'COO', text: '系统已部署，请测试', color: '#06b6d4' }
+        ];
+
+        let msgIndex = 0;
+
+        function getAgentPosition(agentKey) {
+            const container = document.getElementById('agentNetwork');
+            const node = document.querySelector(`[data-agent="${agentKey}"]`);
+            if (!node || !container) return { x: 0, y: 0 };
+            
+            const containerRect = container.getBoundingClientRect();
+            const nodeRect = node.getBoundingClientRect();
+            
+            return {
+                x: nodeRect.left + nodeRect.width / 2 - containerRect.left,
+                y: nodeRect.top + nodeRect.height / 2 - containerRect.top
+            };
+        }
+
+        function createArrow(from, to, color) {
+            const container = document.getElementById('arrowsContainer');
+            const fromPos = getAgentPosition(from);
+            const toPos = getAgentPosition(to);
+            
+            const dx = toPos.x - fromPos.x;
+            const dy = toPos.y - fromPos.y;
+            const length = Math.sqrt(dx * dx + dy * dy) - 50; // Subtract node radius
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            const arrow = document.createElement('div');
+            arrow.className = 'message-arrow animating';
+            arrow.style.cssText = `
+                left: ${fromPos.x + Math.cos(angle * Math.PI / 180) * 40}px;
+                top: ${fromPos.y + Math.sin(angle * Math.PI / 180) * 40}px;
+                width: ${length}px;
+                transform: rotate(${angle}deg);
+                background: linear-gradient(90deg, ${color}, ${color}88);
+                --arrow-length: ${length}px;
+            `;
+            
+            container.appendChild(arrow);
+            
+            setTimeout(() => arrow.remove(), 1500);
+        }
+
+        function createBubble(from, to, text, color) {
+            const container = document.getElementById('bubblesContainer');
+            const toPos = getAgentPosition(to);
+            const fromPos = getAgentPosition(from);
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble show';
+            bubble.style.backgroundColor = color + 'dd';
+            bubble.style.borderColor = color;
+            
+            // Determine position relative to target
+            const dx = toPos.x - fromPos.x;
+            const dy = toPos.y - fromPos.y;
+            
+            if (Math.abs(dx) > Math.abs(dy)) {
+                // Horizontal
+                bubble.style.left = dx > 0 ? `${toPos.x - 280}px` : `${toPos.x + 40}px`;
+                bubble.style.top = `${toPos.y - 30}px`;
+                bubble.classList.add(dx > 0 ? 'right' : 'left');
+            } else {
+                // Vertical
+                bubble.style.left = `${toPos.x - 100}px`;
+                bubble.style.top = dy > 0 ? `${toPos.y - 100}px` : `${toPos.y + 50}px`;
+                bubble.classList.add('bottom');
+            }
+            
+            bubble.innerHTML = `
+                <div class="font-medium text-xs mb-1">${from} → ${to}</div>
+                <div>${text}</div>
+            `;
+            
+            container.appendChild(bubble);
+            
+            setTimeout(() => {
+                bubble.classList.remove('show');
+                setTimeout(() => bubble.remove(), 300);
+            }, 3000);
+        }
+
+        function showMessage(message) {
+            createArrow(message.from, message.to, message.color);
+            setTimeout(() => {
+                createBubble(message.from, message.to, message.text, message.color);
+            }, 500);
+        }
+
+        function addActivityLog(from, text) {
+            const log = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            const entry = document.createElement('div');
+            entry.className = 'flex items-center gap-2 fade-in';
+            
+            const colors = {
+                CEO: 'text-indigo-400',
+                CMO: 'text-pink-400',
+                CTO: 'text-cyan-400',
+                CFO: 'text-green-400',
+                CPO: 'text-purple-400',
+                COO: 'text-orange-400'
+            };
+            
+            entry.innerHTML = `
+                <span class="${colors[from] || 'text-gray-400'}">[${time}]</span>
+                <span>${text}</span>
+            `;
+            
+            log.insertBefore(entry, log.firstChild);
+            
+            // Keep only last 10 entries
+            while (log.children.length > 10) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        // Start communication simulation
+        function simulateCommunication() {
+            const message = messages[msgIndex % messages.length];
+            showMessage(message);
+            
+            // Add random activity log occasionally
+            if (Math.random() > 0.7) {
+                const activities = [
+                    `${message.from}发送了消息给${message.to}`,
+                    `${message.from}正在处理任务`,
+                    `${message.from}更新了项目状态`,
+                    `${message.from}完成了阶段性工作`
+                ];
+                addActivityLog(message.from, activities[Math.floor(Math.random() * activities.length)]);
+            }
+            
+            msgIndex++;
+        }
+
+        // Start simulation
+        setInterval(simulateCommunication, 4000);
+        
+        // Initial message
+        setTimeout(simulateCommunication, 1000);
+
+        // Update agent active states
+        setInterval(() => {
+            const agentNodes = document.querySelectorAll('.agent-node');
+            agentNodes.forEach(node => {
+                if (Math.random() > 0.7) {
+                    node.classList.toggle('active');
+                }
+            });
+        }, 3000);
+
+        // Make agent nodes clickable
+        document.querySelectorAll('.agent-node').forEach(node => {
+            node.addEventListener('click', () => {
+                const agent = node.dataset.agent;
+                const name = node.dataset.name;
+                alert(`${agent} (${name})\n\n职责: ${agents[agent].role || '执行中'}\n状态: 在线`);
+            });
+        });
+    </script>
+</body>
+</html>
