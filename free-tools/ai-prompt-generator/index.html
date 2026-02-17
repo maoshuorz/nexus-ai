@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Generator - Nexus AI Free Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pixel-bg: #fafaf9;
+            --pixel-accent: #10b981;
+            --pixel-border: #1c1917;
+        }
+        
+        * { font-family: 'VT323', monospace; }
+        
+        body {
+            background: var(--pixel-bg);
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+        }
+        
+        .pixel-title { font-family: 'Press Start 2P', cursive; }
+        
+        .pixel-btn {
+            background: var(--pixel-accent);
+            border: 4px solid var(--pixel-border);
+            box-shadow: 4px 4px 0 var(--pixel-border);
+            transition: all 0.1s;
+        }
+        
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--pixel-border);
+        }
+        
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--pixel-border);
+        }
+        
+        .pixel-card {
+            background: white;
+            border: 4px solid var(--pixel-border);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+        }
+        
+        textarea, select {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4">
+    
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-block bg-stone-900 text-white px-4 py-2 mb-4 text-sm">
+                🎁 FREE TOOL BY NEXUS AI
+            </div>
+            
+            <h1 class="pixel-title text-2xl md:text-3xl mb-2">AI PROMPT GENERATOR</h1>
+            
+            <p class="text-xl text-stone-600">Generate effective AI prompts in seconds</p>
+        </div>
+
+        <!-- Main Tool -->
+        <div class="pixel-card p-6 md:p-8">
+            <!-- Input Section -->
+            <div class="mb-6">
+                <label class="block text-lg font-bold mb-2">What do you want to create?</label>
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="e.g., A marketing email for a new product launch"
+                    class="w-full p-4 border-4 border-stone-900 text-lg focus:outline-none focus:border-emerald-500"
+                >
+            </div>
+
+            <!-- Options -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-lg font-bold mb-2">AI Model</label>
+                    <select id="aiModel" class="w-full p-3 border-4 border-stone-900">
+                        <option value="gpt4">GPT-4 / Kimi / Claude</option>
+                        <option value="midjourney">Midjourney / DALL-E</option>
+                        <option value="code">Code Assistant</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-bold mb-2">Tone</label>
+                    <select id="tone" class="w-full p-3 border-4 border-stone-900">
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="creative">Creative</option>
+                        <option value="technical">Technical</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button onclick="generatePrompt()" class="pixel-btn w-full py-4 text-xl font-bold mb-6">
+                ✨ GENERATE PROMPT
+            </button>
+
+            <!-- Result -->
+            <div id="resultArea" class="hidden">
+                <label class="block text-lg font-bold mb-2">Your Optimized Prompt:</label>
+                
+                <textarea 
+                    id="resultPrompt" 
+                    readonly
+                    class="w-full h-48 p-4 border-4 border-stone-900 bg-stone-50 text-lg resize-none"
+                ></textarea>
+                
+                <div class="flex gap-4 mt-4">
+                    <button onclick="copyPrompt()" class="pixel-btn secondary flex-1 py-3 text-lg border-4 border-stone-900 bg-white">
+                        📋 Copy
+                    </button>
+                    
+                    <button onclick="clearAll()" class="pixel-btn secondary flex-1 py-3 text-lg border-4 border-stone-900 bg-white">
+                        🔄 New
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="pixel-card p-6 mt-6">
+            <h3 class="text-xl font-bold mb-4">💡 Tips for Better Prompts</h3>
+            
+            <ul class="space-y-2 text-lg">
+                <li>• Be specific about the output format you want</li>
+                <li>• Include relevant context and constraints</li>
+                <li>• Specify the target audience</li>
+                <li>• Add examples if possible</li>
+                <li>• Mention the desired length or depth</li>
+            </ul>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-8">
+            <p class="text-lg text-stone-600 mb-4">Need custom AI solutions?</p>
+            
+            <a href="https://maoshuorz.github.io/nexus-ai/" target="_blank" class="pixel-btn inline-block px-8 py-4 text-lg">
+                🚀 Visit Nexus AI
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const promptTemplates = {
+            gpt4: {
+                professional: `Act as an expert consultant. Create a detailed, professional piece about [TOPIC]. 
+
+Requirements:
+- Target audience: Business professionals
+- Tone: Formal and authoritative
+- Structure: Clear sections with headings
+- Length: Comprehensive but concise
+- Include: Actionable insights and recommendations
+
+Context: [TOPIC]`,
+
+                casual: `Hey! Help me write something about [TOPIC] in a friendly, conversational way.
+
+Make it:
+- Easy to read and understand
+- Engaging and relatable
+- Like talking to a friend
+- Include practical tips
+
+Topic: [TOPIC]`,
+
+                creative: `You are a creative writer. Craft an imaginative piece about [TOPIC].
+
+Style:
+- Think outside the box
+- Use vivid descriptions
+- Capture the reader's imagination
+- Be original and unique
+
+Subject: [TOPIC]`,
+
+                technical: `As a technical expert, provide a detailed technical explanation of [TOPIC].
+
+Include:
+- Technical specifications
+- Step-by-step processes
+- Code examples where relevant
+- Best practices
+- Common pitfalls to avoid
+
+Technical Topic: [TOPIC]`
+            },
+            
+            midjourney: {
+                professional: `Professional product photography of [TOPIC], studio lighting, clean background, 8k, highly detailed, commercial quality --ar 16:9`,
+                
+                casual: `Cute illustration of [TOPIC], warm colors, friendly style, cartoon aesthetic, cheerful atmosphere --ar 1:1`,
+                
+                creative: `Surreal artistic interpretation of [TOPIC], vibrant colors, dreamlike atmosphere, unique perspective, masterpiece quality --ar 16:9`,
+                
+                technical: `Technical diagram of [TOPIC], blueprint style, precise details, annotations, clean lines, professional schematic --ar 16:9`
+            },
+            
+            code: {
+                professional: `Write production-ready code for [TOPIC].
+
+Requirements:
+- Clean, maintainable code
+- Follow best practices
+- Include error handling
+- Add comprehensive comments
+- Write unit tests
+- Consider edge cases
+
+Programming Task: [TOPIC]`,
+                
+                casual: `Help me write a simple script for [TOPIC].
+
+Keep it:
+- Easy to understand
+- Well-commented
+- Working example
+- Beginner-friendly
+
+Code Task: [TOPIC]`,
+                
+                creative: `Create an innovative solution for [TOPIC] using creative coding approaches.
+
+Consider:
+- Novel algorithms
+- Creative problem-solving
+- Efficient implementation
+- Modern techniques
+
+Creative Coding: [TOPIC]`,
+                
+                technical: `Implement [TOPIC] with enterprise-grade code quality.
+
+Specifications:
+- System architecture
+- Design patterns
+- Performance optimization
+- Security considerations
+- Scalability
+- Documentation
+
+Technical Implementation: [TOPIC]`
+            }
+        };
+
+        function generatePrompt() {
+            const userInput = document.getElementById('userInput').value.trim();
+            const model = document.getElementById('aiModel').value;
+            const tone = document.getElementById('tone').value;
+            
+            if (!userInput) {
+                alert('Please enter what you want to create!');
+                return;
+            }
+            
+            const template = promptTemplates[model][tone];
+            const result = template.replace(/\[TOPIC\]/g, userInput);
+            
+            document.getElementById('resultPrompt').value = result;
+            document.getElementById('resultArea').classList.remove('hidden');
+            
+            // Scroll to result
+            document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyPrompt() {
+            const result = document.getElementById('resultPrompt');
+            result.select();
+            document.execCommand('copy');
+            
+            alert('Prompt copied to clipboard!');
+        }
+        
+        function clearAll() {
+            document.getElementById('userInput').value = '';
+            document.getElementById('resultPrompt').value = '';
+            document.getElementById('resultArea').classList.add('hidden');
+        }
+        
+        // Enter key to generate
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generatePrompt();
+            }
+        });
+    </script>
+</body>
+</html>
