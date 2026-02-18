@@ -6,7 +6,7 @@
   "unread_messages": 0,
   "status": "真实数据",
   "message": "公司运营中 - 等待首单",
-  "last_updated": "2026-02-18T04:19:25.974Z",
+  "last_updated": "2026-02-18T04:45:45.064Z",
   "agents": [
     {
       "id": "CEO",
@@ -99,10 +99,26 @@
     ],
     "in_progress": [
       {
-        "name": "网站实时更新修复",
-        "owner": "CTO David",
-        "progress": 100,
-        "deadline": "2026-02-18"
+        "name": "AI播客自动生成",
+        "priority": "P0",
+        "owners": [
+          "CTO David",
+          "CPO Michael"
+        ],
+        "deadline": "2026-02-25",
+        "revenue": "$500-2000/月",
+        "status": "开发中"
+      },
+      {
+        "name": "智能客服外包",
+        "priority": "P0",
+        "owners": [
+          "CTO David",
+          "COO Emma"
+        ],
+        "deadline": "2026-02-28",
+        "revenue": "$1000-5000/月",
+        "status": "开发中"
       }
     ],
     "completed": [
@@ -121,6 +137,11 @@
       {
         "name": "项目管理工作流程v2.0",
         "date": "2026-02-18"
+      },
+      {
+        "name": "网站实时更新修复",
+        "date": "2026-02-18",
+        "owner": "CTO David"
       }
     ]
   }

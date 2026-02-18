@@ -44,7 +44,24 @@ const dashboardData = {
       { name: "工作流编排服务", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" },
       { name: "AI竞品情报监控系统", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18", revenue: "$500-2000/月" }
     ],
-    in_progress: [],
+    in_progress: [
+      {
+        name: "AI播客自动生成",
+        priority: "P0",
+        owners: ["CTO David", "CPO Michael"],
+        deadline: "2026-02-25",
+        revenue: "$500-2000/月",
+        status: "开发中"
+      },
+      {
+        name: "智能客服外包",
+        priority: "P0",
+        owners: ["CTO David", "COO Emma"],
+        deadline: "2026-02-28",
+        revenue: "$1000-5000/月",
+        status: "开发中"
+      }
+    ],
 
     completed: [
       // 已完成的项目
