@@ -34,9 +34,26 @@ const dashboardData = {
     { id: "COO", name: "Emma", status: "active", role: "首席运营官", current_task: "Gmail接单系统监控" }
   ],
   projects: {
-    discussing: 0,
-    in_progress: 0,
-    completed: 0
+    discussing: [
+      // CMO提交的待讨论项目
+      { name: "AI播客自动生成", priority: "P0", submitter: "CMO Sarah", date: "2026-02-18" },
+      { name: "智能客服外包", priority: "P0", submitter: "CMO Sarah", date: "2026-02-18" },
+      { name: "AI技能市场", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" },
+      { name: "小说IP衍生品", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" },
+      { name: "运营监控SaaS", priority: "P2", submitter: "CMO Sarah", date: "2026-02-18" },
+      { name: "工作流编排服务", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" }
+    ],
+    in_progress: [
+      // CEO决策并分配的进行中的项目
+      { name: "网站实时更新修复", owner: "CTO David", progress: 100, deadline: "2026-02-18" }
+    ],
+    completed: [
+      // 已完成的项目
+      { name: "Gmail自动接单系统v2.0", date: "2026-02-18" },
+      { name: "网站UI重设计v3.5", date: "2026-02-18" },
+      { name: "VoxYZ风格监控系统", date: "2026-02-18" },
+      { name: "项目管理工作流程v2.0", date: "2026-02-18" }
+    ]
   }
 };
 

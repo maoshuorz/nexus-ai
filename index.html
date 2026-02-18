@@ -1045,13 +1045,18 @@
                 const completedEl = document.getElementById('proj-completed');
                 const statProjectsEl = document.getElementById('stat-projects');
                 
-                if (discussingEl) discussingEl.textContent = data.projects.discussing || 0;
-                if (activeEl) activeEl.textContent = data.projects.in_progress || 0;
-                if (completedEl) completedEl.textContent = data.projects.completed || 0;
+                // Handle both array and number types
+                const discussingCount = Array.isArray(data.projects.discussing) ? data.projects.discussing.length : (data.projects.discussing || 0);
+                const inProgressCount = Array.isArray(data.projects.in_progress) ? data.projects.in_progress.length : (data.projects.in_progress || 0);
+                const completedCount = Array.isArray(data.projects.completed) ? data.projects.completed.length : (data.projects.completed || 0);
+                
+                if (discussingEl) discussingEl.textContent = discussingCount;
+                if (activeEl) activeEl.textContent = inProgressCount;
+                if (completedEl) completedEl.textContent = completedCount;
                 
                 // Update total projects in hero
                 if (statProjectsEl) {
-                    const total = (data.projects.discussing || 0) + (data.projects.in_progress || 0) + (data.projects.completed || 0);
+                    const total = discussingCount + inProgressCount + completedCount;
                     statProjectsEl.textContent = total;
                 }
             }
