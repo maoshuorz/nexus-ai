@@ -363,14 +363,47 @@
                 </div>
             </div>
 
+            <!-- Real-time Monitor Stats -->
+            <div class="pixel-card p-6 mb-6 border-emerald-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold flex items-center gap-2">
+                        <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                        <span data-i18n="realtime_title">实时监控数据</span>
+                    </h3>
+                    <span class="text-sm text-stone-500" id="lastUpdate">--:--:--</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="pixel-card p-4 text-center bg-emerald-50">
+                        <p class="text-2xl font-bold text-emerald-600" id="rt-revenue">--</p>
+                        <p class="text-stone-600 text-sm" data-i18n="stat_today_revenue">今日收入</p>
+                    </div>
+                    <div class="pixel-card p-4 text-center bg-blue-50">
+                        <p class="text-2xl font-bold text-blue-600" id="rt-orders">--</p>
+                        <p class="text-stone-600 text-sm" data-i18n="stat_total_orders">订单数量</p>
+                    </div>
+                    <div class="pixel-card p-4 text-center bg-purple-50">
+                        <p class="text-2xl font-bold text-purple-600" id="rt-agents">--</p>
+                        <p class="text-stone-600 text-sm" data-i18n="stat_active_agents">Agent在线</p>
+                    </div>
+                    <div class="pixel-card p-4 text-center bg-amber-50">
+                        <p class="text-2xl font-bold text-amber-600" id="rt-inquiries">--</p>
+                        <p class="text-stone-600 text-sm" data-i18n="stat_new_inquiries">新客户咨询</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between">
+                    <span class="text-xs text-stone-400" id="api-status" data-i18n="api_connecting">正在连接API...</span>
+                    <button onclick="fetchRealtimeData()" class="pixel-btn px-3 py-1 text-sm" data-i18n="btn_refresh">刷新</button>
+                </div>
+            </div>
+
             <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="live-stats">
                 <div class="pixel-card p-4 text-center">
-                    <p class="text-3xl font-bold text-emerald-600">6</p>
+                    <p class="text-3xl font-bold text-emerald-600" id="stat-agents">6</p>
                     <p class="text-stone-600" data-i18n="stat_agents">AI Agents</p>
                 </div>
                 <div class="pixel-card p-4 text-center">
-                    <p class="text-3xl font-bold text-blue-600">12</p>
+                    <p class="text-3xl font-bold text-blue-600" id="stat-projects">0</p>
                     <p class="text-stone-600" data-i18n="stat_projects">Projects</p>
                 </div>
                 <div class="pixel-card p-4 text-center">
@@ -378,8 +411,8 @@
                     <p class="text-stone-600" data-i18n="stat_online">Online</p>
                 </div>
                 <div class="pixel-card p-4 text-center">
-                    <p class="text-3xl font-bold text-emerald-600">$10K</p>
-                    <p class="text-stone-600" data-i18n="stat_goal">Goal/Month</p>
+                    <p class="text-3xl font-bold text-emerald-600" id="stat-revenue">$0</p>
+                    <p class="text-stone-600" data-i18n="stat_revenue">Revenue</p>
                 </div>
             </div>
         </div>
@@ -488,15 +521,15 @@
                         <h3 class="text-xl font-bold" data-i18n="insight_revenue_title">Revenue Tracker</h3>
                     </div>
                     
-                    <div class="stat-number mb-2">$1,500</div>
+                    <div class="stat-number mb-2" id="insight-revenue">$0</div>
                     
                     <p class="text-stone-600 mb-4" data-i18n="insight_revenue_desc">of $10,000 monthly goal</p>
                     
                     <div class="w-full bg-stone-200 h-4 border-2 border-stone-900">
-                        <div class="bg-emerald-500 h-full" style="width: 15%"></div>
+                        <div class="bg-emerald-500 h-full" id="revenue-progress" style="width: 0%"></div>
                     </div>
                     
-                    <p class="text-sm text-stone-500 mt-2">15% <span data-i18n="insight_achieved">achieved this month</span></p>
+                    <p class="text-sm text-stone-500 mt-2"><span id="revenue-percent">0</span>% <span data-i18n="insight_achieved">achieved this month</span></p>
                 </div>
 
                 <!-- Insight 2: Projects -->
@@ -509,17 +542,17 @@
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <span class="text-stone-600" data-i18n="insight_discussing">Discussing</span>
-                            <span class="font-bold text-amber-600" id="proj-discussing">2</span>
+                            <span class="font-bold text-amber-600" id="proj-discussing">0</span>
                         </div>
                         
                         <div class="flex items-center justify-between">
                             <span class="text-stone-600" data-i18n="insight_active">Active</span>
-                            <span class="font-bold text-emerald-600" id="proj-active">2</span>
+                            <span class="font-bold text-emerald-600" id="proj-active">0</span>
                         </div>
                         
                         <div class="flex items-center justify-between">
                             <span class="text-stone-600" data-i18n="insight_completed">Completed</span>
-                            <span class="font-bold text-blue-600" id="proj-completed">3</span>
+                            <span class="font-bold text-blue-600" id="proj-completed">0</span>
                         </div>
                     </div>
                 </div>
@@ -610,6 +643,9 @@
                 hero_subtitle: "24/7接单 • 1小时响应 • 50%+利润率",
                 btn_view_services: "查看服务", btn_contact_us: "联系我们",
                 stat_agents: "AI Agent", stat_projects: "项目", stat_online: "在线", stat_goal: "月度目标",
+                realtime_title: "实时监控数据", stat_today_revenue: "今日收入", stat_total_orders: "订单数量", 
+                stat_active_agents: "Agent在线", stat_new_inquiries: "新客户咨询",
+                api_connecting: "正在连接API...", api_connected: "已连接", api_error: "连接失败", btn_refresh: "刷新",
                 services_title: "服务项目", services_subtitle: "专业AI开发服务",
                 service_1_title: "AI Agent系统", service_1_desc: "定制多Agent协作系统，实现业务自动化",
                 service_1_time: "2-4周", service_2_title: "工作流自动化", service_2_desc: "端到端业务流程自动化与优化",
@@ -632,6 +668,9 @@
                 hero_subtitle: "24/7 Order Taking • 1-Hour Response • 50%+ Profit",
                 btn_view_services: "VIEW SERVICES", btn_contact_us: "CONTACT US",
                 stat_agents: "AI Agents", stat_projects: "Projects", stat_online: "Online", stat_goal: "Goal/Month",
+                realtime_title: "Real-time Monitor", stat_today_revenue: "Today's Revenue", stat_total_orders: "Total Orders", 
+                stat_active_agents: "Active Agents", stat_new_inquiries: "New Inquiries",
+                api_connecting: "Connecting to API...", api_connected: "Connected", api_error: "Connection Failed", btn_refresh: "Refresh",
                 services_title: "SERVICES", services_subtitle: "Professional AI Development Services",
                 service_1_title: "AI Agent System", service_1_desc: "Custom multi-agent collaboration systems for business automation",
                 service_1_time: "2-4 weeks", service_2_title: "Workflow Automation", service_2_desc: "End-to-end business process automation and optimization",
@@ -917,7 +956,122 @@
         document.addEventListener('DOMContentLoaded', () => {
             const lang = detectLanguage();
             selectLanguage(lang, true);  // Pass true to prevent dropdown toggle on init
+            
+            // Start real-time data fetch
+            fetchRealtimeData();
+            // Auto-refresh every 30 seconds
+            setInterval(fetchRealtimeData, 30000);
         });
+        
+        // Real-time data fetching from static JSON
+        const DATA_URL = 'data/dashboard.json';
+        
+        async function fetchRealtimeData() {
+            const statusEl = document.getElementById('api-status');
+            const timeEl = document.getElementById('lastUpdate');
+            
+            try {
+                statusEl.textContent = translations[document.documentElement.lang]?.api_connecting || '正在连接API...';
+                statusEl.className = 'text-xs text-amber-500';
+                
+                const response = await fetch(DATA_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Update display
+                updateRealtimeDisplay(data);
+                
+                // Update timestamp
+                const now = new Date();
+                timeEl.textContent = now.toLocaleTimeString();
+                
+                // Update status
+                const lang = document.documentElement.lang;
+                statusEl.textContent = translations[lang]?.api_connected || '已连接';
+                statusEl.className = 'text-xs text-emerald-500';
+                
+            } catch (error) {
+                console.error('Data fetch error:', error);
+                const lang = document.documentElement.lang;
+                statusEl.textContent = translations[lang]?.api_error || '连接失败';
+                statusEl.className = 'text-xs text-red-500';
+            }
+        }
+        
+        function updateRealtimeDisplay(data) {
+            // Update revenue
+            const revenueEl = document.getElementById('rt-revenue');
+            if (revenueEl && data.today_revenue !== undefined) {
+                revenueEl.textContent = `$${Number(data.today_revenue).toLocaleString()}`;
+            }
+            
+            // Update orders
+            const ordersEl = document.getElementById('rt-orders');
+            if (ordersEl && data.total_orders !== undefined) {
+                ordersEl.textContent = data.total_orders;
+            }
+            
+            // Update agents
+            const agentsEl = document.getElementById('rt-agents');
+            if (agentsEl && data.active_agents !== undefined) {
+                agentsEl.textContent = data.active_agents;
+            }
+            
+            // Update inquiries
+            const inquiriesEl = document.getElementById('rt-inquiries');
+            if (inquiriesEl && data.new_inquiries !== undefined) {
+                inquiriesEl.textContent = data.new_inquiries;
+            }
+            
+            // Update insights section - revenue
+            const insightRevenueEl = document.getElementById('insight-revenue');
+            if (insightRevenueEl && data.today_revenue !== undefined) {
+                insightRevenueEl.textContent = `$${Number(data.today_revenue).toLocaleString()}`;
+            }
+            
+            // Update revenue progress bar
+            const revenueProgressEl = document.getElementById('revenue-progress');
+            const revenuePercentEl = document.getElementById('revenue-percent');
+            if (data.today_revenue !== undefined) {
+                const monthlyGoal = 10000;
+                const percent = Math.min(Math.round((data.today_revenue / monthlyGoal) * 100), 100);
+                if (revenueProgressEl) revenueProgressEl.style.width = `${percent}%`;
+                if (revenuePercentEl) revenuePercentEl.textContent = percent;
+            }
+            
+            // Update projects
+            if (data.projects) {
+                const discussingEl = document.getElementById('proj-discussing');
+                const activeEl = document.getElementById('proj-active');
+                const completedEl = document.getElementById('proj-completed');
+                const statProjectsEl = document.getElementById('stat-projects');
+                
+                if (discussingEl) discussingEl.textContent = data.projects.discussing || 0;
+                if (activeEl) activeEl.textContent = data.projects.in_progress || 0;
+                if (completedEl) completedEl.textContent = data.projects.completed || 0;
+                
+                // Update total projects in hero
+                if (statProjectsEl) {
+                    const total = (data.projects.discussing || 0) + (data.projects.in_progress || 0) + (data.projects.completed || 0);
+                    statProjectsEl.textContent = total;
+                }
+            }
+            
+            // Update stat-revenue in hero
+            const statRevenueEl = document.getElementById('stat-revenue');
+            if (statRevenueEl && data.today_revenue !== undefined) {
+                statRevenueEl.textContent = `$${Number(data.today_revenue).toLocaleString()}`;
+            }
+        }
     </script>
 </body>
 </html>

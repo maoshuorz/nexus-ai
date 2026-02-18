@@ -1,62 +1,14 @@
-[
-  {
-    "id": 1,
-    "timestamp": "",
-    "status": "new",
-    "type": "unknown",
-    "subject": "",
-    "from": "",
-    "body_preview": "",
-    "message_id": ""
+{
+  "schema_version": "2.0",
+  "last_updated": "2026-02-18T08:56:53.171944",
+  "metadata": {
+    "system": "Nexus AI Order Management",
+    "total_orders": 0,
+    "pending_sync": 0,
+    "last_sync_time": null,
+    "gmail_account": "qingziyuezi@gmail.com",
+    "sync_interval_minutes": 5
   },
-  {
-    "id": 2,
-    "timestamp": "",
-    "status": "new",
-    "type": "unknown",
-    "subject": "",
-    "from": "",
-    "body_preview": "",
-    "message_id": ""
-  },
-  {
-    "id": 3,
-    "timestamp": "",
-    "status": "new",
-    "type": "unknown",
-    "subject": "",
-    "from": "",
-    "body_preview": "",
-    "message_id": ""
-  },
-  {
-    "id": 4,
-    "timestamp": "",
-    "status": "new",
-    "type": "unknown",
-    "subject": "",
-    "from": "",
-    "body_preview": "",
-    "message_id": ""
-  },
-  {
-    "id": 5,
-    "timestamp": "",
-    "status": "new",
-    "type": "unknown",
-    "subject": "",
-    "from": "",
-    "body_preview": "",
-    "message_id": ""
-  },
-  {
-    "id": 6,
-    "timestamp": "",
-    "status": "new",
-    "type": "unknown",
-    "subject": "",
-    "from": "",
-    "body_preview": "",
-    "message_id": ""
-  }
-]
+  "orders": [],
+  "sync_log": []
+}

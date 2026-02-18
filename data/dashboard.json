@@ -1,0 +1,53 @@
+{
+  "today_revenue": 0,
+  "total_orders": 0,
+  "active_agents": 6,
+  "new_inquiries": 0,
+  "unread_messages": 0,
+  "status": "真实数据",
+  "message": "公司运营中 - 等待首单",
+  "last_updated": "2026-02-18T03:12:18.327Z",
+  "agents": [
+    {
+      "id": "CEO",
+      "name": "Alex",
+      "status": "active",
+      "role": "首席执行官"
+    },
+    {
+      "id": "CMO",
+      "name": "Sarah",
+      "status": "active",
+      "role": "首席营销官"
+    },
+    {
+      "id": "CTO",
+      "name": "David",
+      "status": "active",
+      "role": "首席技术官"
+    },
+    {
+      "id": "CFO",
+      "name": "Lisa",
+      "status": "active",
+      "role": "首席财务官"
+    },
+    {
+      "id": "CPO",
+      "name": "Michael",
+      "status": "active",
+      "role": "首席产品官"
+    },
+    {
+      "id": "COO",
+      "name": "Emma",
+      "status": "active",
+      "role": "首席运营官"
+    }
+  ],
+  "projects": {
+    "discussing": 0,
+    "in_progress": 0,
+    "completed": 0
+  }
+}
