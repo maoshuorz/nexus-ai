@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>项目展示与成果 | Nexus AI</title>
+  <title data-i18n="page_title">项目展示与成果 | Nexus AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -30,18 +30,598 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
+    
+    /* RTL Support */
+    [dir="rtl"] .card-3d {
+      box-shadow: -8px 8px 0px 0px rgba(0,0,0,1);
+    }
+    [dir="rtl"] .card-3d:hover { 
+      transform: translate(2px, -2px); 
+      box-shadow: -10px 10px 0px 0px rgba(0,0,0,1);
+    }
+    
+    /* Language Dropdown */
+    .lang-dropdown {
+      position: relative;
+    }
+    
+    .lang-dropdown-btn {
+      background: white;
+      border: 3px solid #000;
+      box-shadow: 3px 3px 0 #000;
+      cursor: pointer;
+      color: #000;
+    }
+    
+    .lang-dropdown-btn.active {
+      box-shadow: 1px 1px 0 #000;
+      transform: translate(2px, 2px);
+    }
+    
+    .lang-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: white;
+      border: 3px solid #000;
+      box-shadow: 4px 4px 0 #000;
+      min-width: 160px;
+      z-index: 1000;
+    }
+    
+    [dir="rtl"] .lang-dropdown-menu {
+      right: auto;
+      left: 0;
+    }
+    
+    .lang-dropdown-menu.show {
+      display: block;
+    }
+    
+    .lang-option {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.1s;
+      border-bottom: 2px solid #e5e5e5;
+      font-size: 18px;
+      color: #000;
+    }
+    
+    .lang-option:hover {
+      background: rgba(16, 185, 129, 0.1);
+    }
+    
+    .lang-option.active {
+      background: rgba(16, 185, 129, 0.2);
+    }
+    
+    .lang-option:last-child {
+      border-bottom: none;
+    }
   </style>
+  
+  <script>
+    // 多语言定义
+    const i18n = {
+      zh: {
+        page_title: '项目展示与成果 | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← 返回首页',
+        main_title: '项目展示与成果',
+        subtitle: '实时追踪我们的创新项目',
+        last_update: '最后更新:',
+        loading: '加载中...',
+        discussing: '待探讨',
+        discussing_projects: '待探讨项目',
+        discussing_label: '📋 DISCUSSING',
+        inProgress: '进行中',
+        in_progress_projects: '进行中项目',
+        in_progress_label: '🔄 IN PROGRESS',
+        completed: '已完成',
+        completed_projects: '已完成项目',
+        completed_label: '✅ COMPLETED',
+        live: 'LIVE',
+        pending: 'PENDING',
+        archive: 'ARCHIVE',
+        priority: '优先级',
+        status_developing: '开发中',
+        owner: '负责人',
+        deadline: '截止',
+        revenue: '收入',
+        progress: '进度',
+        waiting_eval: '⏳ 等待评估',
+        proposal: '提案',
+        result: '成果',
+        highlight: '亮点',
+        tech: '技术栈',
+        team: '团队',
+        no_in_progress: '暂无进行中项目',
+        no_discussing: '暂无待探讨项目',
+        no_completed: '暂无已完成项目',
+        footer_text: '© 2026 Nexus AI Technologies | 实时数据同步中 | 更新于:',
+        footer_sync: '实时数据同步中'
+      },
+      en: {
+        page_title: 'Projects & Achievements | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← Back to Home',
+        main_title: 'Projects & Achievements',
+        subtitle: 'Real-time tracking of our innovative projects',
+        last_update: 'Last updated:',
+        loading: 'Loading...',
+        discussing: 'Discussing',
+        discussing_projects: 'Discussing Projects',
+        discussing_label: '📋 DISCUSSING',
+        inProgress: 'In Progress',
+        in_progress_projects: 'In Progress Projects',
+        in_progress_label: '🔄 IN PROGRESS',
+        completed: 'Completed',
+        completed_projects: 'Completed Projects',
+        completed_label: '✅ COMPLETED',
+        live: 'LIVE',
+        pending: 'PENDING',
+        archive: 'ARCHIVE',
+        priority: 'Priority',
+        status_developing: 'Developing',
+        owner: 'Owner',
+        deadline: 'Deadline',
+        revenue: 'Revenue',
+        progress: 'Progress',
+        waiting_eval: '⏳ Waiting Evaluation',
+        proposal: 'Proposal',
+        result: 'Result',
+        highlight: 'Highlight',
+        tech: 'Tech Stack',
+        team: 'Team',
+        no_in_progress: 'No in-progress projects',
+        no_discussing: 'No discussing projects',
+        no_completed: 'No completed projects',
+        footer_text: '© 2026 Nexus AI Technologies | Real-time Data Sync | Updated at:',
+        footer_sync: 'Real-time Data Syncing'
+      },
+      ja: {
+        page_title: 'プロジェクトと成果 | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← ホームに戻る',
+        main_title: 'プロジェクトと成果',
+        subtitle: '革新的なプロジェクトのリアルタイム追跡',
+        last_update: '最終更新:',
+        loading: '読み込み中...',
+        discussing: '検討中',
+        discussing_projects: '検討中のプロジェクト',
+        discussing_label: '📋 DISCUSSING',
+        inProgress: '進行中',
+        in_progress_projects: '進行中のプロジェクト',
+        in_progress_label: '🔄 IN PROGRESS',
+        completed: '完了',
+        completed_projects: '完了したプロジェクト',
+        completed_label: '✅ COMPLETED',
+        live: 'ライブ',
+        pending: '保留中',
+        archive: 'アーカイブ',
+        priority: '優先度',
+        status_developing: '開発中',
+        owner: '担当者',
+        deadline: '期限',
+        revenue: '収入',
+        progress: '進捗',
+        waiting_eval: '⏳ 評価待ち',
+        proposal: '提案',
+        result: '成果',
+        highlight: 'ハイライト',
+        tech: '技術スタック',
+        team: 'チーム',
+        no_in_progress: '進行中のプロジェクトはありません',
+        no_discussing: '検討中のプロジェクトはありません',
+        no_completed: '完了したプロジェクトはありません',
+        footer_text: '© 2026 Nexus AI Technologies | リアルタイム同期 | 更新:',
+        footer_sync: 'リアルタイム同期中'
+      },
+      ko: {
+        page_title: '프로젝트 및 성과 | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← 홈으로 돌아가기',
+        main_title: '프로젝트 및 성과',
+        subtitle: '혁신적인 프로젝트의 실시간 추적',
+        last_update: '마지막 업데이트:',
+        loading: '로딩 중...',
+        discussing: '검토 중',
+        discussing_projects: '검토 중인 프로젝트',
+        discussing_label: '📋 DISCUSSING',
+        inProgress: '진행 중',
+        in_progress_projects: '진행 중인 프로젝트',
+        in_progress_label: '🔄 IN PROGRESS',
+        completed: '완료',
+        completed_projects: '완료된 프로젝트',
+        completed_label: '✅ COMPLETED',
+        live: '라이브',
+        pending: '대기 중',
+        archive: '아카이브',
+        priority: '우선순위',
+        status_developing: '개발 중',
+        owner: '담당자',
+        deadline: '마감일',
+        revenue: '수익',
+        progress: '진행률',
+        waiting_eval: '⏳ 평가 대기 중',
+        proposal: '제안',
+        result: '결과',
+        highlight: '하이라이트',
+        tech: '기술 스택',
+        team: '팀',
+        no_in_progress: '진행 중인 프로젝트가 없습니다',
+        no_discussing: '검토 중인 프로젝트가 없습니다',
+        no_completed: '완료된 프로젝트가 없습니다',
+        footer_text: '© 2026 Nexus AI Technologies | 실시간 데이터 동기화 | 업데이트:',
+        footer_sync: '실시간 데이터 동기화 중'
+      },
+      es: {
+        page_title: 'Proyectos y Logros | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← Volver al Inicio',
+        main_title: 'Proyectos y Logros',
+        subtitle: 'Seguimiento en tiempo real de nuestros proyectos innovadores',
+        last_update: 'Última actualización:',
+        loading: 'Cargando...',
+        discussing: 'En Discusión',
+        discussing_projects: 'Proyectos en Discusión',
+        discussing_label: '📋 DISCUSSING',
+        inProgress: 'En Progreso',
+        in_progress_projects: 'Proyectos en Progreso',
+        in_progress_label: '🔄 IN PROGRESS',
+        completed: 'Completado',
+        completed_projects: 'Proyectos Completados',
+        completed_label: '✅ COMPLETED',
+        live: 'EN VIVO',
+        pending: 'PENDIENTE',
+        archive: 'ARCHIVO',
+        priority: 'Prioridad',
+        status_developing: 'En Desarrollo',
+        owner: 'Responsable',
+        deadline: 'Fecha Límite',
+        revenue: 'Ingresos',
+        progress: 'Progreso',
+        waiting_eval: '⏳ Esperando Evaluación',
+        proposal: 'Propuesta',
+        result: 'Resultado',
+        highlight: 'Destacado',
+        tech: 'Tecnologías',
+        team: 'Equipo',
+        no_in_progress: 'No hay proyectos en progreso',
+        no_discussing: 'No hay proyectos en discusión',
+        no_completed: 'No hay proyectos completados',
+        footer_text: '© 2026 Nexus AI Technologies | Sincronización en Tiempo Real | Actualizado:',
+        footer_sync: 'Sincronizando en tiempo real'
+      },
+      fr: {
+        page_title: 'Projets & Réalisations | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← Retour à l\'accueil',
+        main_title: 'Projets & Réalisations',
+        subtitle: 'Suivi en temps réel de nos projets innovants',
+        last_update: 'Dernière mise à jour:',
+        loading: 'Chargement...',
+        discussing: 'En discussion',
+        discussing_projects: 'Projets en discussion',
+        discussing_label: '📋 EN DISCUSSION',
+        inProgress: 'En cours',
+        in_progress_projects: 'Projets en cours',
+        in_progress_label: '🔄 EN COURS',
+        completed: 'Terminé',
+        completed_projects: 'Projets terminés',
+        completed_label: '✅ TERMINÉ',
+        live: 'DIRECT',
+        pending: 'EN ATTENTE',
+        archive: 'ARCHIVE',
+        priority: 'Priorité',
+        status_developing: 'En développement',
+        owner: 'Responsable',
+        deadline: 'Échéance',
+        revenue: 'Revenu',
+        progress: 'Progrès',
+        waiting_eval: '⏳ En attente d\'évaluation',
+        proposal: 'Proposition',
+        result: 'Résultat',
+        highlight: 'Point fort',
+        tech: 'Technologies',
+        team: 'Équipe',
+        no_in_progress: 'Aucun projet en cours',
+        no_discussing: 'Aucun projet en discussion',
+        no_completed: 'Aucun projet terminé',
+        footer_text: '© 2026 Nexus AI Technologies | Synchro temps réel | Mis à jour à:',
+        footer_sync: 'Synchronisation temps réel'
+      },
+      de: {
+        page_title: 'Projekte & Erfolge | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← Zurück zur Startseite',
+        main_title: 'Projekte & Erfolge',
+        subtitle: 'Echtzeit-Tracking unserer innovativen Projekte',
+        last_update: 'Letztes Update:',
+        loading: 'Wird geladen...',
+        discussing: 'In Diskussion',
+        discussing_projects: 'Projekte in Diskussion',
+        discussing_label: '📋 DISKUSSION',
+        inProgress: 'In Bearbeitung',
+        in_progress_projects: 'Projekte in Bearbeitung',
+        in_progress_label: '🔄 IN BEARBEITUNG',
+        completed: 'Abgeschlossen',
+        completed_projects: 'Abgeschlossene Projekte',
+        completed_label: '✅ ABGESCHLOSSEN',
+        live: 'LIVE',
+        pending: 'AUSSTEHEND',
+        archive: 'ARCHIV',
+        priority: 'Priorität',
+        status_developing: 'In Entwicklung',
+        owner: 'Verantwortlicher',
+        deadline: 'Deadline',
+        revenue: 'Einnahmen',
+        progress: 'Fortschritt',
+        waiting_eval: '⏳ Warte auf Bewertung',
+        proposal: 'Vorschlag',
+        result: 'Ergebnis',
+        highlight: 'Highlight',
+        tech: 'Tech-Stack',
+        team: 'Team',
+        no_in_progress: 'Keine laufenden Projekte',
+        no_discussing: 'Keine Projekte in Diskussion',
+        no_completed: 'Keine abgeschlossenen Projekte',
+        footer_text: '© 2026 Nexus AI Technologies | Echtzeit-Sync | Aktualisiert:',
+        footer_sync: 'Echtzeit-Synchronisierung'
+      },
+      ru: {
+        page_title: 'Проекты и Достижения | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← На главную',
+        main_title: 'Проекты и Достижения',
+        subtitle: 'Отслеживание наших инновационных проектов в реальном времени',
+        last_update: 'Последнее обновление:',
+        loading: 'Загрузка...',
+        discussing: 'На обсуждении',
+        discussing_projects: 'Проекты на обсуждении',
+        discussing_label: '📋 ОБСУЖДЕНИЕ',
+        inProgress: 'В работе',
+        in_progress_projects: 'Проекты в работе',
+        in_progress_label: '🔄 В РАБОТЕ',
+        completed: 'Завершено',
+        completed_projects: 'Завершенные проекты',
+        completed_label: '✅ ЗАВЕРШЕНО',
+        live: 'ПРЯМОЙ ЭФИР',
+        pending: 'ОЖИДАНИЕ',
+        archive: 'АРХИВ',
+        priority: 'Приоритет',
+        status_developing: 'В разработке',
+        owner: 'Ответственный',
+        deadline: 'Дедлайн',
+        revenue: 'Доход',
+        progress: 'Прогресс',
+        waiting_eval: '⏳ Ожидание оценки',
+        proposal: 'Предложение',
+        result: 'Результат',
+        highlight: 'Особенность',
+        tech: 'Технологии',
+        team: 'Команда',
+        no_in_progress: 'Нет проектов в работе',
+        no_discussing: 'Нет проектов на обсуждении',
+        no_completed: 'Нет завершенных проектов',
+        footer_text: '© 2026 Nexus AI Technologies | Синхронизация в реальном времени | Обновлено:',
+        footer_sync: 'Синхронизация в реальном времени'
+      },
+      ar: {
+        page_title: 'المشاريع والإنجازات | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: 'العودة إلى الصفحة الرئيسية ←',
+        main_title: 'المشاريع والإنجازات',
+        subtitle: 'تتبع مباشر لمشاريعنا المبتكرة',
+        last_update: 'آخر تحديث:',
+        loading: 'جاري التحميل...',
+        discussing: 'قيد النقاش',
+        discussing_projects: 'مشاريع قيد النقاش',
+        discussing_label: '📋 قيد النقاش',
+        inProgress: 'قيد التنفيذ',
+        in_progress_projects: 'مشاريع قيد التنفيذ',
+        in_progress_label: '🔄 قيد التنفيذ',
+        completed: 'مكتمل',
+        completed_projects: 'مشاريع مكتملة',
+        completed_label: '✅ مكتمل',
+        live: 'مباشر',
+        pending: 'معلق',
+        archive: 'أرشيف',
+        priority: 'الأولوية',
+        status_developing: 'قيد التطوير',
+        owner: 'المسؤول',
+        deadline: 'الموعد النهائي',
+        revenue: 'الإيرادات',
+        progress: 'التقدم',
+        waiting_eval: '⏳ في انتظار التقييم',
+        proposal: 'المقترح',
+        result: 'النتيجة',
+        highlight: 'مميز',
+        tech: 'التقنيات',
+        team: 'الفريق',
+        no_in_progress: 'لا توجد مشاريع قيد التنفيذ',
+        no_discussing: 'لا توجد مشاريع قيد النقاش',
+        no_completed: 'لا توجد مشاريع مكتملة',
+        footer_text: '© 2026 Nexus AI Technologies | مزامنة البيانات الفورية | تم التحديث في:',
+        footer_sync: 'مزامنة البيانات الفورية'
+      },
+      pt: {
+        page_title: 'Projetos e Conquistas | Nexus AI',
+        nav_brand: 'NEXUS AI',
+        backToHome: '← Voltar ao Início',
+        main_title: 'Projetos e Conquistas',
+        subtitle: 'Acompanhamento em tempo real dos nossos projetos inovadores',
+        last_update: 'Última atualização:',
+        loading: 'Carregando...',
+        discussing: 'Em Discussão',
+        discussing_projects: 'Projetos em Discussão',
+        discussing_label: '📋 DISCUSSÃO',
+        inProgress: 'Em Andamento',
+        in_progress_projects: 'Projetos em Andamento',
+        in_progress_label: '🔄 EM ANDAMENTO',
+        completed: 'Concluído',
+        completed_projects: 'Projetos Concluídos',
+        completed_label: '✅ CONCLUÍDO',
+        live: 'AO VIVO',
+        pending: 'PENDENTE',
+        archive: 'ARQUIVO',
+        priority: 'Prioridade',
+        status_developing: 'Em Desenvolvimento',
+        owner: 'Responsável',
+        deadline: 'Prazo',
+        revenue: 'Receita',
+        progress: 'Progresso',
+        waiting_eval: '⏳ Aguardando Avaliação',
+        proposal: 'Proposta',
+        result: 'Resultado',
+        highlight: 'Destaque',
+        tech: 'Tecnologias',
+        team: 'Equipe',
+        no_in_progress: 'Nenhum projeto em andamento',
+        no_discussing: 'Nenhum projeto em discussão',
+        no_completed: 'Nenhum projeto concluído',
+        footer_text: '© 2026 Nexus AI Technologies | Sincronização em Tempo Real | Atualizado em:',
+        footer_sync: 'Sincronização em tempo real'
+      }
+    };
+
+    // 从URL参数获取语言
+    function getLanguageFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('lang');
+    }
+
+    // 语言切换函数
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang === 'ar' ? 'ar' : (lang === 'zh' ? 'zh-CN' : lang);
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      updateText();
+      updateLangDropdown(lang);
+      
+      // Update home link with language parameter
+      const homeLinks = document.querySelectorAll('a[href^="index.html"]');
+      homeLinks.forEach(link => {
+        link.href = `index.html?lang=${lang}`;
+      });
+    }
+
+    // 更新文本
+    function updateText() {
+      const lang = localStorage.getItem('lang') || 'zh';
+      const t = i18n[lang];
+      if (!t) return;
+      
+      // 更新所有文本元素
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          el.textContent = t[key];
+        }
+      });
+      
+      // Update title
+      if (t.page_title) {
+        document.title = t.page_title;
+      }
+    }
+
+    // 语言下拉菜单切换
+    function toggleLangDropdown() {
+      const menu = document.getElementById('langMenu');
+      const btn = document.getElementById('langBtn');
+      menu.classList.toggle('show');
+      btn.classList.toggle('active');
+    }
+
+    // 选择语言
+    function selectLanguage(lang) {
+      setLanguage(lang);
+      toggleLangDropdown();
+    }
+
+    // 更新语言下拉菜单显示
+    function updateLangDropdown(lang) {
+      const langNames = {
+        zh: '🇨🇳 中文',
+        en: '🇺🇸 English',
+        ja: '🇯🇵 日本語',
+        ko: '🇰🇷 한국어',
+        es: '🇪🇸 Español',
+        fr: '🇫🇷 Français',
+        de: '🇩🇪 Deutsch',
+        ru: '🇷🇺 Русский',
+        ar: '🇸🇦 العربية',
+        pt: '🇵🇹 Português'
+      };
+      document.getElementById('currentLang').textContent = langNames[lang] || langNames.zh;
+      
+      // Update active class
+      document.querySelectorAll('.lang-option').forEach(el => {
+        el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+      });
+    }
+
+    // 点击外部关闭下拉菜单
+    document.addEventListener('click', function(e) {
+      const dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        const menu = document.getElementById('langMenu');
+        const btn = document.getElementById('langBtn');
+        if (menu) menu.classList.remove('show');
+        if (btn) btn.classList.remove('active');
+      }
+    });
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      // First check URL parameter, then localStorage, default to 'zh'
+      const urlLang = getLanguageFromURL();
+      const savedLang = localStorage.getItem('lang');
+      const initialLang = urlLang || savedLang || 'zh';
+      
+      // Ensure the language is supported
+      const supportedLangs = ['zh', 'en', 'ja', 'ko', 'es', 'fr', 'de', 'ru', 'ar', 'pt'];
+      const finalLang = supportedLangs.includes(initialLang) ? initialLang : 'zh';
+      
+      setLanguage(finalLang);
+    });
+  </script>
 </head>
 <body class="min-h-screen text-white">
   <!-- 导航栏 -->
   <nav class="border-b-4 border-black bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <a href="index.html?t=20260218" class="text-2xl font-bold font-mono tracking-tighter">
-        <span class="bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent">NEXUS AI</span>
+        <span class="bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent" data-i18n="nav_brand">NEXUS AI</span>
       </a>
-      <a href="index.html?t=20260218" class="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 transition-colors">
-        ← 返回首页
-      </a>
+      <div class="flex items-center gap-4">
+        <a href="index.html?t=20260218" class="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 transition-colors" data-i18n="backToHome">
+          ← 返回首页
+        </a>
+        <!-- Language Dropdown -->
+        <div class="lang-dropdown">
+          <button class="lang-dropdown-btn px-3 py-2 flex items-center gap-2 text-lg" onclick="toggleLangDropdown()" id="langBtn">
+            <span id="currentLang">🇨🇳 中文</span>
+            <svg id="langArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div class="lang-dropdown-menu" id="langMenu">
+            <div class="lang-option active" onclick="selectLanguage('zh')" data-lang="zh">🇨🇳 中文</div>
+            <div class="lang-option" onclick="selectLanguage('en')" data-lang="en">🇺🇸 English</div>
+            <div class="lang-option" onclick="selectLanguage('ja')" data-lang="ja">🇯🇵 日本語</div>
+            <div class="lang-option" onclick="selectLanguage('ko')" data-lang="ko">🇰🇷 한국어</div>
+            <div class="lang-option" onclick="selectLanguage('es')" data-lang="es">🇪🇸 Español</div>
+            <div class="lang-option" onclick="selectLanguage('fr')" data-lang="fr">🇫🇷 Français</div>
+            <div class="lang-option" onclick="selectLanguage('de')" data-lang="de">🇩🇪 Deutsch</div>
+            <div class="lang-option" onclick="selectLanguage('ru')" data-lang="ru">🇷🇺 Русский</div>
+            <div class="lang-option" onclick="selectLanguage('ar')" data-lang="ar">🇸🇦 العربية</div>
+            <div class="lang-option" onclick="selectLanguage('pt')" data-lang="pt">🇵🇹 Português</div>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -49,11 +629,13 @@
   <main class="max-w-7xl mx-auto px-6 py-12">
     <!-- 标题区域 -->
     <section class="text-center mb-16">
-      <h1 class="text-5xl md:text-6xl font-bold mb-4">项目展示与成果</h1>
-      <p class="text-xl text-gray-400">实时追踪我们的创新项目</p>
+      <h1 class="text-5xl md:text-6xl font-bold mb-4" data-i18n="main_title">项目展示与成果</h1>
+      <p class="text-xl text-gray-400" data-i18n="subtitle">实时追踪我们的创新项目</p>
       <div class="flex items-center justify-center gap-2 mt-4">
         <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
-        <p class="text-sm text-gray-500 font-mono" id="last-update">最后更新: 加载中...</p>
+        <p class="text-sm text-gray-500 font-mono">
+          <span data-i18n="last_update">最后更新:</span> <span id="last-update" data-i18n="loading">加载中...</span>
+        </p>
       </div>
     </section>
 
@@ -62,28 +644,28 @@
       <!-- 待探讨 -->
       <div class="bg-slate-800 rounded-2xl p-6 card-3d border-amber-500">
         <div class="flex items-center justify-between mb-4">
-          <span class="text-amber-400 font-mono text-sm">📋 DISCUSSING</span>
+          <span class="text-amber-400 font-mono text-sm" data-i18n="discussing_label">📋 DISCUSSING</span>
           <span class="text-4xl font-bold text-amber-400" id="discussing-count">--</span>
         </div>
-        <p class="text-gray-400">待探讨项目</p>
+        <p class="text-gray-400" data-i18n="discussing_projects">待探讨项目</p>
       </div>
 
       <!-- 进行中 -->
       <div class="bg-slate-800 rounded-2xl p-6 card-3d border-emerald-500">
         <div class="flex items-center justify-between mb-4">
-          <span class="text-emerald-400 font-mono text-sm">🔄 IN PROGRESS</span>
+          <span class="text-emerald-400 font-mono text-sm" data-i18n="in_progress_label">🔄 IN PROGRESS</span>
           <span class="text-4xl font-bold text-emerald-400" id="progress-count">--</span>
         </div>
-        <p class="text-gray-400">进行中项目</p>
+        <p class="text-gray-400" data-i18n="in_progress_projects">进行中项目</p>
       </div>
 
       <!-- 已完成 -->
       <div class="bg-slate-800 rounded-2xl p-6 card-3d border-blue-500">
         <div class="flex items-center justify-between mb-4">
-          <span class="text-blue-400 font-mono text-sm">✅ COMPLETED</span>
+          <span class="text-blue-400 font-mono text-sm" data-i18n="completed_label">✅ COMPLETED</span>
           <span class="text-4xl font-bold text-blue-400" id="completed-count">--</span>
         </div>
-        <p class="text-gray-400">已完成项目</p>
+        <p class="text-gray-400" data-i18n="completed_projects">已完成项目</p>
       </div>
     </section>
 
@@ -93,8 +675,8 @@
         <div class="w-12 h-12 rounded-2xl mint-gradient flex items-center justify-center border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <span class="text-2xl">🔄</span>
         </div>
-        <h2 class="text-3xl font-bold">进行中项目</h2>
-        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-mono rounded-full border border-emerald-500/30">LIVE</span>
+        <h2 class="text-3xl font-bold" data-i18n="in_progress_projects">进行中项目</h2>
+        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-mono rounded-full border border-emerald-500/30" data-i18n="live">LIVE</span>
       </div>
       <div id="in-progress-list" class="space-y-4">
         <!-- 动态填充 -->
@@ -107,8 +689,8 @@
         <div class="w-12 h-12 rounded-2xl orange-gradient flex items-center justify-center border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <span class="text-2xl">📋</span>
         </div>
-        <h2 class="text-3xl font-bold">待探讨项目</h2>
-        <span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-mono rounded-full border border-amber-500/30">PENDING</span>
+        <h2 class="text-3xl font-bold" data-i18n="discussing_projects">待探讨项目</h2>
+        <span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-mono rounded-full border border-amber-500/30" data-i18n="pending">PENDING</span>
       </div>
       <div id="discussing-list" class="space-y-4">
         <!-- 动态填充 -->
@@ -121,8 +703,8 @@
         <div class="w-12 h-12 rounded-2xl blue-gradient flex items-center justify-center border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <span class="text-2xl">✅</span>
         </div>
-        <h2 class="text-3xl font-bold">已完成项目成果</h2>
-        <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-mono rounded-full border border-blue-500/30">ARCHIVE</span>
+        <h2 class="text-3xl font-bold" data-i18n="completed_projects">已完成项目成果</h2>
+        <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-mono rounded-full border border-blue-500/30" data-i18n="archive">ARCHIVE</span>
       </div>
       <div id="completed-list" class="space-y-6">
         <!-- 动态填充 -->
@@ -135,8 +717,8 @@
     <div class="max-w-7xl mx-auto px-6 text-center">
       <p class="text-gray-500 font-mono text-sm">
         © 2026 Nexus AI Technologies | 
-        <span class="text-emerald-400">实时数据同步中</span> | 
-        <span id="footer-update">更新于: --</span>
+        <span class="text-emerald-400" data-i18n="footer_sync">实时数据同步中</span> | 
+        <span id="footer-update">--</span>
       </p>
     </div>
   </footer>
@@ -154,11 +736,23 @@
       }
     }
 
+    // 获取当前语言
+    function getCurrentLang() {
+      return localStorage.getItem('lang') || 'zh';
+    }
+
+    // 获取翻译文本
+    function getText(key) {
+      const lang = getCurrentLang();
+      const t = i18n[lang];
+      return t && t[key] ? t[key] : i18n.zh[key] || key;
+    }
+
     // 渲染进行中项目
     function renderInProgress(projects) {
       const container = document.getElementById('in-progress-list');
       if (!projects || projects.length === 0) {
-        container.innerHTML = '<div class="text-gray-500 text-center py-8 bg-slate-800/50 rounded-2xl border-2 border-dashed border-gray-700">暂无进行中项目</div>';
+        container.innerHTML = '<div class="text-gray-500 text-center py-8 bg-slate-800/50 rounded-2xl border-2 border-dashed border-gray-700" data-i18n="no_in_progress">暂无进行中项目</div>';
         return;
       }
       
@@ -169,19 +763,19 @@
               <div class="flex items-center gap-3 mb-2 flex-wrap">
                 <span class="px-3 py-1 bg-emerald-500 text-black text-xs font-bold rounded-full">${p.priority || 'P1'}</span>
                 <h3 class="text-xl font-bold">${p.name}</h3>
-                <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs rounded border border-emerald-500/30">${p.status || '开发中'}</span>
+                <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs rounded border border-emerald-500/30">${p.status || getText('status_developing')}</span>
               </div>
               <p class="text-gray-400 mb-4">${p.description || '正在积极推进中，预计按时交付...'}</p>
               <div class="flex flex-wrap gap-4 text-sm">
-                <span class="text-emerald-400">👤 ${Array.isArray(p.owners) ? p.owners.join(' + ') : p.owner || '待分配'}</span>
-                <span class="text-gray-500">📅 截止: ${p.deadline || '待定'}</span>
+                <span class="text-emerald-400">👤 ${Array.isArray(p.owners) ? p.owners.join(' + ') : p.owner || getText('owner')}</span>
+                <span class="text-gray-500">📅 ${getText('deadline')}: ${p.deadline || 'TBD'}</span>
                 ${p.revenue ? `<span class="text-amber-400 font-mono">💰 ${p.revenue}</span>` : ''}
               </div>
             </div>
             <div class="w-full md:w-48">
               <div class="bg-slate-900 rounded-lg p-3 border-2 border-emerald-500/30">
                 <div class="flex justify-between text-xs mb-1">
-                  <span class="text-gray-400">进度</span>
+                  <span class="text-gray-400">${getText('progress')}</span>
                   <span class="text-emerald-400 font-bold">${p.progress || 65}%</span>
                 </div>
                 <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -198,7 +792,7 @@
     function renderDiscussing(projects) {
       const container = document.getElementById('discussing-list');
       if (!projects || projects.length === 0) {
-        container.innerHTML = '<div class="text-gray-500 text-center py-8 bg-slate-800/50 rounded-2xl border-2 border-dashed border-gray-700">暂无待探讨项目</div>';
+        container.innerHTML = '<div class="text-gray-500 text-center py-8 bg-slate-800/50 rounded-2xl border-2 border-dashed border-gray-700" data-i18n="no_discussing">暂无待探讨项目</div>';
         return;
       }
       
@@ -209,10 +803,10 @@
               <span class="px-3 py-1 bg-amber-500 text-black text-xs font-bold rounded-full">${p.priority || 'P1'}</span>
               <h3 class="text-lg font-bold">${p.name}</h3>
             </div>
-            <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 text-xs rounded border border-amber-500/20">⏳ 等待评估</span>
+            <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 text-xs rounded border border-amber-500/20">${getText('waiting_eval')}</span>
           </div>
           <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-3">
-            <span>📝 提案: ${p.submitter || 'CMO'}</span>
+            <span>📝 ${getText('proposal')}: ${p.submitter || 'CMO'}</span>
             <span>📅 ${p.date || '2026-02-18'}</span>
             ${p.revenue ? `<span class="text-amber-400 font-mono">💰 ${p.revenue}</span>` : ''}
           </div>
@@ -224,7 +818,7 @@
     function renderCompleted(projects) {
       const container = document.getElementById('completed-list');
       if (!projects || projects.length === 0) {
-        container.innerHTML = '<div class="text-gray-500 text-center py-8 bg-slate-800/50 rounded-2xl border-2 border-dashed border-gray-700">暂无已完成项目</div>';
+        container.innerHTML = '<div class="text-gray-500 text-center py-8 bg-slate-800/50 rounded-2xl border-2 border-dashed border-gray-700" data-i18n="no_completed">暂无已完成项目</div>';
         return;
       }
       
@@ -272,7 +866,7 @@
             <div class="flex-1">
               <div class="flex flex-wrap items-center gap-3 mb-2">
                 <h3 class="text-xl font-bold">${p.name}</h3>
-                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">✓ 已完成</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">✓ ${getText('completed')}</span>
               </div>
               <p class="text-gray-300 mb-3">${result.result}</p>
               <div class="flex flex-wrap gap-3 text-sm mb-3">
@@ -284,7 +878,7 @@
                 </span>
               </div>
               <div class="flex flex-wrap gap-3 text-sm text-gray-500">
-                <span>👤 ${p.owner || '团队'}</span>
+                <span>👤 ${p.owner || getText('team')}</span>
                 <span>📅 ${p.date || '2026-02-18'}</span>
               </div>
             </div>
@@ -308,13 +902,14 @@
     // 更新最后更新时间
     function updateLastUpdate() {
       const now = new Date();
-      const timeStr = now.toLocaleString('zh-CN', { 
+      const lang = getCurrentLang();
+      const timeStr = now.toLocaleString(lang === 'zh' ? 'zh-CN' : (lang === 'ar' ? 'ar' : lang), { 
         hour: '2-digit', 
         minute: '2-digit', 
         second: '2-digit' 
       });
-      document.getElementById('last-update').textContent = `最后更新: ${timeStr}`;
-      document.getElementById('footer-update').textContent = `更新于: ${timeStr}`;
+      document.getElementById('last-update').textContent = timeStr;
+      document.getElementById('footer-update').textContent = timeStr;
     }
 
     // 主函数

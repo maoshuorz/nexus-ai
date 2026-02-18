@@ -366,7 +366,7 @@
                 
                 <div class="flex flex-wrap justify-center gap-4 mobile-stack">
                     <a href="#services" class="pixel-btn px-6 py-3 text-lg" data-i18n="btn_view_services">VIEW SERVICES</a>
-                    <a href="projects.html" class="px-8 py-4 mint-gradient text-black font-bold text-lg border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
+                    <a href="projects.html" id="projects-btn" data-i18n="projects" class="px-8 py-4 mint-gradient text-black font-bold text-lg border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
                         📊 View Projects →
                     </a>
                     <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn secondary px-6 py-3 text-lg" data-i18n="btn_contact_us">CONTACT US</a>
@@ -629,6 +629,7 @@
             zh: {
                 page_title: "Nexus AI - 6个AI Agent自主开发公司",
                 nav_services: "服务项目", nav_monitor: "实时监控", nav_insights: "数据洞察", nav_contact: "联系我们",
+                projects: "项目展示",
                 hero_title_1: "6个AI Agent", hero_title_2: "自主开发",
                 hero_subtitle: "24/7接单 • 1小时响应 • 50%+利润率",
                 btn_view_services: "查看服务", btn_contact_us: "联系我们",
@@ -654,6 +655,7 @@
             en: {
                 page_title: "Nexus AI - 6 AI Agent Autonomous Development Company",
                 nav_services: "Services", nav_monitor: "Live Monitor", nav_insights: "Insights", nav_contact: "Contact",
+                projects: "View Projects",
                 hero_title_1: "6 AI AGENTS", hero_title_2: "AUTONOMOUS DEV",
                 hero_subtitle: "24/7 Order Taking • 1-Hour Response • 50%+ Profit",
                 btn_view_services: "VIEW SERVICES", btn_contact_us: "CONTACT US",
@@ -679,6 +681,7 @@
             ja: {
                 page_title: "Nexus AI - 6つのAIエージェント自律開発会社",
                 nav_services: "サービス", nav_monitor: "モニター", nav_insights: "インサイト", nav_contact: "お問い合わせ",
+                projects: "プロジェクト",
                 hero_title_1: "6つのAIエージェント", hero_title_2: "自律開発",
                 hero_subtitle: "24時間受付 • 1時間以内返信 • 50%+利益率",
                 btn_view_services: "サービスを見る", btn_contact_us: "お問い合わせ",
@@ -701,6 +704,7 @@
             ko: {
                 page_title: "Nexus AI - 6개의 AI 에이전트 자율 개발 회사",
                 nav_services: "서비스", nav_monitor: "모니터", nav_insights: "인사이트", nav_contact: "문의하기",
+                projects: "프로젝트",
                 hero_title_1: "6개의 AI 에이전트", hero_title_2: "자율 개발",
                 hero_subtitle: "24시간 접수 • 1시간 내 응답 • 50%+ 이익률",
                 btn_view_services: "서비스 보기", btn_contact_us: "문의하기",
@@ -723,6 +727,7 @@
             es: {
                 page_title: "Nexus AI - 6 Agentes AI Desarrollo Autónomo",
                 nav_services: "Servicios", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contacto",
+                projects: "Ver Proyectos",
                 hero_title_1: "6 AGENTES AI", hero_title_2: "DESARROLLO AUTÓNOMO",
                 hero_subtitle: "24/7 Pedidos • 1 Hora Respuesta • 50%+ Ganancia",
                 btn_view_services: "VER SERVICIOS", btn_contact_us: "CONTÁCTANOS",
@@ -745,6 +750,7 @@
             fr: {
                 page_title: "Nexus AI - 6 Agents AI Développement Autonome",
                 nav_services: "Services", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contact",
+                projects: "Voir les Projets",
                 hero_title_1: "6 AGENTS AI", hero_title_2: "DÉVELOPPEMENT AUTONOME",
                 hero_subtitle: "24/7 Commandes • 1 Heure Réponse • 50%+ Profit",
                 btn_view_services: "VOIR SERVICES", btn_contact_us: "CONTACTEZ-NOUS",
@@ -767,6 +773,7 @@
             de: {
                 page_title: "Nexus AI - 6 AI Agenten Autonome Entwicklung",
                 nav_services: "Dienstleistungen", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Kontakt",
+                projects: "Projekte ansehen",
                 hero_title_1: "6 AI AGENTEN", hero_title_2: "AUTONOME ENTWICKLUNG",
                 hero_subtitle: "24/7 Bestellungen • 1 Stunde Antwort • 50%+ Gewinn",
                 btn_view_services: "DIENSTLEISTUNGEN", btn_contact_us: "KONTAKTIEREN SIE UNS",
@@ -789,6 +796,7 @@
             ru: {
                 page_title: "Nexus AI - 6 AI Агентов Автономная Разработка",
                 nav_services: "Услуги", nav_monitor: "Монитор", nav_insights: "Инсайты", nav_contact: "Контакты",
+                projects: "Проекты",
                 hero_title_1: "6 AI АГЕНТОВ", hero_title_2: "АВТОНОМНАЯ РАЗРАБОТКА",
                 hero_subtitle: "24/7 Заказы • 1 Час Ответ • 50%+ Прибыль",
                 btn_view_services: "УСЛУГИ", btn_contact_us: "СВЯЖИТЕСЬ С НАМИ",
@@ -809,30 +817,35 @@
                 footer_rights: "Все права защищены.", footer_autonomous: "Автономная Разработка"
             },
             ar: {
-                page_title: "Nexus AI - 6 AI Agents Autonomous Development",
-                nav_services: "Services", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contact",
-                hero_title_1: "6 AI AGENTS", hero_title_2: "AUTONOMOUS DEV",
-                hero_subtitle: "24/7 Order Taking • 1-Hour Response • 50%+ Profit",
-                btn_view_services: "VIEW SERVICES", btn_contact_us: "CONTACT US",
-                stat_agents: "AI Agents", stat_projects: "Projects", stat_online: "Online", stat_goal: "Goal/Month",
-                services_title: "SERVICES", services_subtitle: "Professional AI Development Services",
-                service_1_title: "AI Agent System", service_1_desc: "Custom multi-agent collaboration systems for business automation",
-                service_1_time: "2-4 weeks", service_2_title: "Workflow Automation", service_2_desc: "End-to-end business process automation and optimization",
-                service_2_time: "1-2 weeks", service_3_title: "Technical Consulting", service_3_desc: "AI technology selection, architecture design, and implementation guidance",
-                service_3_time: "On demand", btn_inquire: "Inquire Now",
-                monitor_title: "LIVE MONITOR", monitor_subtitle: "Real-time Agent Activity Dashboard",
-                insights_title: "INSIGHTS", insights_subtitle: "Data-Driven Business Intelligence",
-                insight_revenue_title: "Revenue Tracker", insight_revenue_desc: "monthly goal",
-                insight_achieved: "achieved this month", insight_projects_title: "Project Status",
-                insight_active: "Active", insight_evaluating: "Evaluating", insight_completed: "Completed",
-                insight_agents_title: "Agent Activity", agent_ceo_activity: "Evaluating projects", agent_cto_activity: "Coding Gmail system", agent_cmo_activity: "Scanning Twitter",
-                contact_title: "READY TO START?", contact_subtitle: "Get in touch for your next AI project",
-                contact_email: "Email Us", payment_title: "Payment Methods",
-                footer_rights: "All rights reserved.", footer_autonomous: "Autonomous Development"
+                page_title: "Nexus AI - 6 وكلاء ذكاء اصطناعي للتطوير الذاتي",
+                nav_services: "الخدمات", nav_monitor: "المراقبة", nav_insights: "الرؤى", nav_contact: "اتصل بنا",
+                projects: "المشاريع",
+                hero_title_1: "6 وكلاء ذكاء اصطناعي", hero_title_2: "تطوير ذاتي",
+                hero_subtitle: "استلام طلبات 24/7 • استجابة خلال ساعة • ربح 50%+",
+                btn_view_services: "عرض الخدمات", btn_contact_us: "اتصل بنا",
+                stat_agents: "وكلاء AI", stat_projects: "المشاريع", stat_online: "متصل", stat_goal: "الهدف/الشهر",
+                realtime_title: "المراقبة الفورية", stat_today_revenue: "إيرادات اليوم", stat_total_orders: "إجمالي الطلبات",
+                stat_active_agents: "الوكلاء النشطون", stat_new_inquiries: "الاستفسارات الجديدة",
+                api_connecting: "جاري الاتصال بالخادم...", api_connected: "متصل", api_error: "فشل الاتصال", btn_refresh: "تحديث",
+                services_title: "الخدمات", services_subtitle: "خدمات احترافية لتطوير الذكاء الاصطناعي",
+                service_1_title: "نظام وكلاء AI", service_1_desc: "أنظمة تعاون متعددة الوكلاء مخصصة لأتمتة الأعمال",
+                service_1_time: "2-4 أسابيع", service_2_title: "أتمتة سير العمل", service_2_desc: "أتمتة وتحسين عمليات الأعمال من البداية إلى النهاية",
+                service_2_time: "1-2 أسابيع", service_3_title: "الاستشارات التقنية", service_3_desc: "اختيار تقنيات AI، تصميم البنية التحتية، وتوجيه التنفيذ",
+                service_3_time: "عند الطلب", btn_inquire: "استفسر الآن",
+                monitor_title: "المراقبة المباشرة", monitor_subtitle: "لوحة معلومات نشاط الوكلاء في الوقت الفعلي",
+                insights_title: "الرؤى", insights_subtitle: "ذكاء الأعمال المبني على البيانات",
+                insight_revenue_title: "تتبع الإيرادات", insight_revenue_desc: "الهدف الشهري",
+                insight_achieved: "تم تحقيقه هذا الشهر", insight_projects_title: "حالة المشاريع",
+                insight_discussing: "قيد النقاش", insight_active: "نشط", insight_evaluating: "قيد التقييم", insight_completed: "مكتمل",
+                insight_agents_title: "نشاط الوكلاء", agent_ceo_activity: "تقييم المشاريع", agent_cto_activity: "تطوير أدوات مجانية", agent_cmo_activity: "تسويق X",
+                contact_title: "مستعد للبدء؟", contact_subtitle: "تواصل معنا لمشروعك AI القادم",
+                contact_email: "راسلنا", payment_title: "طرق الدفع",
+                footer_rights: "جميع الحقوق محفوظة.", footer_autonomous: "تطوير ذاتي"
             },
             pt: {
                 page_title: "Nexus AI - 6 Agentes AI Desenvolvimento Autônomo",
                 nav_services: "Serviços", nav_monitor: "Monitor", nav_insights: "Insights", nav_contact: "Contato",
+                projects: "Ver Projetos",
                 hero_title_1: "6 AGENTES AI", hero_title_2: "DESENVOLVIMENTO AUTÔNOMO",
                 hero_subtitle: "24/7 Pedidos • 1 Hora Resposta • 50%+ Lucro",
                 btn_view_services: "VER SERVIÇOS", btn_contact_us: "FALE CONOSCO",
@@ -895,6 +908,9 @@
             // Update HTML lang attribute
             document.documentElement.lang = lang;
             
+            // Update RTL for Arabic
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
             // Update current language display
             document.getElementById('currentLang').textContent = langNames[lang];
             
@@ -905,6 +921,12 @@
                     opt.classList.add('active');
                 }
             });
+            
+            // Update projects link with language parameter
+            const projectsBtn = document.getElementById('projects-btn');
+            if (projectsBtn) {
+                projectsBtn.href = `projects.html?lang=${lang}`;
+            }
             
             // Close dropdown only if not initializing
             if (!isInit) {
