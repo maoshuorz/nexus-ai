@@ -567,17 +567,17 @@
                     <div class="space-y-3">
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span class="text-stone-600">CEO: <span data-i18n="agent_ceo_activity">Evaluating projects</span></span>
+                            <span class="text-stone-600">CEO: <span id="agent-ceo-activity" data-i18n="agent_ceo_activity">Evaluating projects</span></span>
                         </div>
                         
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span class="text-stone-600">CTO: <span data-i18n="agent_cto_activity">Coding Gmail system</span></span>
+                            <span class="text-stone-600">CTO: <span id="agent-cto-activity" data-i18n="agent_cto_activity">Coding Gmail system</span></span>
                         </div>
                         
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span class="text-stone-600">CMO: <span data-i18n="agent_cmo_activity">Scanning Twitter</span></span>
+                            <span class="text-stone-600">CMO: <span id="agent-cmo-activity" data-i18n="agent_cmo_activity">Scanning Twitter</span></span>
                         </div>
                     </div>
                 </div>
@@ -1024,6 +1024,16 @@
             const agentsEl = document.getElementById('rt-agents');
             if (agentsEl && data.active_agents !== undefined) {
                 agentsEl.textContent = data.active_agents;
+            }
+            
+            // Update agent activities from real data
+            if (data.agents && Array.isArray(data.agents)) {
+                data.agents.forEach(agent => {
+                    const activityEl = document.getElementById(`agent-${agent.id.toLowerCase()}-activity`);
+                    if (activityEl && agent.current_task) {
+                        activityEl.textContent = agent.current_task;
+                    }
+                });
             }
             
             // Update inquiries

@@ -26,12 +26,12 @@ const dashboardData = {
   message: "公司运营中 - 等待首单",
   last_updated: new Date().toISOString(),
   agents: [
-    { id: "CEO", name: "Alex", status: "active", role: "首席执行官" },
-    { id: "CMO", name: "Sarah", status: "active", role: "首席营销官" },
-    { id: "CTO", name: "David", status: "active", role: "首席技术官" },
-    { id: "CFO", name: "Lisa", status: "active", role: "首席财务官" },
-    { id: "CPO", name: "Michael", status: "active", role: "首席产品官" },
-    { id: "COO", name: "Emma", status: "active", role: "首席运营官" }
+    { id: "CEO", name: "Alex", status: "active", role: "首席执行官", current_task: "实时决策与监督" },
+    { id: "CMO", name: "Sarah", status: "active", role: "首席营销官", current_task: "市场调研与项目提案" },
+    { id: "CTO", name: "David", status: "active", role: "首席技术官", current_task: "网站实时数据修复" },
+    { id: "CFO", name: "Lisa", status: "active", role: "首席财务官", current_task: "财务监控与收入追踪" },
+    { id: "CPO", name: "Michael", status: "active", role: "首席产品官", current_task: "产品规划与UI优化" },
+    { id: "COO", name: "Emma", status: "active", role: "首席运营官", current_task: "Gmail接单系统监控" }
   ],
   projects: {
     discussing: 0,
