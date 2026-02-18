@@ -491,29 +491,30 @@
                 if (!response.ok) throw new Error('Failed to fetch');
                 const data = await response.json();
                 
-                // Override projects with real data (all zeros for now)
+                // Override projects with real data from dashboard.json
                 if (data.projects) {
-                    const discussingCount = data.projects.discussing || 0;
-                    const progressCount = data.projects.in_progress || 0;
-                    const completedCount = data.projects.completed || 0;
+                    // Use actual array data from dashboard.json
+                    dataStore.projects.discussing = (data.projects.discussing || []).map(p => ({
+                        title: p.name,
+                        client: p.submitter || 'Unknown',
+                        priority: p.priority?.toLowerCase() === 'p0' ? 'high' : 'medium',
+                        description: p.revenue ? `Revenue: ${p.revenue}` : `Submitted on ${p.date}`
+                    }));
                     
-                    dataStore.projects.discussing = Array(discussingCount).fill({
-                        title: 'Pending Discussion',
-                        priority: 'medium',
-                        description: 'Waiting for evaluation'
-                    });
+                    dataStore.projects.progress = (data.projects.in_progress || []).map(p => ({
+                        title: p.name,
+                        progress: p.progress || 0,
+                        status: p.progress === 100 ? 'completed' : 'active',
+                        team: p.owner ? [p.owner.split(' ')[0].toLowerCase()] : [],
+                        description: `Deadline: ${p.deadline}`
+                    }));
                     
-                    dataStore.projects.progress = Array(progressCount).fill({
-                        title: 'In Progress',
-                        progress: 0,
-                        description: 'Active development'
-                    });
-                    
-                    dataStore.projects.completed = Array(completedCount).fill({
-                        title: 'Completed',
-                        completedDate: new Date().toISOString().split('T')[0],
-                        description: 'Project completed'
-                    });
+                    dataStore.projects.completed = (data.projects.completed || []).map(p => ({
+                        title: p.name,
+                        completedDate: p.date,
+                        team: [],
+                        description: `Completed on ${p.date}`
+                    }));
                 }
                 
                 // Override stats
