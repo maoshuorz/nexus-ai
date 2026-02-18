@@ -41,7 +41,8 @@ const dashboardData = {
       { name: "AI技能市场", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" },
       { name: "小说IP衍生品", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" },
       { name: "运营监控SaaS", priority: "P2", submitter: "CMO Sarah", date: "2026-02-18" },
-      { name: "工作流编排服务", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" }
+      { name: "工作流编排服务", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18" },
+      { name: "AI竞品情报监控系统", priority: "P1", submitter: "CMO Sarah", date: "2026-02-18", revenue: "$500-2000/月" }
     ],
     in_progress: [
       // CEO决策并分配的进行中的项目

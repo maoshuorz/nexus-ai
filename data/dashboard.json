@@ -6,7 +6,7 @@
   "unread_messages": 0,
   "status": "真实数据",
   "message": "公司运营中 - 等待首单",
-  "last_updated": "2026-02-18T04:08:52.655Z",
+  "last_updated": "2026-02-18T04:19:25.974Z",
   "agents": [
     {
       "id": "CEO",
@@ -88,6 +88,13 @@
         "priority": "P1",
         "submitter": "CMO Sarah",
         "date": "2026-02-18"
+      },
+      {
+        "name": "AI竞品情报监控系统",
+        "priority": "P1",
+        "submitter": "CMO Sarah",
+        "date": "2026-02-18",
+        "revenue": "$500-2000/月"
       }
     ],
     "in_progress": [

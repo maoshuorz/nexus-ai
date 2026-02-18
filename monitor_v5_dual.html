@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI - 实时监控中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        nexus: {
+                            dark: '#0a0a0f',
+                            card: '#12121a',
+                            glass: 'rgba(18, 18, 26, 0.85)',
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6',
+                            green: '#10b981',
+                            pink: '#ec4899',
+                            orange: '#f59e0b',
+                            cyan: '#06b6d4',
+                            red: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%);
+            color: #e0e0ff;
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(18, 18, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .agent-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .agent-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+        }
+        
+        .agent-card.active {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+        
+        .agent-card.busy {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .revenue-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .status-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+            50% { opacity: 0.8; box-shadow: 0 0 0 6px transparent; }
+        }
+        
+        .tab-btn {
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .tab-btn.active::before {
+            transform: scaleX(1);
+        }
+        
+        .tab-btn.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: white;
+        }
+        
+        .version-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 4px;
+        }
+        
+        .version-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .version-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .log-entry {
+            animation: slideIn 0.3s ease;
+            border-left: 2px solid transparent;
+        }
+        
+        .log-entry:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .revenue-number {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 200px;
+        }
+        
+        .refresh-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .glass-panel {
+                margin: 0 -12px;
+                border-radius: 0;
+            }
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateX(4px);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        .action-btn {
+            opacity: 0;
+            transform: translateY(4px);
+            transition: all 0.2s ease;
+        }
+        
+        .project-card:hover .action-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .metric-value {
+            transition: all 0.5s ease;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="glass-panel border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left: Logo & Status -->
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-robot text-white text-lg"></i>
+                        </div>
+                        <div class="hidden sm:block">
+                            <h1 class="font-bold text-lg">Nexus AI</h1>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-green-500 status-dot text-green-500"></span>
+                                <span class="text-xs text-green-400">系统正常运行</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Center: Version Toggle -->
+                <div class="version-toggle hidden md:flex">
+                    <button onclick="switchVersion('public')" id="btn-public" class="version-btn active">
+                        <i class="fas fa-eye mr-2"></i>公开版
+                    </button>
+                    <button onclick="switchVersion('full')" id="btn-full" class="version-btn">
+                        <i class="fas fa-cog mr-2"></i>管理版
+                    </button>
+                </div>
+                
+                <!-- Right: Actions -->
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-gray-500 hidden lg:block">
+                        更新于 <span id="lastUpdate" class="text-gray-300 font-mono">--:--:--</span>
+                    </span>
+                    <button onclick="manualRefresh()" id="refreshBtn" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition border border-white/10">
+                        <i class="fas fa-sync-alt text-gray-400"></i>
+                    </button>
+                    <!-- Mobile version toggle -->
+                    <button onclick="toggleMobileVersion()" class="md:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 transition border border-white/10">
+                        <i class="fas fa-exchange-alt text-gray-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Version Indicator -->
+    <div id="mobileVersionBanner" class="md:hidden bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-b border-white/10 py-2 px-4">
+        <div class="flex items-center justify-between">
+            <span class="text-sm" id="mobileVersionText">当前：公开版</span>
+            <button onclick="toggleMobileVersion()" class="text-xs text-blue-400">切换版本</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- ==================== 公开版视图 ==================== -->
+        <div id="publicView" class="fade-in">
+            <!-- 核心指标卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- 总收入 -->
+                <div class="glass-panel rounded-2xl p-5 revenue-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-green-400"></i>
+                        </div>
+                        <span class="text-xs text-green-400 flex items-center gap-1">
+                            <i class="fas fa-arrow-up"></i> +12.5%
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-1">本月收入</p>
+                    <p class="text-2xl font-bold revenue-number metric-value" id="publicRevenue">¥128,500</p>
+                </div>
+                
+                <!-- 活跃项目 -->
+                <div class="glass-panel rounded-2xl p-5 stat-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <i class="fas fa-project-diagram text-blue-400"></i>
+                        </div>
+                        <span class="text-xs text-blue-400 flex items-center gap-1">
+                            <i class="fas fa-arrow-up"></i> +3
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-1">活跃项目</p>
+                    <p class="text-2xl font-bold text-white metric-value" id="publicActiveProjects">12</p>
+                </div>
+                
+                <!-- 完成项目 -->
+                <div class="glass-panel rounded-2xl p-5 stat-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-check-circle text-purple-400"></i>
+                        </div>
+                        <span class="text-xs text-purple-400">本月</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-1">已完成</p>
+                    <p class="text-2xl font-bold text-white metric-value" id="publicCompleted">28</p>
+                </div>
+                
+                <!-- Agent在线 -->
+                <div class="glass-panel rounded-2xl p-5 stat-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                            <i class="fas fa-robot text-cyan-400"></i>
+                        </div>
+                        <span class="w-2 h-2 rounded-full bg-green-500 status-dot text-green-500"></span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-1">Agent在线</p>
+                    <p class="text-2xl font-bold text-white metric-value" id="publicAgents">6/6</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 左侧：Agent状态 -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-panel rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <i class="fas fa-users text-blue-400"></i>
+                                Agent 团队状态
+                            </h2>
+                            <span class="text-xs text-gray-500">实时更新</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="publicAgentGrid">
+                            <!-- Agents will be populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- 收入趋势（简化版） -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <i class="fas fa-chart-line text-green-400"></i>
+                                收入趋势
+                            </h2>
+                            <select class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm text-gray-400">
+                                <option>近7天</option>
+                                <option>近30天</option>
+                            </select>
+                        </div>
+                        <div class="h-48 flex items-end gap-2" id="revenueChart">
+                            <!-- Chart bars will be populated by JS -->
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs text-gray-500">
+                            <span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span><span>周日</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧：项目动态 -->
+                <div class="space-y-6">
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-folder-open text-purple-400"></i>
+                            最新项目
+                        </h2>
+                        
+                        <div class="space-y-3" id="publicProjectList">
+                            <!-- Projects will be populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- 系统公告 -->
+                    <div class="glass-panel rounded-2xl p-6 bg-gradient-to-br from-blue-600/10 to-purple-600/10">
+                        <h3 class="font-semibold mb-3 flex items-center gap-2">
+                            <i class="fas fa-bullhorn text-yellow-400"></i>
+                            系统公告
+                        </h3>
+                        <div class="space-y-2 text-sm text-gray-300">
+                            <p class="flex items-start gap-2">
+                                <span class="text-blue-400">•</span>
+                                Gmail自动接单系统 v2.0 已上线
+                            </p>
+                            <p class="flex items-start gap-2">
+                                <span class="text-blue-400">•</span>
+                                新增多语言网站支持（10种语言）
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 完整版视图（默认隐藏） ==================== -->
+        <div id="fullView" class="hidden fade-in">
+            <!-- 详细统计 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
+                <div class="glass-panel rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">本月收入</p>
+                    <p class="text-lg font-bold text-green-400" id="fullRevenue">¥128,500</p>
+                    <p class="text-xs text-gray-600">目标: ¥150,000</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">活跃项目</p>
+                    <p class="text-lg font-bold text-blue-400" id="fullActive">12</p>
+                    <p class="text-xs text-gray-600">+3 本周新增</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">待评审</p>
+                    <p class="text-lg font-bold text-yellow-400" id="fullPending">5</p>
+                    <p class="text-xs text-gray-600">2个高优先级</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">已完成</p>
+                    <p class="text-lg font-bold text-purple-400" id="fullCompleted">28</p>
+                    <p class="text-xs text-gray-600">本月累计</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">Agent负载</p>
+                    <p class="text-lg font-bold text-cyan-400">78%</p>
+                    <p class="text-xs text-gray-600">平均利用率</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">系统运行</p>
+                    <p class="text-lg font-bold text-emerald-400" id="fullUptime">99.9%</p>
+                    <p class="text-xs text-gray-600 font-mono" id="uptimeText">14d 3h</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 左侧：Agent管理 -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Agent网格（带操作按钮） -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <i class="fas fa-network-wired text-blue-400"></i>
+                                Agent 网络管理
+                            </h2>
+                            <div class="flex gap-2">
+                                <button onclick="refreshAllAgents()" class="px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-400 text-xs hover:bg-blue-500/30 transition">
+                                    <i class="fas fa-sync mr-1"></i>刷新状态
+                                </button>
+                                <button onclick="showAddAgentModal()" class="px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 text-xs hover:bg-green-500/30 transition">
+                                    <i class="fas fa-plus mr-1"></i>添加
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="fullAgentGrid">
+                            <!-- Full version agents -->
+                        </div>
+                    </div>
+
+                    <!-- 详细项目列表 -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <i class="fas fa-tasks text-purple-400"></i>
+                                项目管理
+                            </h2>
+                            <button onclick="showAddProjectModal()" class="px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-400 text-xs hover:bg-purple-500/30 transition">
+                                <i class="fas fa-plus mr-1"></i>新建项目
+                            </button>
+                        </div>
+                        
+                        <!-- 项目标签页 -->
+                        <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+                            <button onclick="switchProjectTab('discussing')" id="tab-discussing" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg border border-gray-700 text-sm text-gray-400">
+                                讨论中 (<span id="count-discussing">0</span>)
+                            </button>
+                            <button onclick="switchProjectTab('progress')" id="tab-progress" class="tab-btn active whitespace-nowrap px-4 py-2 rounded-lg border border-gray-700 text-sm text-gray-400">
+                                进行中 (<span id="count-progress">0</span>)
+                            </button>
+                            <button onclick="switchProjectTab('review')" id="tab-review" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg border border-gray-700 text-sm text-gray-400">
+                                待评审 (<span id="count-review">0</span>)
+                            </button>
+                            <button onclick="switchProjectTab('completed')" id="tab-completed" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg border border-gray-700 text-sm text-gray-400">
+                                已完成 (<span id="count-completed">0</span>)
+                            </button>
+                        </div>
+
+                        <div id="fullProjectList" class="space-y-3">
+                            <!-- Full project list -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：系统日志与配置 -->
+                <div class="space-y-6">
+                    <!-- 实时日志 -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <i class="fas fa-terminal text-gray-400"></i>
+                                系统日志
+                            </h2>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-green-500 status-dot text-green-500"></span>
+                                <span class="text-xs text-green-400">LIVE</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-black/30 rounded-xl p-3 font-mono text-xs">
+                            <div id="systemLog" class="space-y-1 max-h-64 overflow-y-auto">
+                                <!-- Logs will be populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 快速操作 -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-bolt text-yellow-400"></i>
+                            快速操作
+                        </h2>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="actionBackup()" class="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-left">
+                                <i class="fas fa-database text-blue-400 mb-2 block"></i>
+                                <span class="text-sm">数据备份</span>
+                            </button>
+                            <button onclick="actionRestart()" class="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-left">
+                                <i class="fas fa-redo text-orange-400 mb-2 block"></i>
+                                <span class="text-sm">重启服务</span>
+                            </button>
+                            <button onclick="actionNotify()" class="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-left">
+                                <i class="fas fa-bell text-purple-400 mb-2 block"></i>
+                                <span class="text-sm">发送通知</span>
+                            </button>
+                            <button onclick="actionExport()" class="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-left">
+                                <i class="fas fa-download text-green-400 mb-2 block"></i>
+                                <span class="text-sm">导出报告</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- API状态 -->
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-plug text-cyan-400"></i>
+                            API 状态
+                        </h2>
+                        
+                        <div class="space-y-3" id="apiStatusList">
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                    <span class="text-sm">Gmail API</span>
+                                </div>
+                                <span class="text-xs text-green-400">正常</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                    <span class="text-sm">Twitter API</span>
+                                </div>
+                                <span class="text-xs text-green-400">正常</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                    <span class="text-sm">OpenAI API</span>
+                                </div>
+                                <span class="text-xs text-yellow-400">延迟高</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                    <span class="text-sm">Feishu API</span>
+                                </div>
+                                <span class="text-xs text-green-400">正常</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-600">
+            <p>Nexus AI Monitor System v5.0 | 数据每30秒自动更新</p>
+            <p class="mt-1">© 2026 Nexus AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== 全局配置 ====================
+        const CONFIG = {
+            refreshInterval: 30000, // 30秒
+            version: '5.0',
+            apiEndpoint: '/api/monitor', // 待与CTO确认
+        };
+
+        // ==================== 数据存储 ====================
+        const dataStore = {
+            currentVersion: 'public', // public | full
+            agents: [
+                { id: 'ceo', name: 'Alex', title: 'CEO', role: '战略决策', status: 'active', activity: '评估新项目', load: 65, color: 'blue' },
+                { id: 'cmo', name: 'Sarah', title: 'CMO', role: '市场推广', status: 'active', activity: '监控社媒数据', load: 78, color: 'purple' },
+                { id: 'cto', name: 'David', title: 'CTO', role: '技术开发', status: 'busy', activity: '开发Gmail系统', load: 92, color: 'cyan' },
+                { id: 'cfo', name: 'Lisa', title: 'CFO', role: '财务管理', status: 'active', activity: '财务报表分析', load: 45, color: 'green' },
+                { id: 'cpo', name: 'Michael', title: 'CPO', role: '产品设计', status: 'active', activity: '监控页面设计', load: 70, color: 'pink' },
+                { id: 'coo', name: 'Emma', title: 'COO', role: '运营管理', status: 'active', activity: '处理客户邮件', load: 60, color: 'orange' }
+            ],
+            revenue: {
+                current: 128500,
+                target: 150000,
+                history: [85000, 92000, 88000, 105000, 115000, 122000, 128500]
+            },
+            projects: {
+                discussing: [
+                    { id: 1, title: 'AI电商客服机器人', client: '潜在客户A', priority: 'high', description: '全自动化客户服务解决方案', budget: '¥50,000', created: '2026-02-16' },
+                    { id: 2, title: '数据管道系统', client: '潜在客户B', priority: 'medium', description: '自动化数据处理工作流', budget: '¥35,000', created: '2026-02-17' },
+                    { id: 3, title: '智能文档处理', client: '潜在客户C', priority: 'high', description: 'OCR+AI文档自动分类', budget: '¥80,000', created: '2026-02-18' }
+                ],
+                progress: [
+                    { id: 4, title: 'AI提示词生成器', progress: 100, team: ['cto', 'cpo'], description: '免费AI提示词生成工具', status: 'completed', budget: '¥0', started: '2026-02-01' },
+                    { id: 5, title: 'Gmail自动接单系统 v2.0', progress: 85, team: ['cto', 'coo'], description: '智能邮件过滤+验证码检测', status: 'active', budget: '¥25,000', started: '2026-02-10' },
+                    { id: 6, title: '多语言网站 v4.1', progress: 95, team: ['cto', 'cpo', 'cmo'], description: '10语言支持+IP自动识别', status: 'active', budget: '¥40,000', started: '2026-02-08' },
+                    { id: 7, title: 'X自动发布系统', progress: 60, team: ['cto', 'cmo'], description: '6小时频率自动推文', status: 'active', budget: '¥15,000', started: '2026-02-12' }
+                ],
+                review: [
+                    { id: 8, title: '客户数据分析面板', progress: 100, team: ['cto', 'cfo'], description: '可视化财务数据报表', status: 'review', budget: '¥30,000', submitted: '2026-02-17' }
+                ],
+                completed: [
+                    { id: 9, title: '公司官网 v1.0', completedDate: '2026-02-15', team: ['cto', 'cpo'], description: '公司官网首次上线', budget: '¥20,000' },
+                    { id: 10, title: 'X自动发布系统 v1.0', completedDate: '2026-02-16', team: ['cto', 'cmo'], description: '基础自动推文功能', budget: '¥12,000' },
+                    { id: 11, title: 'Gmail自动接单系统 v1.0', completedDate: '2026-02-17', team: ['cto', 'coo'], description: '基础邮件过滤系统', budget: '¥18,000' }
+                ]
+            },
+            logs: [],
+            startTime: Date.now()
+        };
+
+        let currentProjectTab = 'progress';
+        let refreshTimer = null;
+        let isRefreshing = false;
+
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUI();
+            startAutoRefresh();
+            addSystemLog('系统初始化完成', 'success');
+            addSystemLog('连接至监控服务器...', 'info');
+        });
+
+        function initializeUI() {
+            renderPublicAgents();
+            renderPublicProjects();
+            renderRevenueChart();
+            renderFullAgents();
+            renderFullProjects();
+            updateStats();
+        }
+
+        // ==================== 版本切换 ====================
+        function switchVersion(version) {
+            dataStore.currentVersion = version;
+            
+            // Update buttons
+            document.getElementById('btn-public').classList.toggle('active', version === 'public');
+            document.getElementById('btn-full').classList.toggle('active', version === 'full');
+            
+            // Update mobile banner
+            document.getElementById('mobileVersionText').textContent = version === 'public' ? '当前：公开版' : '当前：管理版';
+            
+            // Switch views
+            document.getElementById('publicView').classList.toggle('hidden', version !== 'public');
+            document.getElementById('fullView').classList.toggle('hidden', version !== 'full');
+            
+            // Add animation
+            const activeView = document.getElementById(version === 'public' ? 'publicView' : 'fullView');
+            activeView.classList.remove('fade-in');
+            void activeView.offsetWidth; // Trigger reflow
+            activeView.classList.add('fade-in');
+            
+            addSystemLog(`切换到${version === 'public' ? '公开版' : '管理版'}视图`, 'info');
+        }
+
+        function toggleMobileVersion() {
+            switchVersion(dataStore.currentVersion === 'public' ? 'full' : 'public');
+        }
+
+        // ==================== 公开版渲染 ====================
+        function renderPublicAgents() {
+            const grid = document.getElementById('publicAgentGrid');
+            grid.innerHTML = dataStore.agents.map(agent => `
+                <div class="agent-card ${agent.status} rounded-xl p-4 cursor-pointer">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 rounded-full bg-${agent.color}-500/20 flex items-center justify-center text-2xl border-2 border-${agent.color}-500/30">
+                            ${getAgentEmoji(agent.id)}
+                        </div>
+                        <div>
+                            <p class="font-medium text-white">${agent.name}</p>
+                            <p class="text-xs text-gray-400">${agent.role}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/5 rounded-lg p-2 mb-3">
+                        <p class="text-xs text-gray-300 truncate">${agent.activity}</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full ${getStatusColor(agent.status)}"></span>
+                            <span class="text-xs ${agent.status === 'active' ? 'text-green-400' : 'text-orange-400'}">${getStatusText(agent.status)}</span>
+                        </div>
+                        <div class="w-16 bg-gray-700 rounded-full h-1.5">
+                            <div class="h-1.5 rounded-full bg-${agent.color}-500" style="width: ${agent.load}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPublicProjects() {
+            const list = document.getElementById('publicProjectList');
+            const allProjects = [...dataStore.projects.progress, ...dataStore.projects.completed.slice(0, 2)];
+            
+            list.innerHTML = allProjects.slice(0, 5).map(project => `
+                <div class="project-card glass-panel rounded-xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2 py-0.5 rounded text-xs font-medium ${getProjectStatusStyle(project.status)}">
+                            ${getProjectStatusText(project.status)}
+                        </span>
+                        ${project.progress !== undefined ? `<span class="text-xs text-gray-500">${project.progress}%</span>` : ''}
+                    </div>
+                    <p class="font-medium text-white mb-1">${project.title}</p>
+                    <div class="flex items-center gap-2">
+                        ${(project.team || []).map(id => `
+                            <span class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs" title="${getAgentName(id)}">${getAgentEmoji(id)}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRevenueChart() {
+            const chart = document.getElementById('revenueChart');
+            const max = Math.max(...dataStore.revenue.history);
+            
+            chart.innerHTML = dataStore.revenue.history.map((val, idx) => {
+                const height = (val / max) * 100;
+                const isLast = idx === dataStore.revenue.history.length - 1;
+                return `
+                    <div class="flex-1 flex flex-col items-center gap-1 group cursor-pointer">
+                        <div class="w-full bg-gradient-to-t from-blue-500/30 to-cyan-500/30 rounded-t-lg transition-all duration-300 group-hover:from-blue-500/50 group-hover:to-cyan-500/50 relative" style="height: ${height}%; min-height: 20px;">
+                            ${isLast ? '<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==================== 完整版渲染 ====================
+        function renderFullAgents() {
+            const grid = document.getElementById('fullAgentGrid');
+            grid.innerHTML = dataStore.agents.map(agent => `
+                <div class="agent-card ${agent.status} rounded-xl p-4 relative group">
+                    <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="viewAgentDetail('${agent.id}')" class="p-1 rounded bg-white/10 hover:bg-white/20">
+                            <i class="fas fa-ellipsis-h text-xs"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 rounded-full bg-${agent.color}-500/20 flex items-center justify-center text-2xl border-2 border-${agent.color}-500/30">
+                            ${getAgentEmoji(agent.id)}
+                        </div>
+                        <div>
+                            <p class="font-medium text-white">${agent.name}</p>
+                            <p class="text-xs text-gray-400">${agent.title}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/5 rounded-lg p-2 mb-3">
+                        <p class="text-xs text-gray-300">${agent.activity}</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full ${getStatusColor(agent.status)}"></span>
+                            <span class="text-xs ${agent.status === 'active' ? 'text-green-400' : 'text-orange-400'}">${getStatusText(agent.status)}</span>
+                        </div>
+                        <span class="text-xs text-gray-500">负载 ${agent.load}%</span>
+                    </div>
+                    
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-3">
+                        <div class="progress-bar h-2 rounded-full" style="width: ${agent.load}%"></div>
+                    </div>
+                    
+                    <div class="action-btn flex gap-2">
+                        <button onclick="restartAgent('${agent.id}')" class="flex-1 py-1.5 rounded-lg bg-orange-500/20 text-orange-400 text-xs hover:bg-orange-500/30 transition">
+                            <i class="fas fa-redo mr-1"></i>重启
+                        </button>
+                        <button onclick="pauseAgent('${agent.id}')" class="flex-1 py-1.5 rounded-lg bg-yellow-500/20 text-yellow-400 text-xs hover:bg-yellow-500/30 transition">
+                            <i class="fas fa-pause mr-1"></i>暂停
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFullProjects() {
+            const list = document.getElementById('fullProjectList');
+            const projects = dataStore.projects[currentProjectTab];
+            
+            // Update counts
+            document.getElementById('count-discussing').textContent = dataStore.projects.discussing.length;
+            document.getElementById('count-progress').textContent = dataStore.projects.progress.length;
+            document.getElementById('count-review').textContent = dataStore.projects.review.length;
+            document.getElementById('count-completed').textContent = dataStore.projects.completed.length;
+            
+            // Update tab active states
+            ['discussing', 'progress', 'review', 'completed'].forEach(tab => {
+                const btn = document.getElementById(`tab-${tab}`);
+                if (btn) btn.classList.toggle('active', tab === currentProjectTab);
+            });
+            
+            if (projects.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-inbox text-3xl mb-2 opacity-50"></i>
+                        <p>暂无项目</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = projects.map(project => `
+                <div class="project-card glass-panel rounded-xl p-4">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 rounded text-xs font-medium ${getProjectStatusStyle(project.status)}">
+                                    ${getProjectStatusText(project.status)}
+                                </span>
+                                ${project.budget ? `<span class="text-xs text-green-400">${project.budget}</span>` : ''}
+                            </div>
+                            <p class="font-medium text-white">${project.title}</p>
+                            <p class="text-sm text-gray-400">${project.client || project.description}</p>
+                        </div>
+                        <div class="flex gap-1">
+                            <button onclick="editProject(${project.id})" class="p-2 rounded-lg bg-white/5 hover:bg-blue-500/20 text-gray-400 hover:text-blue-400 transition">
+                                <i class="fas fa-edit text-xs"></i>
+                            </button>
+                            <button onclick="deleteProject(${project.id})" class="p-2 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    ${project.progress !== undefined ? `
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs text-gray-500">${project.progress}%</span>
+                            <div class="flex-1 bg-gray-700 rounded-full h-1.5">
+                                <div class="progress-bar h-1.5 rounded-full" style="width: ${project.progress}%"></div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            ${(project.team || []).map(id => `
+                                <span class="w-7 h-7 rounded-full bg-gray-700 flex items-center justify-center text-xs" title="${getAgentName(id)}">${getAgentEmoji(id)}</span>
+                            `).join('')}
+                        </div>
+                        <span class="text-xs text-gray-500">${project.created || project.started || project.completedDate || project.submitted || ''}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchProjectTab(tab) {
+            currentProjectTab = tab;
+            renderFullProjects();
+        }
+
+        // ==================== 系统日志 ====================
+        function addSystemLog(message, type = 'info') {
+            const logContainer = document.getElementById('systemLog');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            
+            const colorClass = {
+                'success': 'text-green-400',
+                'error': 'text-red-400',
+                'warning': 'text-yellow-400',
+                'info': 'text-blue-400'
+            }[type] || 'text-gray-400';
+            
+            const icon = {
+                'success': '✓',
+                'error': '✗',
+                'warning': '⚠',
+                'info': 'ℹ'
+            }[type] || '•';
+            
+            const entry = document.createElement('div');
+            entry.className = 'log-entry flex items-center gap-2 py-1';
+            entry.innerHTML = `
+                <span class="text-gray-600 font-mono">${time}</span>
+                <span class="${colorClass}">${icon}</span>
+                <span class="text-gray-300">${message}</span>
+            `;
+            
+            logContainer.insertBefore(entry, logContainer.firstChild);
+            
+            while (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        // ==================== 自动刷新 ====================
+        function startAutoRefresh() {
+            refreshTimer = setInterval(() => {
+                autoRefreshData();
+            }, CONFIG.refreshInterval);
+        }
+
+        function autoRefreshData() {
+            if (isRefreshing) return;
+            isRefreshing = true;
+            
+            // Simulate data fetch (replace with actual API call)
+            fetchMonitorData()
+                .then(data => {
+                    updateDataStore(data);
+                    updateUI();
+                    addSystemLog('数据已同步', 'success');
+                })
+                .catch(err => {
+                    console.error('Refresh failed:', err);
+                    addSystemLog('数据同步失败', 'error');
+                })
+                .finally(() => {
+                    isRefreshing = false;
+                });
+        }
+
+        function manualRefresh() {
+            const btn = document.getElementById('refreshBtn');
+            btn.querySelector('i').classList.add('refresh-spin');
+            
+            addSystemLog('手动刷新...', 'info');
+            
+            fetchMonitorData()
+                .then(data => {
+                    updateDataStore(data);
+                    updateUI();
+                    addSystemLog('手动刷新完成', 'success');
+                })
+                .catch(err => {
+                    addSystemLog('刷新失败: ' + err.message, 'error');
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        btn.querySelector('i').classList.remove('refresh-spin');
+                    }, 500);
+                });
+        }
+
+        // ==================== API 接口（待与CTO确认） ====================
+        async function fetchMonitorData() {
+            // TODO: 等待CTO David完成后端API后替换为真实接口
+            // const response = await fetch(CONFIG.apiEndpoint);
+            // return await response.json();
+            
+            // 模拟数据 - 用于静态原型
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        agents: dataStore.agents.map(a => ({
+                            ...a,
+                            load: Math.floor(Math.random() * 40) + 40,
+                            activity: getRandomActivity(a.id)
+                        })),
+                        revenue: {
+                            current: dataStore.revenue.current + Math.floor(Math.random() * 1000),
+                            history: dataStore.revenue.history.map(v => v + Math.floor(Math.random() * 500 - 250))
+                        },
+                        timestamp: Date.now()
+                    });
+                }, 500);
+            });
+        }
+
+        function updateDataStore(data) {
+            if (data.agents) dataStore.agents = data.agents;
+            if (data.revenue) dataStore.revenue = { ...dataStore.revenue, ...data.revenue };
+        }
+
+        function updateUI() {
+            renderPublicAgents();
+            renderPublicProjects();
+            renderFullAgents();
+            renderFullProjects();
+            updateStats();
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        }
+
+        function updateStats() {
+            // Update public stats
+            document.getElementById('publicRevenue').textContent = '¥' + dataStore.revenue.current.toLocaleString();
+            document.getElementById('publicActiveProjects').textContent = dataStore.projects.progress.length;
+            document.getElementById('publicCompleted').textContent = dataStore.projects.completed.length;
+            document.getElementById('publicAgents').textContent = dataStore.agents.filter(a => a.status !== 'offline').length + '/' + dataStore.agents.length;
+            
+            // Update full stats
+            document.getElementById('fullRevenue').textContent = '¥' + dataStore.revenue.current.toLocaleString();
+            document.getElementById('fullActive').textContent = dataStore.projects.progress.length;
+            document.getElementById('fullPending').textContent = dataStore.projects.discussing.length;
+            document.getElementById('fullCompleted').textContent = dataStore.projects.completed.length;
+            
+            // Uptime
+            const uptime = Math.floor((Date.now() - dataStore.startTime) / 1000);
+            const days = Math.floor(uptime / 86400);
+            const hours = Math.floor((uptime % 86400) / 3600);
+            document.getElementById('uptimeText').textContent = `${days}d ${hours}h`;
+        }
+
+        // ==================== 操作函数 ====================
+        function viewAgentDetail(agentId) {
+            addSystemLog(`查看Agent详情: ${agentId}`, 'info');
+            alert(`Agent ${agentId} 详情面板（开发中）`);
+        }
+
+        function restartAgent(agentId) {
+            addSystemLog(`重启Agent: ${agentId}`, 'warning');
+            // TODO: 实现重启逻辑
+        }
+
+        function pauseAgent(agentId) {
+            addSystemLog(`暂停Agent: ${agentId}`, 'warning');
+            // TODO: 实现暂停逻辑
+        }
+
+        function editProject(projectId) {
+            addSystemLog(`编辑项目: #${projectId}`, 'info');
+            alert(`编辑项目 #${projectId}（开发中）`);
+        }
+
+        function deleteProject(projectId) {
+            if (confirm(`确定要删除项目 #${projectId} 吗？`)) {
+                addSystemLog(`删除项目: #${projectId}`, 'warning');
+                // TODO: 实现删除逻辑
+            }
+        }
+
+        function showAddProjectModal() {
+            addSystemLog('打开新建项目面板', 'info');
+            alert('新建项目面板（开发中）');
+        }
+
+        function showAddAgentModal() {
+            addSystemLog('打开添加Agent面板', 'info');
+            alert('添加Agent面板（开发中）');
+        }
+
+        function refreshAllAgents() {
+            addSystemLog('刷新所有Agent状态', 'info');
+            manualRefresh();
+        }
+
+        function actionBackup() {
+            addSystemLog('开始数据备份...', 'info');
+            setTimeout(() => addSystemLog('数据备份完成', 'success'), 2000);
+        }
+
+        function actionRestart() {
+            if (confirm('确定要重启所有服务吗？')) {
+                addSystemLog('服务重启中...', 'warning');
+            }
+        }
+
+        function actionNotify() {
+            const msg = prompt('输入通知内容:');
+            if (msg) addSystemLog(`发送通知: ${msg}`, 'info');
+        }
+
+        function actionExport() {
+            addSystemLog('导出监控报告', 'info');
+            alert('报告导出中...（开发中）');
+        }
+
+        // ==================== 工具函数 ====================
+        function getAgentEmoji(id) {
+            const emojis = {
+                ceo: '👔', cmo: '📢', cto: '💻',
+                cfo: '💰', cpo: '🎨', coo: '⚙️'
+            };
+            return emojis[id] || '🤖';
+        }
+
+        function getAgentName(id) {
+            const agent = dataStore.agents.find(a => a.id === id);
+            return agent ? agent.name : id;
+        }
+
+        function getStatusColor(status) {
+            return {
+                'active': 'bg-green-500',
+                'busy': 'bg-orange-500',
+                'offline': 'bg-gray-500',
+                'error': 'bg-red-500'
+            }[status] || 'bg-gray-500';
+        }
+
+        function getStatusText(status) {
+            return {
+                'active': '空闲',
+                'busy': '忙碌',
+                'offline': '离线',
+                'error': '错误'
+            }[status] || status;
+        }
+
+        function getProjectStatusStyle(status) {
+            const styles = {
+                'discussing': 'bg-gray-500/20 text-gray-400',
+                'active': 'bg-blue-500/20 text-blue-400',
+                'review': 'bg-yellow-500/20 text-yellow-400',
+                'completed': 'bg-green-500/20 text-green-400',
+                'pending': 'bg-purple-500/20 text-purple-400'
+            };
+            return styles[status] || styles['discussing'];
+        }
+
+        function getProjectStatusText(status) {
+            const texts = {
+                'discussing': '讨论中',
+                'active': '进行中',
+                'review': '待评审',
+                'completed': '已完成',
+                'pending': '待开始'
+            };
+            return texts[status] || status;
+        }
+
+        function getRandomActivity(agentId) {
+            const activities = {
+                ceo: ['评估新项目', '战略规划', '团队会议', '客户沟通'],
+                cmo: ['分析市场数据', '优化推广策略', '内容审核', '竞品调研'],
+                cto: ['代码审查', '架构设计', 'Bug修复', '性能优化'],
+                cfo: ['财务报表', '预算分析', '成本核算', '收入预测'],
+                cpo: ['产品设计', '用户体验优化', '需求分析', '原型评审'],
+                coo: ['流程优化', '客户支持', '运营监控', '数据分析']
+            };
+            const list = activities[agentId] || ['工作中...'];
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        // 每分钟添加随机系统日志
+        setInterval(() => {
+            const messages = [
+                { msg: 'Agent完成周期性任务', type: 'success' },
+                { msg: '新数据已同步', type: 'info' },
+                { msg: '系统资源使用正常', type: 'info' },
+                { msg: '备份任务已排队', type: 'info' }
+            ];
+            const random = messages[Math.floor(Math.random() * messages.length)];
+            if (Math.random() > 0.7) {
+                addSystemLog(random.msg, random.type);
+            }
+        }, 60000);
+    </script>
+</body>
+</html>
