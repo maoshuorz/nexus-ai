@@ -318,7 +318,7 @@
                     <a href="#services" class="nav-link text-lg" data-i18n="nav_services">Services</a>
                     <a href="#monitor" class="nav-link text-lg" data-i18n="nav_monitor">Live Monitor</a>
                     <a href="#insights" class="nav-link text-lg" data-i18n="nav_insights">Insights</a>
-                    <a href="projects.html" class="px-6 py-2.5 mint-gradient text-black font-bold border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
+                    <a href="projects.html?v=2" class="px-6 py-2.5 mint-gradient text-black font-bold border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
                         📊 Projects
                     </a>
                     <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn px-4 py-2 text-sm" data-i18n="nav_contact">Contact</a>
@@ -366,7 +366,7 @@
                 
                 <div class="flex flex-wrap justify-center gap-4 mobile-stack">
                     <a href="#services" class="pixel-btn px-6 py-3 text-lg" data-i18n="btn_view_services">VIEW SERVICES</a>
-                    <a href="projects.html" id="projects-btn" data-i18n="projects" class="px-8 py-4 mint-gradient text-black font-bold text-lg border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
+                    <a href="projects.html?v=2" id="projects-btn" data-i18n="projects" class="px-8 py-4 mint-gradient text-black font-bold text-lg border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
                         📊 View Projects →
                     </a>
                     <a href="mailto:qingziyuezi@gmail.com" class="pixel-btn secondary px-6 py-3 text-lg" data-i18n="btn_contact_us">CONTACT US</a>
@@ -925,8 +925,11 @@
             // Update projects link with language parameter
             const projectsBtn = document.getElementById('projects-btn');
             if (projectsBtn) {
-                projectsBtn.href = `projects.html?lang=${lang}`;
+                projectsBtn.href = `projects.html?lang=${lang}&v=2`;
             }
+            
+            // Update projects button text based on language
+            updateProjectsButton();
             
             // Close dropdown only if not initializing
             if (!isInit) {
@@ -956,6 +959,28 @@
             return 'en';
         }
 
+        // Update project button text
+        function updateProjectsButton() {
+            const btn = document.getElementById('projects-btn');
+            const lang = localStorage.getItem('nexus-language') || 'zh';
+            const texts = {
+                zh: '📊 项目展示 →',
+                en: '📊 View Projects →',
+                fr: '📊 Voir les Projets →',
+                ar: '📊 المشاريع →',
+                ja: '📊 プロジェクト →',
+                ko: '📊 프로젝트 →',
+                es: '📊 Ver Proyectos →',
+                de: '📊 Projekte →',
+                ru: '📊 Проекты →',
+                pt: '📊 Ver Projetos →'
+            };
+            if (btn && texts[lang]) {
+                btn.innerHTML = texts[lang];
+                btn.href = `projects.html?lang=${lang}&v=2`;
+            }
+        }
+
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             const dropdown = document.querySelector('.lang-dropdown');
@@ -968,6 +993,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             const lang = detectLanguage();
             selectLanguage(lang, true);  // Pass true to prevent dropdown toggle on init
+            
+            // Update projects button text
+            updateProjectsButton();
             
             // Start real-time data fetch
             fetchRealtimeData();

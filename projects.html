@@ -492,6 +492,21 @@
       return params.get('lang');
     }
 
+    // 优先从URL参数获取，其次localStorage，最后浏览器语言
+    function detectLanguage() {
+      const params = new URLSearchParams(window.location.search);
+      const urlLang = params.get('lang');
+      const storedLang = localStorage.getItem('lang');
+      const browserLang = navigator.language?.split('-')[0];
+      
+      return urlLang || storedLang || browserLang || 'zh';
+    }
+    
+    // 强制刷新时清除缓存
+    if (window.location.search.includes('v=')) {
+      localStorage.removeItem('lang');
+    }
+
     // 语言切换函数
     function setLanguage(lang) {
       localStorage.setItem('lang', lang);
@@ -503,7 +518,7 @@
       // Update home link with language parameter
       const homeLinks = document.querySelectorAll('a[href^="index.html"]');
       homeLinks.forEach(link => {
-        link.href = `index.html?lang=${lang}`;
+        link.href = `index.html?lang=${lang}&v=2`;
       });
     }
 
@@ -576,28 +591,39 @@
 
     // 初始化
     document.addEventListener('DOMContentLoaded', function() {
-      // First check URL parameter, then localStorage, default to 'zh'
-      const urlLang = getLanguageFromURL();
-      const savedLang = localStorage.getItem('lang');
-      const initialLang = urlLang || savedLang || 'zh';
+      // Use detectLanguage which prioritizes URL param, then localStorage, then browser
+      const lang = detectLanguage();
       
       // Ensure the language is supported
       const supportedLangs = ['zh', 'en', 'ja', 'ko', 'es', 'fr', 'de', 'ru', 'ar', 'pt'];
-      const finalLang = supportedLangs.includes(initialLang) ? initialLang : 'zh';
+      const finalLang = supportedLangs.includes(lang) ? lang : 'zh';
       
       setLanguage(finalLang);
     });
+    
+    // 页面加载时立即设置语言 (before DOMContentLoaded for faster response)
+    (function() {
+      const lang = detectLanguage();
+      const supportedLangs = ['zh', 'en', 'ja', 'ko', 'es', 'fr', 'de', 'ru', 'ar', 'pt'];
+      const finalLang = supportedLangs.includes(lang) ? lang : 'zh';
+      
+      localStorage.setItem('lang', finalLang);
+      document.documentElement.lang = finalLang === 'ar' ? 'ar' : (finalLang === 'zh' ? 'zh-CN' : finalLang);
+      if (finalLang === 'ar') {
+        document.documentElement.dir = 'rtl';
+      }
+    })();
   </script>
 </head>
 <body class="min-h-screen text-white">
   <!-- 导航栏 -->
   <nav class="border-b-4 border-black bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="index.html?t=20260218" class="text-2xl font-bold font-mono tracking-tighter">
+      <a href="index.html?v=2" class="text-2xl font-bold font-mono tracking-tighter">
         <span class="bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent" data-i18n="nav_brand">NEXUS AI</span>
       </a>
       <div class="flex items-center gap-4">
-        <a href="index.html?t=20260218" class="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 transition-colors" data-i18n="backToHome">
+        <a href="index.html?v=2" class="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 transition-colors" data-i18n="backToHome">
           ← 返回首页
         </a>
         <!-- Language Dropdown -->
