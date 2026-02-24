@@ -3,389 +3,1390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="page_title">Nexus AI - 6个AI Agent自主开发公司</title>
-    <meta name="description" content="6个AI Agent组成的专业开发团队，提供24/7自主开发服务">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Nexus AI - 六艺智团像素智能</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --pink: #FF6B9D;
+            --pink-glow: #FF6B9D80;
+            --cyan: #4ECDC4;
+            --cyan-glow: #4ECDC480;
+            --yellow: #FFE66D;
+            --yellow-glow: #FFE66D80;
+            --dark: #1A1A2E;
+            --darker: #0F0F1A;
+            --light: #F7F7F7;
+        }
+
         * {
-            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        /* 卡通机器人动画 */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+        body {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
-        
-        @keyframes blink {
-            0%, 90%, 100% { transform: scaleY(1); }
-            95% { transform: scaleY(0.1); }
+
+        /* Pixel grid background */
+        .pixel-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(78, 205, 196, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78, 205, 196, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -1;
         }
-        
-        .robot-float {
-            animation: float 3s ease-in-out infinite;
+
+        /* Neon text effect */
+        .neon-text {
+            text-shadow: 
+                0 0 5px var(--pink),
+                0 0 10px var(--pink),
+                0 0 20px var(--pink),
+                0 0 40px var(--pink-glow);
         }
-        
-        .robot-blink {
-            animation: blink 4s ease-in-out infinite;
+
+        .neon-cyan {
+            text-shadow: 
+                0 0 5px var(--cyan),
+                0 0 10px var(--cyan),
+                0 0 20px var(--cyan),
+                0 0 40px var(--cyan-glow);
         }
-        
-        /* 像素风格按钮 */
-        .pixel-btn {
-            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
-            transition: all 0.2s;
+
+        .neon-yellow {
+            text-shadow: 
+                0 0 5px var(--yellow),
+                0 0 10px var(--yellow),
+                0 0 20px var(--yellow),
+                0 0 40px var(--yellow-glow);
         }
-        
-        .pixel-btn:hover {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+
+        /* Neon border */
+        .neon-border {
+            border: 3px solid var(--pink);
+            box-shadow: 
+                0 0 5px var(--pink),
+                0 0 10px var(--pink),
+                inset 0 0 5px var(--pink-glow);
         }
-        
-        .pixel-btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 3px solid var(--cyan);
+            box-shadow: 0 0 20px var(--cyan-glow);
         }
-        
-        /* 语言选择器 */
-        .lang-dropdown {
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            color: var(--yellow);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            image-rendering: pixelated;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
             position: relative;
         }
-        
-        .lang-dropdown-menu {
-            display: none;
+
+        .nav-links a:hover {
+            color: var(--cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
             position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border: 2px solid black;
-            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
-            min-width: 150px;
-            z-index: 1000;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--cyan);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px var(--cyan);
         }
-        
-        .lang-dropdown-menu.show {
-            display: block;
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
-        
-        .lang-option {
-            padding: 8px 16px;
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            color: var(--pink);
+            animation: flicker 3s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; text-shadow: 0 0 30px var(--pink), 0 0 60px var(--pink-glow); }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--cyan);
+            margin-bottom: 2rem;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-robots {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-robot {
+            width: 80px;
+            height: 80px;
+            image-rendering: pixelated;
+            animation: float 3s ease-in-out infinite;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: transform 0.3s;
         }
-        
-        .lang-option:hover {
-            background: #f3f4f6;
+
+        .hero-robot:hover {
+            transform: scale(1.2);
         }
-        
-        .lang-option.active {
-            background: #10B981;
-            color: white;
+
+        .hero-robot:nth-child(2) { animation-delay: 0.5s; }
+        .hero-robot:nth-child(3) { animation-delay: 1s; }
+        .hero-robot:nth-child(4) { animation-delay: 1.5s; }
+        .hero-robot:nth-child(5) { animation-delay: 2s; }
+        .hero-robot:nth-child(6) { animation-delay: 2.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
-        
-        /* 机器人卡片 */
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--pink);
+            color: var(--dark);
+            box-shadow: 
+                0 0 10px var(--pink),
+                0 0 20px var(--pink-glow),
+                inset -3px -3px 0 rgba(0,0,0,0.2),
+                inset 3px 3px 0 rgba(255,255,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 0 20px var(--pink),
+                0 0 40px var(--pink-glow),
+                inset -3px -3px 0 rgba(0,0,0,0.2),
+                inset 3px 3px 0 rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cyan);
+            border: 3px solid var(--cyan);
+            box-shadow: 
+                0 0 10px var(--cyan-glow),
+                inset 0 0 10px var(--cyan-glow);
+        }
+
+        .btn-secondary:hover {
+            background: var(--cyan);
+            color: var(--dark);
+            box-shadow: 
+                0 0 20px var(--cyan),
+                0 0 40px var(--cyan-glow);
+        }
+
+        /* Pain Points Section */
+        .pain-points {
+            padding: 6rem 2rem;
+            background: var(--dark);
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--yellow);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pain-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid var(--pink);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 
+                0 0 10px var(--pink-glow),
+                inset 0 0 20px rgba(255, 107, 157, 0.1);
+        }
+
+        .pain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 30px var(--pink-glow),
+                inset 0 0 30px rgba(255, 107, 157, 0.2);
+        }
+
+        .pain-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            image-rendering: pixelated;
+        }
+
+        .pain-card h3 {
+            color: var(--pink);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(255, 107, 157, 0.1));
+            border: 3px solid var(--cyan);
+            padding: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            border-color: var(--yellow);
+            box-shadow: 0 0 30px var(--yellow-glow);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            flex-shrink: 0;
+            image-rendering: pixelated;
+            animation: breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .feature-content h3 {
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-content p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        /* Agents Section */
+        .agents {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
         .agent-card {
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: linear-gradient(180deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 26, 0.9));
+            border: 4px solid;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            cursor: pointer;
         }
-        
+
         .agent-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(-10px) scale(1.02);
         }
-        
-        /* 响应式 */
+
+        .agent-card.zongzhi { border-color: var(--yellow); }
+        .agent-card.zongzhi:hover { box-shadow: 0 0 40px var(--yellow-glow); }
+
+        .agent-card.jinxiu { border-color: var(--pink); }
+        .agent-card.jinxiu:hover { box-shadow: 0 0 40px var(--pink-glow); }
+
+        .agent-card.jiangxin { border-color: var(--cyan); }
+        .agent-card.jiangxin:hover { box-shadow: 0 0 40px var(--cyan-glow); }
+
+        .agent-card.moran { border-color: #9B59B6; }
+        .agent-card.moran:hover { box-shadow: 0 0 40px rgba(155, 89, 182, 0.5); }
+
+        .agent-card.ruisi { border-color: #E74C3C; }
+        .agent-card.ruisi:hover { box-shadow: 0 0 40px rgba(231, 76, 60, 0.5); }
+
+        .agent-card.mingjing { border-color: #3498DB; }
+        .agent-card.mingjing:hover { box-shadow: 0 0 40px rgba(52, 152, 219, 0.5); }
+
+        .agent-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            image-rendering: pixelated;
+            animation: robotJump 2s ease-in-out infinite;
+        }
+
+        @keyframes robotJump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .agent-card:hover .agent-avatar {
+            animation: robotSpin 0.5s ease-in-out;
+        }
+
+        @keyframes robotSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .agent-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .agent-role {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .agent-desc {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .agent-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* Trust Section */
+        .trust {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .trust-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 3rem auto;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border: 3px solid var(--cyan);
+            background: rgba(78, 205, 196, 0.05);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            color: var(--cyan);
+            display: block;
+            animation: countUp 2s ease-out;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--pink-glow), var(--cyan-glow));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--darker);
+            opacity: 0.9;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            color: var(--yellow);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: var(--darker);
+            border-top: 3px solid var(--pink);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--yellow);
+            font-size: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyan);
+        }
+
+        .footer-copy {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero-title {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--dark);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+                border-top: 2px solid var(--cyan);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
                 font-size: 2rem;
             }
+
+            .hero-robot {
+                width: 60px;
+                height: 60px;
+            }
+
+            .agents-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pain-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Pixel corners */
+        .pixel-corners {
+            clip-path: polygon(
+                0 8px, 8px 8px, 8px 0,
+                calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+                100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+                8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+            );
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- 导航栏 -->
-    <nav class="bg-white border-b-4 border-black sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold text-xl border-2 border-black">
-                        N
-                    </div>
-                    <span class="font-bold text-xl">Nexus AI</span>
-                </div>
-                
-                <!-- 导航链接 -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#agents" class="font-medium hover:text-emerald-500 transition"><span data-i18n="nav_agents">团队</span></a>
-                    <a href="#services" class="font-medium hover:text-emerald-500 transition"><span data-i18n="nav_services">服务</span></a>
-                    <a href="#monitor" class="font-medium hover:text-emerald-500 transition"><span data-i18n="nav_monitor">监控</span></a>
-                    <a href="#contact" class="font-medium hover:text-emerald-500 transition"><span data-i18n="nav_contact">联系</span></a>
-                </div>
-                
-                <!-- 语言选择器 -->
-                <div class="lang-dropdown">
-                    <button class="flex items-center gap-2 px-3 py-2 border-2 border-black rounded-lg hover:bg-gray-100 transition" onclick="toggleLangDropdown()">
-                        <span id="currentLang">🇨🇳 中文</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="lang-dropdown-menu" id="langMenu">
-                        <div class="lang-option active" onclick="selectLanguage('zh')" data-lang="zh">🇨🇳 中文</div>
-                        <div class="lang-option" onclick="selectLanguage('en')" data-lang="en">🇺🇸 English</div>
-                        <div class="lang-option" onclick="selectLanguage('ja')" data-lang="ja">🇯🇵 日本語</div>
-                        <div class="lang-option" onclick="selectLanguage('ko')" data-lang="ko">🇰🇷 한국어</div>
-                        <div class="lang-option" onclick="selectLanguage('es')" data-lang="es">🇪🇸 Español</div>
-                        <div class="lang-option" onclick="selectLanguage('fr')" data-lang="fr">🇫🇷 Français</div>
-                    </div>
-                </div>
+<body>
+    <div class="pixel-bg"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+                    <!-- Nexus Logo Pixel Art -->
+                    <rect x="4" y="4" width="6" height="6" fill="#FFE66D"/>
+                    <rect x="12" y="4" width="6" height="6" fill="#FF6B9D"/>
+                    <rect x="20" y="4" width="6" height="6" fill="#4ECDC4"/>
+                    <rect x="8" y="12" width="6" height="6" fill="#4ECDC4"/>
+                    <rect x="16" y="12" width="6" height="6" fill="#FFE66D"/>
+                    <rect x="12" y="20" width="6" height="6" fill="#FF6B9D"/>
+                    <rect x="4" y="20" width="6" height="6" fill="#4ECDC4"/>
+                    <rect x="20" y="20" width="6" height="6" fill="#FFE66D"/>
+                </svg>
+                <span class="neon-yellow">NEXUS AI</span>
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">功能</a></li>
+                <li><a href="#agents">智团成员</a></li>
+                <li><a href="#trust">客户案例</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="neon-text">六艺智团，像素智能</h1>
+            <p class="hero-subtitle neon-cyan">让你的工作效率提升300%的AI智囊团</p>
+            <p class="hero-desc">六只专业AI Agent协同作战，从策略规划到代码实现，从内容创作到质量把关，一站式解决你的所有数字化需求</p>
+            
+            <div class="hero-robots">
+                <!-- 宗志 - CEO -->
+                <svg class="hero-robot" viewBox="0 0 32 32" fill="none" onclick="showAgent('zongzhi')">
+                    <!-- Crown -->
+                    <rect x="10" y="2" width="3" height="3" fill="#FFE66D"/>
+                    <rect x="19" y="2" width="3" height="3" fill="#FFE66D"/>
+                    <rect x="7" y="5" width="18" height="3" fill="#FFE66D"/>
+                    <!-- Head -->
+                    <rect x="6" y="8" width="20" height="16" fill="#FFE66D"/>
+                    <rect x="4" y="10" width="2" height="12" fill="#FFE66D"/>
+                    <rect x="26" y="10" width="2" height="12" fill="#FFE66D"/>
+                    <!-- Eyes -->
+                    <rect x="10" y="13" width="4" height="4" fill="#1A1A2E"/>
+                    <rect x="18" y="13" width="4" height="4" fill="#1A1A2E"/>
+                    <!-- Body -->
+                    <rect x="8" y="24" width="16" height="6" fill="#FFE66D"/>
+                    <rect x="6" y="26" width="2" height="4" fill="#FFE66D"/>
+                    <rect x="24" y="26" width="2" height="4" fill="#FFE66D"/>
+                </svg>
+
+                <!-- 锦绣 - Marketing -->
+                <svg class="hero-robot" viewBox="0 0 32 32" fill="none" onclick="showAgent('jinxiu')">
+                    <!-- Chart -->
+                    <rect x="22" y="6" width="3" height="3" fill="#FF6B9D"/>
+                    <rect x="22" y="11" width="3" height="5" fill="#FF6B9D"/>
+                    <!-- Head -->
+                    <rect x="6" y="8" width="14" height="14" fill="#FF6B9D"/>
+                    <rect x="4" y="10" width="2" height="10" fill="#FF6B9D"/>
+                    <rect x="20" y="10" width="2" height="10" fill="#FF6B9D"/>
+                    <!-- Eyes -->
+                    <rect x="9" y="13" width="3" height="3" fill="#1A1A2E"/>
+                    <rect x="15" y="13" width="3" height="3" fill="#1A1A2E"/>
+                    <!-- Body -->
+                    <rect x="7" y="22" width="12" height="8" fill="#FF6B9D"/>
+                </svg>
+
+                <!-- 匠心 - Backend -->
+                <svg class="hero-robot" viewBox="0 0 32 32" fill="none" onclick="showAgent('jiangxin')">
+                    <!-- Gear Teeth -->
+                    <rect x="14" y="2" width="4" height="4" fill="#4ECDC4"/>
+                    <rect x="8" y="4" width="3" height="3" fill="#4ECDC4"/>
+                    <rect x="21" y="4" width="3" height="3" fill="#4ECDC4"/>
+                    <rect x="4" y="8" width="3" height="4" fill="#4ECDC4"/>
+                    <rect x="25" y="8" width="3" height="4" fill="#4ECDC4"/>
+                    <!-- Head -->
+                    <rect x="8" y="7" width="16" height="14" fill="#4ECDC4"/>
+                    <!-- Eyes -->
+                    <rect x="11" y="11" width="4" height="4" fill="#1A1A2E"/>
+                    <rect x="18" y="11" width="4" height="4" fill="#1A1A2E"/>
+                    <!-- Body -->
+                    <rect x="9" y="21" width="14" height="9" fill="#4ECDC4"/>
+                    <rect x="6" y="23" width="3" height="5" fill="#4ECDC4"/>
+                    <rect x="23" y="23" width="3" height="5" fill="#4ECDC4"/>
+                </svg>
+
+                <!-- 墨染 - Frontend -->
+                <svg class="hero-robot" viewBox="0 0 32 32" fill="none" onclick="showAgent('moran')">
+                    <!-- Palette -->
+                    <rect x="22" y="4" width="6" height="4" fill="#9B59B6"/>
+                    <rect x="24" y="8" width="2" height="3" fill="#9B59B6"/>
+                    <rect x="23" y="6" width="2" height="2" fill="#FF6B9D"/>
+                    <rect x="26" y="6" width="1" height="1" fill="#4ECDC4"/>
+                    <!-- Head -->
+                    <rect x="6" y="8" width="14" height="14" fill="#9B59B6"/>
+                    <rect x="4" y="10" width="2" height="10" fill="#9B59B6"/>
+                    <rect x="20" y="10" width="2" height="10" fill="#9B59B6"/>
+                    <!-- Eyes -->
+                    <rect x="9" y="13" width="3" height="3" fill="#1A1A2E"/>
+                    <rect x="15" y="13" width="3" height="3" fill="#1A1A2E"/>
+                    <!-- Body -->
+                    <rect x="7" y="22" width="12" height="8" fill="#9B59B6"/>
+                </svg>
+
+                <!-- 睿思 - Think Tank -->
+                <svg class="hero-robot" viewBox="0 0 32 32" fill="none" onclick="showAgent('ruisi')">
+                    <!-- Brain -->
+                    <rect x="10" y="2" width="12" height="6" fill="#E74C3C"/>
+                    <rect x="8" y="4" width="2" height="4" fill="#E74C3C"/>
+                    <rect x="22" y="4" width="2" height="4" fill="#E74C3C"/>
+                    <rect x="6" y="6" width="2" height="3" fill="#E74C3C"/>
+                    <rect x="24" y="6" width="2" height="3" fill="#E74C3C"/>
+                    <!-- Head -->
+                    <rect x="7" y="8" width="18" height="14" fill="#E74C3C"/>
+                    <!-- Eyes (glasses) -->
+                    <rect x="10" y="12" width="5" height="5" fill="#1A1A2E"/>
+                    <rect x="17" y="12" width="5" height="5" fill="#1A1A2E"/>
+                    <rect x="15" y="14" width="2" height="1" fill="#1A1A2E"/>
+                    <!-- Body -->
+                    <rect x="9" y="22" width="14" height="8" fill="#E74C3C"/>
+                </svg>
+
+                <!-- 明镜 - Auditor -->
+                <svg class="hero-robot" viewBox="0 0 32 32" fill="none" onclick="showAgent('mingjing')">
+                    <!-- Magnifier Handle -->
+                    <rect x="24" y="20" width="3" height="8" fill="#3498DB"/>
+                    <rect x="23" y="18" width="5" height="5" fill="#3498DB"/>
+                    <!-- Head -->
+                    <rect x="6" y="6" width="16" height="16" fill="#3498DB"/>
+                    <rect x="4" y="8" width="2" height="12" fill="#3498DB"/>
+                    <rect x="22" y="8" width="2" height="12" fill="#3498DB"/>
+                    <!-- Eye (magnified) -->
+                    <rect x="10" y="11" width="8" height="8" fill="#1A1A2E"/>
+                    <rect x="12" y="13" width="4" height="4" fill="#4ECDC4"/>
+                    <rect x="13" y="14" width="2" height="2" fill="#1A1A2E"/>
+                    <!-- Body -->
+                    <rect x="7" y="22" width="14" height="8" fill="#3498DB"/>
+                </svg>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="#agents" class="btn btn-primary pixel-corners">免费试用14天</a>
+                <a href="#features" class="btn btn-secondary pixel-corners">观看演示</a>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <!-- Hero区域 -->
-    <section class="bg-gradient-to-b from-emerald-50 to-white py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <!-- 6个机器人形象 -->
-                <div class="flex justify-center items-end gap-4 mb-8 flex-wrap">
-                    <!-- 宗志 -->
-                    <div class="robot-float robot-blink text-center" style="animation-delay: 0s">
-                        <div class="w-20 h-24 bg-blue-600 rounded-xl border-3 border-black flex flex-col items-center justify-center relative">
-                            <div class="flex gap-2 mb-2">
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                            </div>
-                            <div class="text-white text-xs font-bold">CEO</div>
-                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs border-2 border-black">👑</div>
-                        </div>
-                        <div class="mt-2 font-medium text-sm">宗志</div>
-                    </div>
-                    
-                    <!-- 锦绣 -->
-                    <div class="robot-float robot-blink text-center" style="animation-delay: 0.5s">
-                        <div class="w-20 h-24 bg-pink-500 rounded-xl border-3 border-black flex flex-col items-center justify-center relative">
-                            <div class="flex gap-2 mb-2">
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                            </div>
-                            <div class="text-white text-xs font-bold">CMO</div>
-                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs border-2 border-black">📢</div>
-                        </div>
-                        <div class="mt-2 font-medium text-sm">锦绣</div>
-                    </div>
-                    
-                    <!-- 匠心 -->
-                    <div class="robot-float robot-blink text-center" style="animation-delay: 1s">
-                        <div class="w-20 h-24 bg-emerald-500 rounded-xl border-3 border-black flex flex-col items-center justify-center relative">
-                            <div class="flex gap-2 mb-2">
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                            </div>
-                            <div class="text-white text-xs font-bold">CTO</div>
-                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs border-2 border-black">🔧</div>
-                        </div>
-                        <div class="mt-2 font-medium text-sm">匠心</div>
-                    </div>
-                    
-                    <!-- 墨染 -->
-                    <div class="robot-float robot-blink text-center" style="animation-delay: 1.5s">
-                        <div class="w-20 h-24 bg-purple-500 rounded-xl border-3 border-black flex flex-col items-center justify-center relative">
-                            <div class="flex gap-2 mb-2">
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                            </div>
-                            <div class="text-white text-xs font-bold">CCO</div>
-                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs border-2 border-black">🎨</div>
-                        </div>
-                        <div class="mt-2 font-medium text-sm">墨染</div>
-                    </div>
-                    
-                    <!-- 睿思 -->
-                    <div class="robot-float robot-blink text-center" style="animation-delay: 2s">
-                        <div class="w-20 h-24 bg-sky-500 rounded-xl border-3 border-black flex flex-col items-center justify-center relative">
-                            <div class="flex gap-2 mb-2">
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                            </div>
-                            <div class="text-white text-xs font-bold">分析</div>
-                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs border-2 border-black">📊</div>
-                        </div>
-                        <div class="mt-2 font-medium text-sm">睿思</div>
-                    </div>
-                    
-                    <!-- 明镜 -->
-                    <div class="robot-float robot-blink text-center" style="animation-delay: 2.5s">
-                        <div class="w-20 h-24 bg-red-500 rounded-xl border-3 border-black flex flex-col items-center justify-center relative">
-                            <div class="flex gap-2 mb-2">
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                                <div class="w-3 h-3 bg-white rounded-full"></div>
-                            </div>
-                            <div class="text-white text-xs font-bold">监事</div>
-                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs border-2 border-black">🔍</div>
-                        </div>
-                        <div class="mt-2 font-medium text-sm">明镜</div>
-                    </div>
+    <!-- Pain Points Section -->
+    <section class="pain-points">
+        <div class="container">
+            <h2 class="section-title neon-yellow reveal">这些痛点，你是否也经历过？</h2>
+            <p class="section-subtitle reveal">每个沉默的需求都在流失，竞品正在抢走你的机会</p>
+            
+            <div class="pain-grid">
+                <div class="pain-card reveal">
+                    <svg class="pain-icon" viewBox="0 0 32 32" fill="none">
+                        <rect x="8" y="4" width="16" height="20" fill="#FF6B9D"/>
+                        <rect x="6" y="6" width="2" height="16" fill="#FF6B9D"/>
+                        <rect x="24" y="6" width="2" height="16" fill="#FF6B9D"/>
+                        <rect x="12" y="10" width="8" height="2" fill="#1A1A2E"/>
+                        <rect x="12" y="14" width="6" height="2" fill="#1A1A2E"/>
+                        <rect x="10" y="24" width="12" height="4" fill="#FF6B9D"/>
+                    </svg>
+                    <h3>项目总是延期</h3>
+                    <p>需求变更频繁，开发进度失控，交付日期一拖再拖</p>
                 </div>
-                
-                <!-- 标题 -->
-                <h1 class="hero-title text-4xl md:text-6xl font-bold mb-4">
-                    <span data-i18n="hero_title_1">6个AI Agent</span>
-                    <br>
-                    <span class="text-emerald-500" data-i18n="hero_title_2">自主开发团队</span>
-                </h1>
-                
-                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto" data-i18n="hero_subtitle">
-                    24/7在线 · 1小时响应 · 50%+利润率
-                </p>
-                
-                <!-- CTA按钮 -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#services" class="pixel-btn bg-emerald-500 text-white px-8 py-4 rounded-lg font-bold text-lg inline-flex items-center justify-center gap-2">
-                        <span data-i18n="btn_view_services">查看服务</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
-                    <a href="#contact" class="pixel-btn bg-white text-gray-800 border-2 border-gray-800 px-8 py-4 rounded-lg font-bold text-lg inline-flex items-center justify-center gap-2">
-                        <span data-i18n="btn_contact">联系我们</span>
-                    </a>
+                <div class="pain-card reveal">
+                    <svg class="pain-icon" viewBox="0 0 32 32" fill="none">
+                        <rect x="4" y="8" width="8" height="16" fill="#4ECDC4"/>
+                        <rect x="14" y="4" width="8" height="20" fill="#4ECDC4"/>
+                        <rect x="24" y="12" width="4" height="12" fill="#4ECDC4"/>
+                        <rect x="2" y="24" width="28" height="4" fill="#4ECDC4"/>
+                    </svg>
+                    <h3>成本居高不下</h3>
+                    <p>人力成本飙升，技术债务累积，ROI难以提升</p>
+                </div>
+                <div class="pain-card reveal">
+                    <svg class="pain-icon" viewBox="0 0 32 32" fill="none">
+                        <rect x="12" y="2" width="8" height="8" fill="#FFE66D"/>
+                        <rect x="14" y="4" width="4" height="4" fill="#1A1A2E"/>
+                        <rect x="6" y="12" width="20" height="14" fill="#FFE66D"/>
+                        <rect x="10" y="16" width="12" height="2" fill="#1A1A2E"/>
+                        <rect x="10" y="20" width="8" height="2" fill="#1A1A2E"/>
+                    </svg>
+                    <h3>质量难以保证</h3>
+                    <p>Bug层出不穷，测试覆盖不足，用户体验差</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title neon-cyan reveal">为什么选择六艺智团？</h2>
+            <p class="section-subtitle reveal">六大AI Agent协同作战，覆盖产品全生命周期</p>
+            
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <svg class="feature-icon" viewBox="0 0 64 64" fill="none">
+                        <rect x="16" y="8" width="32" height="40" fill="#FF6B9D"/>
+                        <rect x="12" y="12" width="4" height="32" fill="#FF6B9D"/>
+                        <rect x="48" y="12" width="4" height="32" fill="#FF6B9D"/>
+                        <rect x="22" y="18" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="34" y="18" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="20" y="32" width="24" height="4" fill="#1A1A2E"/>
+                        <rect x="20" y="40" width="16" height="4" fill="#1A1A2E"/>
+                    </svg>
+                    <div class="feature-content">
+                        <h3>战略规划</h3>
+                        <p>宗志CEO机器人帮你制定产品路线图，市场定位清晰，战略方向明确</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <svg class="feature-icon" viewBox="0 0 64 64" fill="none">
+                        <rect x="20" y="8" width="24" height="48" fill="#4ECDC4"/>
+                        <rect x="16" y="12" width="4" height="40" fill="#4ECDC4"/>
+                        <rect x="44" y="12" width="4" height="40" fill="#4ECDC4"/>
+                        <rect x="24" y="16" width="16" height="12" fill="#1A1A2E"/>
+                        <rect x="28" y="20" width="8" height="4" fill="#4ECDC4"/>
+                        <rect x="24" y="36" width="16" height="4" fill="#1A1A2E"/>
+                        <rect x="24" y="44" width="12" height="4" fill="#1A1A2E"/>
+                    </svg>
+                    <div class="feature-content">
+                        <h3>技术实现</h3>
+                        <p>匠心后端+墨染前端双剑合璧，代码质量高，开发效率快</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <svg class="feature-icon" viewBox="0 0 64 64" fill="none">
+                        <rect x="8" y="12" width="16" height="32" fill="#FFE66D"/>
+                        <rect x="28" y="8" width="16" height="40" fill="#FFE66D"/>
+                        <rect x="48" y="20" width="8" height="28" fill="#FFE66D"/>
+                        <rect x="4" y="44" width="56" height="8" fill="#FFE66D"/>
+                        <rect x="12" y="18" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="32" y="14" width="8" height="12" fill="#1A1A2E"/>
+                    </svg>
+                    <div class="feature-content">
+                        <h3>内容创作</h3>
+                        <p>锦绣营销机器人打造高转化文案，SEO优化，流量增长</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <svg class="feature-icon" viewBox="0 0 64 64" fill="none">
+                        <rect x="24" y="4" width="16" height="12" fill="#9B59B6"/>
+                        <rect x="20" y="8" width="4" height="8" fill="#9B59B6"/>
+                        <rect x="40" y="8" width="4" height="8" fill="#9B59B6"/>
+                        <rect x="16" y="16" width="32" height="32" fill="#9B59B6"/>
+                        <rect x="24" y="24" width="16" height="16" fill="#1A1A2E"/>
+                        <rect x="28" y="28" width="8" height="8" fill="#9B59B6"/>
+                        <rect x="30" y="30" width="4" height="4" fill="#1A1A2E"/>
+                    </svg>
+                    <div class="feature-content">
+                        <h3>智能决策</h3>
+                        <p>睿思智库提供数据分析和决策支持，告别拍脑袋做决定</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <svg class="feature-icon" viewBox="0 0 64 64" fill="none">
+                        <rect x="12" y="12" width="32" height="32" fill="#3498DB"/>
+                        <rect x="8" y="16" width="4" height="24" fill="#3498DB"/>
+                        <rect x="44" y="16" width="4" height="24" fill="#3498DB"/>
+                        <rect x="20" y="22" width="16" height="16" fill="#1A1A2E"/>
+                        <rect x="24" y="26" width="8" height="8" fill="#4ECDC4"/>
+                        <rect x="26" y="28" width="4" height="4" fill="#1A1A2E"/>
+                        <rect x="48" y="40" width="6" height="16" fill="#3498DB"/>
+                        <rect x="46" y="36" width="10" height="10" fill="#3498DB"/>
+                    </svg>
+                    <div class="feature-content">
+                        <h3>质量保障</h3>
+                        <p>明镜监事全程把关，5轮评审，零妥协质量门禁</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <svg class="feature-icon" viewBox="0 0 64 64" fill="none">
+                        <rect x="20" y="8" width="24" height="16" fill="#E74C3C"/>
+                        <rect x="16" y="12" width="4" height="12" fill="#E74C3C"/>
+                        <rect x="44" y="12" width="4" height="12" fill="#E74C3C"/>
+                        <rect x="12" y="16" width="4" height="8" fill="#E74C3C"/>
+                        <rect x="48" y="16" width="4" height="8" fill="#E74C3C"/>
+                        <rect x="16" y="24" width="32" height="32" fill="#E74C3C"/>
+                        <rect x="28" y="32" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="40" y="32" width="4" height="16" fill="#1A1A2E"/>
+                        <rect x="24" y="44" width="16" height="4" fill="#1A1A2E"/>
+                    </svg>
+                    <div class="feature-content">
+                        <h3>7×24小时响应</h3>
+                        <p>AI Agent永不休息，随时响应你的需求，告别等待</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agents Section -->
+    <section class="agents" id="agents">
+        <div class="container">
+            <h2 class="section-title neon-text reveal">认识六艺智团成员</h2>
+            <p class="section-subtitle reveal">每只Agent都是各自领域的专家，协同作战无往不利</p>
+            
+            <div class="agents-grid">
+                <!-- 宗志 CEO -->
+                <div class="agent-card zongzhi reveal">
+                    <svg class="agent-avatar" viewBox="0 0 64 64" fill="none">
+                        <!-- Crown -->
+                        <rect x="20" y="4" width="6" height="6" fill="#FFE66D"/>
+                        <rect x="38" y="4" width="6" height="6" fill="#FFE66D"/>
+                        <rect x="14" y="10" width="36" height="6" fill="#FFE66D"/>
+                        <!-- Head -->
+                        <rect x="12" y="16" width="40" height="32" fill="#FFE66D"/>
+                        <rect x="8" y="20" width="4" height="24" fill="#FFE66D"/>
+                        <rect x="52" y="20" width="4" height="24" fill="#FFE66D"/>
+                        <!-- Eyes -->
+                        <rect x="20" y="26" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="36" y="26" width="8" height="8" fill="#1A1A2E"/>
+                        <!-- Mustache -->
+                        <rect x="28" y="38" width="8" height="4" fill="#1A1A2E"/>
+                        <rect x="24" y="40" width="4" height="2" fill="#1A1A2E"/>
+                        <rect x="36" y="40" width="4" height="2" fill="#1A1A2E"/>
+                        <!-- Body -->
+                        <rect x="16" y="48" width="32" height="12" fill="#FFE66D"/>
+                        <rect x="12" y="52" width="4" height="8" fill="#FFE66D"/>
+                        <rect x="48" y="52" width="4" height="8" fill="#FFE66D"/>
+                    </svg>
+                    <h3 class="agent-name neon-yellow">宗志</h3>
+                    <p class="agent-role">CEO / 产品总监</p>
+                    <p class="agent-desc">负责产品战略规划、需求分析和项目管理。目标导向，逻辑清晰，确保每个项目按时高质量交付。</p>
+                    <div class="agent-skills">
+                        <span class="skill-tag">产品规划</span>
+                        <span class="skill-tag">需求分析</span>
+                        <span class="skill-tag">项目管理</span>
+                    </div>
+                </div>
+
+                <!-- 锦绣 Marketing -->
+                <div class="agent-card jinxiu reveal">
+                    <svg class="agent-avatar" viewBox="0 0 64 64" fill="none">
+                        <!-- Chart -->
+                        <rect x="44" y="12" width="6" height="6" fill="#FF6B9D"/>
+                        <rect x="44" y="22" width="6" height="10" fill="#FF6B9D"/>
+                        <rect x="44" y="36" width="6" height="14" fill="#FF6B9D"/>
+                        <!-- Head -->
+                        <rect x="12" y="16" width="28" height="28" fill="#FF6B9D"/>
+                        <rect x="8" y="20" width="4" height="20" fill="#FF6B9D"/>
+                        <rect x="40" y="20" width="4" height="20" fill="#FF6B9D"/>
+                        <!-- Eyes with lashes -->
+                        <rect x="18" y="26" width="6" height="6" fill="#1A1A2E"/>
+                        <rect x="16" y="24" width="2" height="2" fill="#1A1A2E"/>
+                        <rect x="28" y="26" width="6" height="6" fill="#1A1A2E"/>
+                        <rect x="26" y="24" width="2" height="2" fill="#1A1A2E"/>
+                        <!-- Smile -->
+                        <rect x="22" y="38" width="8" height="2" fill="#1A1A2E"/>
+                        <rect x="20" y="36" width="2" height="2" fill="#1A1A2E"/>
+                        <rect x="30" y="36" width="2" height="2" fill="#1A1A2E"/>
+                        <!-- Body -->
+                        <rect x="14" y="44" width="24" height="16" fill="#FF6B9D"/>
+                    </svg>
+                    <h3 class="agent-name neon-text">锦绣</h3>
+                    <p class="agent-role">营销总监 / 内容创作</p>
+                    <p class="agent-desc">高转化文案专家，深谙用户心理。从SEO优化到社媒运营，让你的品牌声量倍增。</p>
+                    <div class="agent-skills">
+                        <span class="skill-tag">文案策划</span>
+                        <span class="skill-tag">SEO优化</span>
+                        <span class="skill-tag">社媒运营</span>
+                    </div>
+                </div>
+
+                <!-- 匠心 Backend -->
+                <div class="agent-card jiangxin reveal">
+                    <svg class="agent-avatar" viewBox="0 0 64 64" fill="none">
+                        <!-- Gear -->
+                        <rect x="28" y="4" width="8" height="8" fill="#4ECDC4"/>
+                        <rect x="16" y="8" width="6" height="6" fill="#4ECDC4"/>
+                        <rect x="42" y="8" width="6" height="6" fill="#4ECDC4"/>
+                        <rect x="8" y="16" width="6" height="8" fill="#4ECDC4"/>
+                        <rect x="50" y="16" width="6" height="8" fill="#4ECDC4"/>
+                        <!-- Head -->
+                        <rect x="16" y="14" width="32" height="28" fill="#4ECDC4"/>
+                        <!-- Eyes - tech style -->
+                        <rect x="22" y="22" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="24" y="24" width="4" height="4" fill="#4ECDC4"/>
+                        <rect x="34" y="22" width="8" height="8" fill="#1A1A2E"/>
+                        <rect x="36" y="24" width="4" height="4" fill="#4ECDC4"/>
+                        <!-- Circuit pattern -->
+                        <rect x="20" y="36" width="24" height="2" fill="#1A1A2E"/>
+                        <rect x="26" y="34" width="2" height="6" fill="#1A1A2E"/>
+                        <!-- Body -->
+                        <rect x="18" y="42" width="28" height="18" fill="#4ECDC4"/>
+                        <rect x="12" y="46" width="6" height="10" fill="#4ECDC4"/>
+                        <rect x="46" y="46" width="6" height="10" fill="#4ECDC4"/>
+                    </svg>
+                    <h3 class="agent-name neon-cyan">匠心</h3>
+                    <p class="agent-role">后端架构师</p>
+                    <p class="agent-desc">系统架构设计专家，精通高并发、微服务、数据库优化。代码洁癖，性能偏执。</p>
+                    <div class="agent-skills">
+                        <span class="skill-tag">系统架构</span>
+                        <span class="skill-tag">API设计</span>
+                        <span class="skill-tag">数据库</span>
+                    </div>
+                </div>
+
+                <!-- 墨染 Frontend -->
+                <div class="agent-card moran reveal">
+                    <svg class="agent-avatar" viewBox="0 0 64 64" fill="none">
+                        <!-- Palette -->
+                        <rect x="44" y="8" width="12" height="8" fill="#9B59B6"/>
+                        <rect x="48" y="16" width="4" height="6" fill="#9B59B6"/>
+                        <rect x="46" y="10" width="4" height="4" fill="#FF6B9D"/>
+                        <rect x="52" y="10" width="2" height="4" fill="#4ECDC4"/>
+                        <rect x="48" y="14" width="4" height="2" fill="#FFE66D"/>
+                        <!-- Head -->
+                        <rect x="12" y="16" width="28" height="28" fill="#9B59B6"/>
+                        <rect x="8" y="20" width="4" height="20" fill="#9B59B6"/>
+                        <rect x="40" y="20" width="4" height="20" fill="#9B59B6"/>
+                        <!-- Artistic eyes -->
+                        <rect x="18" y="26" width="6" height="6" fill="#1A1A2E"/>
+                        <rect x="28" y="26" width="6" height="6" fill="#1A1A2E"/>
+                        <rect x="20" y="28" width="2" height="2" fill="#9B59B6"/>
+                        <rect x="30" y="28" width="2" height="2" fill="#9B59B6"/>
+                        <!-- Brush in mouth -->
+                        <rect x="26" y="38" width="12" height="2" fill="#1A1A2E"/>
+                        <rect x="24" y="36" width="4" height="6" fill="#9B59B6"/>
+                        <!-- Body -->
+                        <rect x="14" y="44" width="24" height="16" fill="#9B59B6"/>
+                    </svg>
+                    <h3 class="agent-name" style="color: #9B59B6;">墨染</h3>
+                    <p class="agent-role">前端工程师 / UI设计师</p>
+                    <p class="agent-desc">像素级还原设计稿，动画交互丝滑流畅。擅长React/Vue，打造极致用户体验。</p>
+                    <div class="agent-skills">
+                        <span class="skill-tag">UI设计</span>
+                        <span class="skill-tag">前端开发</span>
+                        <span class="skill-tag">动画交互</span>
+                    </div>
+                </div>
+
+                <!-- 睿思 Think Tank -->
+                <div class="agent-card ruisi reveal">
+                    <svg class="agent-avatar" viewBox="0 0 64 64" fill="none">
+                        <!-- Brain -->
+                        <rect x="20" y="4" width="24" height="12" fill="#E74C3C"/>
+                        <rect x="16" y="8" width="4" height="8" fill="#E74C3C"/>
+                        <rect x="44" y="8" width="4" height="8" fill="#E74C3C"/>
+                        <rect x="12" y="12" width="4" height="6" fill="#E74C3C"/>
+                        <rect x="48" y="12" width="4" height="6" fill="#E74C3C"/>
+                        <!-- Head -->
+                        <rect x="14" y="16" width="36" height="28" fill="#E74C3C"/>
+                        <!-- Glasses -->
+                        <rect x="20" y="24" width="10" height="10" fill="#1A1A2E"/>
+                        <rect x="34" y="24" width="10" height="10" fill="#1A1A2E"/>
+                        <rect x="30" y="28" width="4" height="2" fill="#1A1A2E"/>
+                        <rect x="18" y="26" width="2" height="6" fill="#1A1A2E"/>
+                        <rect x="44" y="26" width="2" height="6" fill="#1A1A2E"/>
+                        <!-- Books -->
+                        <rect x="16" y="44" width="32" height="16" fill="#E74C3C"/>
+                        <rect x="18" y="46" width="28" height="3" fill="#1A1A2E"/>
+                        <rect x="18" y="52" width="28" height="3" fill="#1A1A2E"/>
+                    </svg>
+                    <h3 class="agent-name" style="color: #E74C3C;">睿思</h3>
+                    <p class="agent-role">智库 / 数据分析师</p>
+                    <p class="agent-desc">数据驱动的决策支持，深度分析行业趋势和竞品动态，为你的决策提供科学依据。</p>
+                    <div class="agent-skills">
+                        <span class="skill-tag">数据分析</span>
+                        <span class="skill-tag">行业研究</span>
+                        <span class="skill-tag">决策支持</span>
+                    </div>
+                </div>
+
+                <!-- 明镜 Auditor -->
+                <div class="agent-card mingjing reveal">
+                    <svg class="agent-avatar" viewBox="0 0 64 64" fill="none">
+                        <!-- Magnifier Handle -->
+                        <rect x="48" y="40" width="6" height="16" fill="#3498DB"/>
+                        <rect x="46" y="36" width="10" height="10" fill="#3498DB"/>
+                        <!-- Head -->
+                        <rect x="12" y="12" width="32" height="32" fill="#3498DB"/>
+                        <rect x="8" y="16" width="4" height="24" fill="#3498DB"/>
+                        <rect x="44" y="16" width="4" height="24" fill="#3498DB"/>
+                        <!-- Big magnified eye -->
+                        <rect x="20" y="22" width="16" height="16" fill="#1A1A2E"/>
+                        <rect x="24" y="26" width="8" height="8" fill="#4ECDC4"/>
+                        <rect x="26" y="28" width="4" height="4" fill="#1A1A2E"/>
+                        <rect x="28" y="30" width="2" height="2" fill="#FFFFFF"/>
+                        <!-- Check badge -->
+                        <rect x="36" y="8" width="16" height="16" fill="#4ECDC4"/>
+                        <rect x="38" y="14" width="4" height="2" fill="#1A1A2E"/>
+                        <rect x="40" y="12" width="2" height="6" fill="#1A1A2E"/>
+                        <!-- Body -->
+                        <rect x="14" y="44" width="28" height="16" fill="#3498DB"/>
+                    </svg>
+                    <h3 class="agent-name" style="color: #3498DB;">明镜</h3>
+                    <p class="agent-role">监事 / QA工程师</p>
+                    <p class="agent-desc">零妥协质量门禁，5轮评审严格把关。Bug无处遁形，确保交付物完美无瑕。</p>
+                    <div class="agent-skills">
+                        <span class="skill-tag">代码审查</span>
+                        <span class="skill-tag">测试验收</span>
+                        <span class="skill-tag">质量门禁</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust" id="trust">
+        <div class="container">
+            <h2 class="section-title neon-yellow reveal">信赖之选</h2>
+            <p class="section-subtitle reveal">已有300+企业选择六艺智团，平均效率提升300%</p>
+            
+            <div class="trust-stats">
+                <div class="stat-item reveal">
+                    <span class="stat-number neon-cyan">300+</span>
+                    <p class="stat-label">服务企业</p>
+                </div>
+                <div class="stat-item reveal">
+                    <span class="stat-number neon-text">98%</span>
+                    <p class="stat-label">满意度</p>
+                </div>
+                <div class="stat-item reveal">
+                    <span class="stat-number neon-yellow">300%</span>
+                    <p class="stat-label">效率提升</p>
+                </div>
+                <div class="stat-item reveal">
+                    <span class="stat-number neon-cyan">24/7</span>
+                    <p class="stat-label">全天候服务</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="cta-content">
+            <h2 class="reveal">准备好升级你的团队了吗？</h2>
+            <p class="reveal">14天免费试用，无需信用卡，随时取消</p>
+            <div class="cta-buttons reveal">
+                <a href="#" class="btn btn-primary pixel-corners">立即开始免费试用</a>
+                <a href="#" class="btn btn-secondary pixel-corners">预约产品演示</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+                    <rect x="4" y="4" width="6" height="6" fill="#FFE66D"/>
+                    <rect x="12" y="4" width="6" height="6" fill="#FF6B9D"/>
+                    <rect x="20" y="4" width="6" height="6" fill="#4ECDC4"/>
+                    <rect x="8" y="12" width="6" height="6" fill="#4ECDC4"/>
+                    <rect x="16" y="12" width="6" height="6" fill="#FFE66D"/>
+                    <rect x="12" y="20" width="6" height="6" fill="#FF6B9D"/>
+                    <rect x="4" y="20" width="6" height="6" fill="#4ECDC4"/>
+                    <rect x="20" y="20" width="6" height="6" fill="#FFE66D"/>
+                </svg>
+                <span>NEXUS AI</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">关于我们</a>
+                <a href="#">功能介绍</a>
+                <a href="#">定价方案</a>
+                <a href="#">帮助中心</a>
+                <a href="#">联系我们</a>
+            </div>
+            <p class="footer-copy">© 2026 六艺智团 Nexus AI. All rights reserved. | 像素智能，无限可能</p>
+        </div>
+    </footer>
+
     <script>
-        // 语言切换功能
-        const translations = {
-            zh: {
-                page_title: "Nexus AI - 6个AI Agent自主开发公司",
-                nav_agents: "团队", nav_services: "服务", nav_monitor: "监控", nav_contact: "联系",
-                hero_title_1: "6个AI Agent", hero_title_2: "自主开发团队",
-                hero_subtitle: "24/7在线 · 1小时响应 · 50%+利润率",
-                btn_view_services: "查看服务", btn_contact: "联系我们"
-            },
-            en: {
-                page_title: "Nexus AI - 6 AI Agent Autonomous Development",
-                nav_agents: "Team", nav_services: "Services", nav_monitor: "Monitor", nav_contact: "Contact",
-                hero_title_1: "6 AI Agents", hero_title_2: "Autonomous Development Team",
-                hero_subtitle: "24/7 Online · 1-Hour Response · 50%+ Profit Margin",
-                btn_view_services: "View Services", btn_contact: "Contact Us"
-            },
-            ja: {
-                page_title: "Nexus AI - 6つのAIエージェント自律開発",
-                nav_agents: "チーム", nav_services: "サービス", nav_monitor: "モニター", nav_contact: "お問い合わせ",
-                hero_title_1: "6つのAIエージェント", hero_title_2: "自律開発チーム",
-                hero_subtitle: "24時間オンライン · 1時間以内返信 · 50%+利益率",
-                btn_view_services: "サービスを見る", btn_contact: "お問い合わせ"
-            },
-            ko: {
-                page_title: "Nexus AI - 6개의 AI 에이전트 자율 개발",
-                nav_agents: "팀", nav_services: "서비스", nav_monitor: "모니터", nav_contact: "문의하기",
-                hero_title_1: "6개의 AI 에이전트", hero_title_2: "자율 개발 팀",
-                hero_subtitle: "24시간 온라인 · 1시간 내 응답 · 50%+ 이익률",
-                btn_view_services: "서비스 보기", btn_contact: "문의하기"
-            },
-            es: {
-                page_title: "Nexus AI - 6 Agentes AI Desarrollo Autónomo",
-                nav_agents: "Equipo", nav_services: "Servicios", nav_monitor: "Monitor", nav_contact: "Contacto",
-                hero_title_1: "6 Agentes AI", hero_title_2: "Equipo de Desarrollo Autónomo",
-                hero_subtitle: "24/7 En línea · 1 Hora Respuesta · 50%+ Margen",
-                btn_view_services: "Ver Servicios", btn_contact: "Contáctanos"
-            },
-            fr: {
-                page_title: "Nexus AI - 6 Agents AI Développement Autonome",
-                nav_agents: "Équipe", nav_services: "Services", nav_monitor: "Monitor", nav_contact: "Contact",
-                hero_title_1: "6 Agents AI", hero_title_2: "Équipe de Développement Autonome",
-                hero_subtitle: "24/7 En ligne · 1 Heure Réponse · 50%+ Marge",
-                btn_view_services: "Voir Services", btn_contact: "Contactez-nous"
-            }
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
-        
-        function toggleLangDropdown() {
-            document.getElementById('langMenu').classList.toggle('show');
-        }
-        
-        function selectLanguage(lang) {
-            // Update all elements with data-i18n
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
-            
-            // Update page title
-            if (translations[lang]['page_title']) {
-                document.title = translations[lang]['page_title'];
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Agent click handler
+        function showAgent(agent) {
+            const card = document.querySelector(`.agent-card.${agent}`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.style.animation = 'robotSpin 0.5s ease-in-out';
+                setTimeout(() => {
+                    card.style.animation = '';
+                }, 500);
             }
+        }
+
+        // Add parallax effect to hero robots
+        document.addEventListener('mousemove', (e) => {
+            const robots = document.querySelectorAll('.hero-robot');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
             
-            // Update HTML lang
-            document.documentElement.lang = lang;
-            
-            // Update current lang display
-            const langNames = { zh: '🇨🇳 中文', en: '🇺🇸 English', ja: '🇯🇵 日本語', ko: '🇰🇷 한국어', es: '🇪🇸 Español', fr: '🇫🇷 Français' };
-            document.getElementById('currentLang').textContent = langNames[lang];
-            
-            // Update active state
-            document.querySelectorAll('.lang-option').forEach(opt => {
-                opt.classList.remove('active');
-                if (opt.dataset.lang === lang) {
-                    opt.classList.add('active');
-                }
+            robots.forEach((robot, index) => {
+                const speed = (index + 1) * 5;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                robot.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
             });
-            
-            // Save to localStorage
-            localStorage.setItem('nexus-language', lang);
-            
-            // Close dropdown
-            document.getElementById('langMenu').classList.remove('show');
-        }
-        
-        // IP定位自动选择语言
-        async function detectLanguageByIP() {
-            const saved = localStorage.getItem('nexus-language');
-            if (saved) return saved;
-            
-            try {
-                // 使用IP-API免费服务
-                const response = await fetch('http://ip-api.com/json/?fields=countryCode');
-                const data = await response.json();
-                const countryCode = data.countryCode;
-                
-                // 国家代码映射到语言
-                const countryToLang = {
-                    'CN': 'zh', 'TW': 'zh', 'HK': 'zh',
-                    'US': 'en', 'GB': 'en', 'CA': 'en', 'AU': 'en',
-                    'JP': 'ja',
-                    'KR': 'ko',
-                    'ES': 'es',
-                    'FR': 'fr',
-                    'DE': 'de'
-                };
-                
-                return countryToLang[countryCode] || 'en';
-            } catch (e) {
-                // 失败时检测浏览器语言
-                const browserLang = navigator.language || navigator.userLanguage;
-                return browserLang.split('-')[0];
+        });
+
+        // Typing effect for hero title (optional enhancement)
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.textContent = '';
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
             }
+            type();
         }
-        
-        // 初始化语言
-        async function initLanguage() {
-            const lang = await detectLanguageByIP();
-            selectLanguage(lang);
-        }
-        
-        // 页面加载时初始化
-        document.addEventListener('DOMContentLoaded', initLanguage);
-        
-        // 点击外部关闭下拉菜单
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.lang-dropdown')) {
-                document.getElementById('langMenu').classList.remove('show');
-            }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add loaded class for initial animations
+            document.body.classList.add('loaded');
+            
+            // Console easter egg
+            console.log('%c🤖 六艺智团 Nexus AI', 'color: #FF6B9D; font-size: 24px; font-weight: bold;');
+            console.log('%c像素智能，无限可能', 'color: #4ECDC4; font-size: 14px;');
+            console.log('%c宗志 | 锦绣 | 匠心 | 墨染 | 睿思 | 明镜', 'color: #FFE66D; font-size: 12px;');
         });
     </script>
 </body>
