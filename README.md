@@ -1,270 +1,248 @@
-# Nexus AI V3.0 像素风官网设计
+# 🎭 Nexus AI - 四智团协同系统
 
-> 🎨 设计团队：六艺智团 - 墨染（前端/UI设计师）
-> 📅 版本：V3.0 Pixel Edition
-> 🎯 项目：nexus-ai官网重设计
-
----
-
-## 📋 设计概述
-
-本项目采用**复古像素风**视觉语言，结合现代霓虹光效，打造独特的AI智团品牌形象。六只Agent机器人各具特色，通过SVG像素画呈现，传达科技感与趣味性的完美平衡。
-
-### 设计理念
-- **像素美学**：致敬8-bit游戏时代，唤起怀旧情怀
-- **霓虹未来**：赛博朋克风格的光效设计
-- **可爱亲和**：圆润的机器人形象降低AI的距离感
-- **专业可信**：清晰的信息架构建立信任
+> 🧠 宗志 (CEO) · 💻 码匠 (工程师) · 🔬 研析 (研究员) · 🏠 家助 (协调员)  
+> 📅 版本：V4.0 Quartet Edition  
+> 🌐 官网：https://maoshuorz.github.io/nexus-ai/
 
 ---
 
-## 🎨 色彩系统
+## 📋 项目概述
 
-### 主色调
-| 颜色 | 色值 | 用途 |
-|------|------|------|
-| 粉色 | `#FF6B9D` | 主强调色、CTA按钮、锦锈 |
-| 青色 | `#4ECDC4` | 辅助色、链接、匠心 |
-| 黄色 | `#FFE66D` | 高亮、Logo、宗志 |
-| 深蓝黑 | `#1A1A2E` | 背景、深色卡片 |
-| 更深蓝黑 | `#0F0F1A` | 页面底色 |
+Nexus AI 是一个**四智团协同作战系统**，通过 4 个专业 AI Agent 的分工协作，实现高效的任务执行和决策支持。
 
-### Agent专属色
-| Agent | 颜色 | 色值 |
-|-------|------|------|
-| 宗志 | 黄色 | `#FFE66D` |
-| 锦绣 | 粉色 | `#FF6B9D` |
-| 匠心 | 青色 | `#4ECDC4` |
-| 墨染 | 紫色 | `#9B59B6` |
-| 睿思 | 红色 | `#E74C3C` |
-| 明镜 | 蓝色 | `#3498DB` |
+### 核心理念
+- **精简高效**：4 人团队，职责清晰
+- **实时协同**：状态实时同步，可视化监控
+- **安全可控**：本地运行，数据隔离
+- **开源开放**：MIT 许可，自由扩展
 
 ---
 
-## 🤖 六艺智团成员设计
+## 👥 四智团成员
 
-### 1. 宗志 (CEO)
-- **形象特征**：戴皇冠、有胡须（威严感）
-- **代表物**：👑 皇冠
-- **性格**：沉稳、决策力强
-- **颜色**：黄色 `#FFE66D`
-
-### 2. 锦绣 (Marketing)
-- **形象特征**：睫毛装饰、图表在手
-- **代表物**：📊 上升图表
-- **性格**：活泼、数据敏感
-- **颜色**：粉色 `#FF6B9D`
-
-### 3. 匠心 (Backend)
-- **形象特征**：齿轮头、电路纹路
-- **代表物**：⚙️ 齿轮
-- **性格**：严谨、技术控
-- **颜色**：青色 `#4ECDC4`
-
-### 4. 墨染 (Frontend)
-- **形象特征**：持调色板、画笔
-- **代表物**：🎨 调色板
-- **性格**：创意、追求完美
-- **颜色**：紫色 `#9B59B6`
-
-### 5. 睿思 (Think Tank)
-- **形象特征**：大脑头、戴眼镜、书本
-- **代表物**：🧠 大脑
-- **性格**：睿智、博学
-- **颜色**：红色 `#E74C3C`
-
-### 6. 明镜 (Auditor)
-- **形象特征**：大眼睛、放大镜
-- **代表物**：🔍 放大镜
-- **性格**：细致、严格
-- **颜色**：蓝色 `#3498DB`
+| 名字 | 角色 | 职责 | 表情 | 颜色 |
+|------|------|------|------|------|
+| **宗志** | 决策者 (CEO) | 战略规划、任务分配 | 🧠💡 | #FF6B6B |
+| **码匠** | 工程师 | 编码实现、技术构建 | 💻🔨 | #4ECDC4 |
+| **研析** | 研究员 | 信息收集、数据分析 | 🔬📊 | #A78BFA |
+| **家助** | 协调员 | 日程管理、资源协调 | 🏠📋 | #F59E0B |
 
 ---
 
-## 📐 页面结构
+## 🌐 在线演示
 
-```
-├── Header (固定导航)
-│   ├── Logo (像素化Nexus图标)
-│   └── 导航链接 (平滑滚动)
-│
-├── Hero Section (首屏)
-│   ├── 主标题 + 霓虹效果
-│   ├── 六机器人浮动动画
-│   └── CTA按钮组
-│
-├── Pain Points (痛点共鸣)
-│   └── 三个痛点卡片
-│
-├── Features (功能展示)
-│   └── 六个功能特性
-│
-├── Agents (智团成员)
-│   └── 六个Agent详细卡片
-│
-├── Trust (信任背书)
-│   └── 统计数据展示
-│
-├── CTA (行动召唤)
-│   └── 转化按钮
-│
-└── Footer (页脚)
-    └── 链接 + 版权
-```
+### 官网
+- **主页**: https://maoshuorz.github.io/nexus-ai/
+- **四智团监控**: https://maoshuorz.github.io/nexus-ai/quartet.html
+
+### 功能
+- 实时 Agent 状态展示
+- 活动日志（每 3 秒刷新）
+- WebSocket 实时推送
+- 响应式设计（支持移动端）
 
 ---
 
-## ✨ 动画效果清单
+## 🚀 快速开始
 
-### 页面加载
-- [x] 机器人依次浮入 (stagger 0.5s)
-- [x] 标题闪烁效果 (flicker)
-- [x] 背景光晕脉动 (pulse)
+### 前置要求
+- Python 3.14+
+- Node.js 18+
+- OpenClaw
 
-### 滚动交互
-- [x] 元素渐入动画 (reveal)
-- [x] 数字计数动画 (countUp)
-- [x] 视差滚动效果 (parallax)
+### 安装
 
-### 悬停效果
-- [x] 机器人跳跃动画 (robotJump)
-- [x] 卡片边框发光
-- [x] 按钮上浮 + 阴影加深
-- [x] 导航下划线展开
-
-### 点击交互
-- [x] 机器人旋转 (robotSpin)
-- [x] 平滑滚动定位
-- [x] 移动端菜单切换
-
-### 彩蛋
-- [x] Konami Code彩蛋 (↑↑↓↓←→←→BA)
-- [x] Console品牌信息
-
----
-
-## 📱 响应式断点
-
-| 断点 | 宽度 | 适配 |
-|------|------|------|
-| Mobile | < 768px | 单列布局、汉堡菜单 |
-| Tablet | 768px - 1024px | 双列布局 |
-| Desktop | > 1024px | 完整多列布局 |
-
-### 移动端优化
-- 导航转为汉堡菜单
-- Hero机器人缩小至60px
-- 卡片单列堆叠
-- 字体大小适当缩小
-
----
-
-## 🔧 技术实现
-
-### 字体
-- **中文展示**: ZCOOL KuaiLe (快乐体)
-- **英文像素**: Press Start 2P
-- **回退**: system-ui, sans-serif
-
-### SVG像素画规范
-- 统一网格：32×32 (小图标) / 64×64 (大头像)
-- `image-rendering: pixelated` 保持锐化
-- 使用 `<rect>` 元素构建
-- 避免抗锯齿
-
-### CSS特性
-- CSS Custom Properties (变量系统)
-- CSS Grid + Flexbox 布局
-- CSS Animations + Transitions
-- clip-path 像素切角
-
-### JavaScript功能
-- IntersectionObserver 滚动监听
-- requestAnimationFrame 动画优化
-- 防抖/节流处理
-- 无依赖原生JS
-
----
-
-## 📁 文件结构
-
-```
-moran-design/
-├── index.html          # 主页面 (完整实现)
-├── styles.css          # 样式表 (分离版)
-├── main.js             # 交互脚本
-└── README.md           # 设计文档
-```
-
----
-
-## 🚀 使用说明
-
-### 本地预览
 ```bash
-# 方式1: 直接打开
-open index.html
+# 1. 克隆项目
+git clone https://github.com/maoshuorz/nexus-ai.git
+cd nexus-ai
 
-# 方式2: 本地服务器
-cd /tmp/liuyi/outbox/zongzhi/moran-design
-python3 -m http.server 8080
-# 访问 http://localhost:8080
+# 2. 安装后端依赖
+cd backend/star-office
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# 3. 启动服务
+cd ../../scripts
+./start-star-office-auto.sh
 ```
 
-### 部署
-所有资源为静态文件，可部署至：
-- GitHub Pages
-- Vercel / Netlify
-- 自有服务器
-- CDN
+### 访问
+
+```bash
+open http://localhost:18795
+```
 
 ---
 
-## 🎯 营销框架整合
+## 📁 项目结构
 
-基于锦绣提供的高转化页面结构：
-
-1. **首屏Hero** - 3秒价值主张
-2. **痛点共鸣** - 建立情感连接
-3. **解决方案** - 六Agent差异化价值
-4. **信任背书** - 数据+案例
-5. **行动触发** - 低门槛CTA
-6. **异议处理** - 免费试用降低风险
-
----
-
-## 📊 性能优化
-
-- [x] SVG内联减少请求
-- [x] 字体预加载
-- [x] 动画使用transform (GPU加速)
-- [x] 懒加载非首屏内容
-- [x] 无大型图片资源
+```
+nexus-ai/
+├── index.html                 # 官网主页
+├── quartet.html               # 四智团监控页面
+├── star_office_bridge.py      # Agent 桥接模块
+├── agent_runner.py            # Agent 运行器
+├── README.md                  # 本文档
+├── docs/                      # 文档目录
+│   ├── API.md                 # API 文档
+│   └── DEPLOYMENT.md          # 部署指南
+└── backend/star-office/       # Star Office 后端
+    ├── app.py                 # Flask 服务
+    ├── auto_sync.py           # 自动同步脚本
+    ├── frontend/              # 前端文件
+    └── scripts/               # 启动脚本
+```
 
 ---
 
-## ✅ 验收清单
+## 🔌 API 文档
 
-- [x] 六只机器人像素画设计
-- [x] 霓虹灯效果实现
-- [x] 响应式布局
-- [x] 平滑滚动
-- [x] 交互动画
-- [x] 移动端适配
-- [x] 代码注释完整
-- [x] 无外部依赖 (除Google Fonts)
+### 基础端点
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/health` | GET | 健康检查 |
+| `/quartet/status` | GET | 所有 Agent 状态 |
+| `/quartet/:name/state` | POST | 设置 Agent 状态 |
+| `/quartet/activity` | GET | 活动日志 |
+| `/quartet/stats` | GET | 统计数据 |
+
+### 使用示例
+
+```bash
+# 设置 Agent 状态
+curl -X POST http://localhost:18795/quartet/宗志/state \
+     -H 'Content-Type: application/json' \
+     -d '{"state": "thinking", "note": "战略规划"}'
+
+# 获取活动日志
+curl http://localhost:18795/quartet/activity?limit=10
+
+# 获取统计
+curl http://localhost:18795/quartet/stats?days=7
+```
+
+### Python SDK
+
+```python
+from star_office_bridge import StatePublisher
+
+# 创建 Agent
+zong = StatePublisher("宗志")
+
+# 设置状态
+zong.thinking("战略规划中")
+
+# 委派任务
+zong.delegate("码匠", "实现新功能")
+```
 
 ---
 
-## 📝 更新日志
+## 🔄 自动同步
 
-### v3.0 (2026-02-25)
-- 初始版本发布
-- 完成六艺智团像素风设计
-- 实现完整响应式官网
+系统支持从 OpenClaw sessions 自动同步 Agent 活动：
+
+```bash
+# 启动自动同步
+python auto_sync.py
+```
+
+**同步频率**: 每 30 秒  
+**数据来源**: OpenClaw sessions（只读）  
+**安全保证**: 不修改任何 Agent 代码
 
 ---
 
-**设计者**: 墨染 (六艺智团 - 前端/UI设计师)  
-**审核**: 待宗志(CEO)确认  
-**状态**: ✅ 已完成，等待验收
+## 🛠️ 技术栈
+
+| 层级 | 技术 |
+|------|------|
+| 前端 | HTML5, CSS3, JavaScript, Socket.IO |
+| 后端 | Python 3.14, Flask, Flask-SocketIO |
+| 通信 | WebSocket, REST API |
+| 部署 | GitHub Pages, 本地服务 |
+
+---
+
+## 📊 系统架构
+
+```
+┌─────────────────────────────────────────────┐
+│              Nexus AI                        │
+│  ┌─────────────────────────────────────┐   │
+│  │  四智团 (Quartet)                    │   │
+│  │  🧠宗志  💻码匠  🔬研析  🏠家助      │   │
+│  └─────────────────────────────────────┘   │
+│                    ↓                         │
+│  ┌─────────────────────────────────────┐   │
+│  │  star_office_bridge.py              │   │
+│  └─────────────────────────────────────┘   │
+└────────────────────┬───────────────────────┘
+                     │ HTTP + WebSocket
+                     ↓
+┌─────────────────────────────────────────────┐
+│           Star Office UI                     │
+│  ┌─────────────────────────────────────┐   │
+│  │  Flask + SocketIO (Port 18795)      │   │
+│  └─────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────┐   │
+│  │  实时监控面板                        │   │
+│  └─────────────────────────────────────┘   │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## 🔐 安全说明
+
+- 服务仅监听 `localhost:18795`（不开放外网）
+- 自动同步只读访问 OpenClaw sessions
+- 所有数据本地存储
+- 无外部 API 调用
+- 可随时停止服务或删除数据
+
+详见：[SECURITY_GUIDE.md](backend/star-office/SECURITY_GUIDE.md)
+
+---
+
+## 📚 文档
+
+| 文档 | 说明 |
+|------|------|
+| [README_QUARTET.md](README_QUARTET.md) | 四智团使用说明 |
+| [DESIGN_QUARTET.md](backend/star-office/DESIGN_QUARTET.md) | 设计文档 |
+| [SECURITY_GUIDE.md](backend/star-office/SECURITY_GUIDE.md) | 安全指南 |
+| [INTEGRATION_STAR_OFFICE.md](INTEGRATION_STAR_OFFICE.md) | Star Office 集成 |
+
+---
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+### 开发流程
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
+---
+
+## 📄 许可证
+
+MIT License - 详见 [LICENSE](LICENSE)
+
+---
+
+## 📞 联系方式
+
+- **GitHub**: [@maoshuorz](https://github.com/maoshuorz)
+- **项目地址**: https://github.com/maoshuorz/nexus-ai
+
+---
+
+_最后更新：2026-03-01 · V4.0 Quartet Edition_
