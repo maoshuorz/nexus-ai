@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Star Office Bridge - Nexus AI Agent 状态发布器
+Star Office Bridge v2 - Nexus AI Agent 状态发布器
+支持 WebSocket 实时推送 + 像素风视觉
 
 用法:
     from star_office_bridge import StatePublisher
@@ -46,7 +47,6 @@ class StatePublisher:
             bool: 是否成功
         """
         if async_mode:
-            # 异步发布，不阻塞
             thread = threading.Thread(
                 target=self._send_state,
                 args=(state, note),
@@ -82,6 +82,27 @@ class StatePublisher:
     def log_activity(self, note: str = ""):
         """记录活动日志（不改变状态）"""
         self.set_state("executing", note)
+    
+    # 便捷方法
+    def start_work(self, task: str):
+        """开始工作"""
+        self.set_state("writing", task)
+    
+    def start_research(self, topic: str):
+        """开始调研"""
+        self.set_state("researching", topic)
+    
+    def start_execution(self, action: str):
+        """开始执行"""
+        self.set_state("executing", action)
+    
+    def finish(self, note: str = "任务完成"):
+        """完成任务"""
+        self.set_state("idle", note)
+    
+    def error(self, msg: str):
+        """报告错误"""
+        self.set_state("error", msg)
 
 
 # 便捷函数
@@ -94,32 +115,26 @@ def create_publisher(agent_name: str) -> StatePublisher:
 if __name__ == "__main__":
     import time
     
-    print("Star Office Bridge 测试")
-    print("=" * 40)
+    print("╔════════════════════════════════════════════════════════╗")
+    print("║     Star Office Bridge v2 - Phase 2 测试                ║")
+    print("╚════════════════════════════════════════════════════════╝")
+    print()
     
-    # 测试宗志 (CEO)
-    publisher = StatePublisher("宗志")
+    # 测试所有 Agent
+    agents = ["宗志", "锦绣", "匠心", "墨染", "睿思", "明镜"]
     
-    print(f"\n1. 设置状态：writing - 正在分析市场数据")
-    publisher.set_state("writing", "正在分析市场数据")
-    time.sleep(0.5)
-    
-    print(f"2. 设置状态：researching - 调研竞品")
-    publisher.set_state("researching", "调研竞品")
-    time.sleep(0.5)
-    
-    print(f"3. 设置状态：idle - 休息中")
-    publisher.set_state("idle", "休息中")
-    time.sleep(0.5)
-    
-    print(f"\n4. 获取当前状态...")
-    status = publisher.get_status()
-    if status:
-        print(f"   状态：{status.get('state')} - {status.get('label')}")
-        print(f"   备注：{status.get('note')}")
-        print(f"   更新时间：{status.get('updated_at')}")
-    else:
-        print("   获取状态失败")
+    for i, name in enumerate(agents):
+        publisher = StatePublisher(name)
+        states = [
+            ("writing", "正在处理任务"),
+            ("researching", "调研中"),
+            ("executing", "执行命令"),
+            ("idle", "待命"),
+        ]
+        for state, note in states:
+            publisher.set_state(state, note)
+            time.sleep(0.3)
     
     print("\n✓ 测试完成")
-    print("访问 http://localhost:18795 查看状态看板")
+    print("\n访问 http://localhost:18795 查看像素风状态看板")
+    print("WebSocket 实时推送已启用 ✨")
