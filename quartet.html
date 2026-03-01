@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四智团 - Nexus AI</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card-bg: #12121a;
+            --border: #2a2a3a;
+            --text: #e0e0e0;
+            --muted: #666;
+            --primary: #4ECDC4;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h1 { 
+            font-size: 32px; 
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #A78BFA, #F59E0B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle { color: var(--muted); font-size: 14px; }
+        
+        .nav-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #000;
+        }
+        
+        .stage {
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            min-height: 400px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .agent-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .agent-card.active {
+            animation: pulse-card 2s infinite;
+        }
+        
+        @keyframes pulse-card {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+            50% { box-shadow: 0 0 40px rgba(255,255,255,0.2); }
+        }
+        
+        .agent-avatar {
+            font-size: 72px;
+            display: block;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+        
+        .agent-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .agent-role {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+        
+        .agent-state {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .agent-note {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 12px;
+            min-height: 35px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .activity-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .activity-panel h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .activity-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .activity-item:last-child { border-bottom: none; }
+        .activity-time { color: var(--muted); min-width: 70px; font-family: monospace; }
+        .activity-agent { font-weight: bold; }
+        .activity-action { color: var(--muted); }
+        
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+        
+        .connection-status.connected { border-color: #4ECDC4; color: #4ECDC4; }
+        .connection-status.disconnected { border-color: #FF6B6B; color: #FF6B6B; }
+        
+        @media (max-width: 768px) {
+            .agents-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        .state-thinking { background: rgba(255,107,107,0.2); color: #FF6B6B; }
+        .state-coding { background: rgba(78,205,196,0.2); color: #4ECDC4; }
+        .state-researching, .state-analyzing { background: rgba(167,139,250,0.2); color: #A78BFA; }
+        .state-coordinating { background: rgba(245,158,11,0.2); color: #F59E0B; }
+        .state-idle { background: rgba(255,255,255,0.1); color: #999; }
+        .state-deciding { background: rgba(255,107,107,0.3); color: #FF6B6B; }
+        .state-building { background: rgba(78,205,196,0.3); color: #4ECDC4; }
+        .state-executing { background: rgba(255,255,255,0.2); color: #fff; }
+        .state-error { background: rgba(255,0,0,0.3); color: #ff4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 四智团</h1>
+            <div class="subtitle">Nexus AI Quartet - 实时活动监控</div>
+            <a href="index.html" class="nav-link">← 返回主页</a>
+        </header>
+        
+        <div class="connection-status disconnected" id="connStatus">⚡ 连接中...</div>
+        
+        <div class="stage">
+            <div class="agents-grid" id="agentsGrid">
+                <div class="loading" style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">连接中...</div>
+            </div>
+        </div>
+        
+        <div class="activity-panel">
+            <h2>📋 活动日志</h2>
+            <div class="activity-list" id="activityList"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 连接本地 Star Office 服务
+        const socket = io('http://localhost:18795');
+        let agents = {};
+        let config = {};
+        
+        socket.on('connect', () => {
+            document.getElementById('connStatus').textContent = '✅ 已连接';
+            document.getElementById('connStatus').className = 'connection-status connected';
+        });
+        
+        socket.on('disconnect', () => {
+            document.getElementById('connStatus').textContent = '❌ 已断开 - 请启动 Star Office 服务';
+            document.getElementById('connStatus').className = 'connection-status disconnected';
+        });
+        
+        socket.on('init', (data) => {
+            config = data.config;
+            agents = data.agents.agents || {};
+            renderAgents();
+            loadActivity();
+            setInterval(loadActivity, 3000);
+        });
+        
+        socket.on('agent_update', (agent) => {
+            agents[agent.name] = agent;
+            renderAgents();
+        });
+        
+        function renderAgents() {
+            const grid = document.getElementById('agentsGrid');
+            const quartet = ['宗志', '码匠', '研析', '家助'];
+            
+            grid.innerHTML = quartet.map(name => {
+                const cfg = config[name] || {role: 'Unknown', color: '#999', avatar: '❓', title: ''};
+                const agent = agents[name] || {};
+                const state = agent.state || 'idle';
+                const label = agent.label || '待命';
+                const icon = agent.icon || '⏸️';
+                const note = agent.note || '-';
+                const isActive = state !== 'idle';
+                
+                return `
+                    <div class="agent-card ${isActive ? 'active' : ''}" 
+                         style="--color: ${cfg.color}; border-color: ${cfg.color}33">
+                        <span class="agent-avatar" style="color: ${cfg.color}">${cfg.avatar}</span>
+                        <div class="agent-name">${name}</div>
+                        <div class="agent-role">${cfg.role} · ${cfg.title}</div>
+                        <div class="agent-state state-${state}">
+                            <span class="status-indicator" style="background: ${cfg.color}"></span>
+                            ${icon} ${label}
+                        </div>
+                        <div class="agent-note">${note}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        async function loadActivity() {
+            try {
+                const res = await fetch('http://localhost:18795/quartet/activity?limit=10');
+                const data = await res.json();
+                const list = document.getElementById('activityList');
+                
+                if (!data.log || data.log.length === 0) {
+                    list.innerHTML = '<div style="color: #666; text-align: center; padding: 20px;">暂无活动</div>';
+                    return;
+                }
+                
+                list.innerHTML = data.log.map(item => {
+                    const cfg = config[item.agent] || {color: '#999', avatar: '❓'};
+                    const time = new Date(item.timestamp).toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                    return `
+                        <div class="activity-item">
+                            <span class="activity-time">${time}</span>
+                            <span class="activity-agent" style="color: ${cfg.color}">${cfg.avatar} ${item.agent}</span>
+                            <span class="activity-action">→ ${item.state} · ${item.note || ''}</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error('加载活动失败:', e);
+            }
+        }
+    </script>
+</body>
+</html>
