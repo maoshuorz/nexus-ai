@@ -113,7 +113,30 @@ class Agent:
                 "problem_solving": Skill("问题解决", 7),
                 "teamwork": Skill("团队协作", 7)
             }
+        # Star Office 桥接（延迟初始化）
+        self._bridge = None
     
+    def set_state(self, state: str, note: str = ""):
+        """发布 Agent 状态到 Star Office 看板（异步，不阻塞主逻辑）
+
+        Args:
+            state: 状态字符串，支持 idle/writing/researching/executing/syncing/error
+                   以及 Nexus AI 内部状态 working/thinking/waiting/offline
+            note:  当前任务描述（可选）
+
+        示例:
+            self.set_state("writing", "正在分析市场数据")
+            self.set_state("idle")
+        """
+        if self._bridge is None:
+            try:
+                from star_office_bridge import StatePublisher
+                self._bridge = StatePublisher(self.name)
+            except ImportError:
+                self._bridge = False  # 标记为已尝试，不再重试
+        if self._bridge:
+            self._bridge.set_state(state, note)
+
     def can_take_task(self) -> bool:
         """是否能接受新任务"""
         return (self.state == AgentState.IDLE and 
