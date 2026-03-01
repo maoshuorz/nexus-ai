@@ -1,0 +1,256 @@
+# Nexus AI × Star Office UI 整合文档
+
+_将 Star Office UI 作为 Nexus AI 的官方状态监控面板_
+
+---
+
+## 📋 整合概述
+
+Star Office UI 为 Nexus AI 的 6 个 Agent 提供实时状态监控：
+
+| Agent | 角色 | 专属色 |
+|-------|------|--------|
+| 宗志 | CEO | #FFE66D 黄 |
+| 锦绣 | CMO | #FF6B9D 粉 |
+| 匠心 | CTO | #4ECDC4 青 |
+| 墨染 | Frontend | #9B59B6 紫 |
+| 睿思 | Think | #E74C3C 红 |
+| 明镜 | Audit | #3498DB 蓝 |
+
+---
+
+## 🏗️ 架构
+
+```
+┌─────────────────────────────────────────┐
+│          Nexus AI Agents                │
+│  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐       │
+│  │宗志 │ │锦绣 │ │匠心 │ │ ... │       │
+│  └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘       │
+│     │       │       │       │           │
+│     └───────┴───┬───┴───────┘           │
+│                 │                       │
+│          StatePublisher                │
+│          (star_office_bridge.py)        │
+└─────────────────┼───────────────────────┘
+                  │ HTTP POST
+                  ▼
+┌─────────────────────────────────────────┐
+│       Star Office UI (Port 18795)       │
+│  ┌─────────────────────────────────┐    │
+│  │  /agents/:name/state (API)      │    │
+│  │  /agents/status (状态墙)         │    │
+│  │  /agents/activity-log (日志)    │    │
+│  └─────────────────────────────────┘    │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 快速开始
+
+### 1. 启动服务
+
+```bash
+cd /Users/maoshu/Desktop/tbms
+./scripts/start-nexus-full.sh
+```
+
+### 2. 在 Nexus AI Agent 中集成
+
+```python
+# 在 Agent 初始化时
+from star_office_bridge import StatePublisher
+
+class MyAgent:
+    def __init__(self, name: str):
+        self.name = name
+        self.publisher = StatePublisher(name)
+    
+    def work(self, task: str):
+        # 开始工作
+        self.publisher.set_state("writing", f"正在处理：{task}")
+        
+        # ... 执行任务 ...
+        
+        # 完成
+        self.publisher.set_state("idle", "任务完成")
+```
+
+### 3. 访问看板
+
+打开浏览器访问：http://localhost:18795
+
+- **简洁模式**: 显示单一状态
+- **Agent 模式**: 显示 6 Agent 状态墙 + 活动日志
+
+---
+
+## 📡 API 文档
+
+### 基础 API
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/health` | GET | 健康检查 |
+| `/status` | GET | 当前状态（简洁模式） |
+| `/set_state` | POST | 设置状态（简洁模式） |
+| `/yesterday-memo` | GET | 读取 MEMORY.md |
+
+### Agent API
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/agents/status` | GET | 所有 Agent 状态 |
+| `/agents/:name/status` | GET | 单个 Agent 状态 |
+| `/agents/:name/state` | POST | 设置 Agent 状态 |
+| `/agents/activity-log` | GET | 活动日志（最近 20 条） |
+| `/agents/config` | GET | Agent 配置信息 |
+
+### 请求示例
+
+```bash
+# 设置宗志状态
+curl -X POST http://localhost:18795/agents/宗志/state \
+     -H 'Content-Type: application/json' \
+     -d '{"state": "writing", "note": "正在分析 Q1 财报"}'
+
+# 获取所有 Agent 状态
+curl http://localhost:18795/agents/status
+
+# 获取活动日志
+curl http://localhost:18795/agents/activity-log?limit=10
+```
+
+---
+
+## 📝 状态值说明
+
+| 状态 | 说明 | 使用场景 |
+|------|------|----------|
+| `idle` | 空闲 | 等待任务/休息 |
+| `writing` | 写作中 | 编写代码/文档/报告 |
+| `researching` | 调研中 | 搜索信息/分析数据 |
+| `executing` | 执行中 | 运行命令/调用 API |
+| `syncing` | 同步中 | 文件同步/数据更新 |
+| `error` | 异常 | 任务失败/错误处理 |
+
+---
+
+## 🔧 配置
+
+### Star Office 配置
+
+编辑 `/Users/maoshu/Desktop/tbms/backend/star-office/app.py`:
+
+```python
+# 修改端口
+app.run(host="0.0.0.0", port=18795, debug=False)
+
+# 添加新 Agent
+AGENT_CONFIG = {
+    "宗志": {"role": "CEO", "color": "#FFE66D"},
+    # 添加新 Agent...
+}
+```
+
+### Nexus AI 配置
+
+在 Agent 基类中集成：
+
+```python
+# advanced_company_v3.py 或类似文件
+from star_office_bridge import StatePublisher
+
+# 在 Agent 初始化时
+self.state_publisher = StatePublisher(self.name)
+
+# 在关键方法中调用
+def execute_task(self, task):
+    self.state_publisher.set_state("executing", task.description)
+    # ...
+```
+
+---
+
+## 📊 前端模式
+
+### 简洁模式
+- 单状态显示
+- 适合个人使用
+- 快速查看当前状态
+
+### Agent 模式
+- 6 Agent 状态墙
+- 专属颜色标识
+- 活动日志时间轴
+- 适合团队协作监控
+
+---
+
+## ⚠️ 注意事项
+
+1. **端口占用**: 默认端口 18795，如被占用请修改 `app.py`
+2. **虚拟环境**: Star Office 使用独立 `.venv`，确保已安装依赖
+3. **异步发布**: `set_state(async_mode=True)` 不阻塞主逻辑
+4. **日志轮转**: 活动日志保留最近 100 条，自动轮转
+
+---
+
+## 🛠️ 故障排查
+
+### Star Office 无法启动
+
+```bash
+# 查看日志
+cat /tmp/star-office.log
+
+# 检查端口占用
+lsof -i :18795
+
+# 重启服务
+kill $(cat backend/star-office/.pid)
+./scripts/start-nexus-full.sh
+```
+
+### Agent 状态不更新
+
+1. 检查网络连接：`curl http://localhost:18795/health`
+2. 检查 Agent 名称是否正确（中文名称需精确匹配）
+3. 查看活动日志：`curl http://localhost:18795/agents/activity-log`
+
+---
+
+## 📄 文件结构
+
+```
+tbms/
+├── backend/star-office/
+│   ├── app.py              # Flask 服务（支持 Agent API）
+│   ├── agents_state.json   # Agent 状态存储
+│   ├── activity_log.json   # 活动日志
+│   └── frontend/
+│       └── index.html      # 支持双模式看板
+
+nexus-ai/
+├── star_office_bridge.py   # Agent 状态发布器
+└── INTEGRATION_STAR_OFFICE.md  # 本文档
+
+scripts/
+├── start-office.sh         # 仅启动 Star Office
+└── start-nexus-full.sh     # 启动全套服务
+```
+
+---
+
+## 🎯 后续优化（阶段 2/3）
+
+- [ ] 像素风视觉升级（六艺智团头像）
+- [ ] WebSocket 实时推送（替代轮询）
+- [ ] 状态统计报表（每日/每周）
+- [ ] Telegram 通知集成
+- [ ] 状态 - 任务关联（绑定具体任务 ID）
+
+---
+
+_最后更新：2026-03-01_
