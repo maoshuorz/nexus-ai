@@ -254,3 +254,72 @@ scripts/
 ---
 
 _最后更新：2026-03-01_
+
+---
+
+## 🎨 Phase 2 更新 (2026-03-01)
+
+### 新增功能
+
+#### 1. WebSocket 实时推送
+- 状态变更即时同步到前端（无需轮询）
+- 事件：`connect` → `agents_init`, `agent_update`, `status_update`
+- 断线自动重连
+
+#### 2. 像素风视觉升级
+- 字体：Press Start 2P（像素游戏风格）
+- 霓虹灯效果：文字阴影 + 边框发光
+- Agent 头像表情符号：
+  - 宗志 🐲 (CEO)
+  - 锦绣 🦊 (CMO)
+  - 匠心 🤖 (CTO)
+  - 墨染 🎨 (Frontend)
+  - 睿思 🦉 (Think)
+  - 明镜 ⚖️ (Audit)
+
+#### 3. 状态动画
+- 状态指示灯闪烁
+- Agent 卡片更新脉冲效果
+- WebSocket 连接状态指示
+
+#### 4. 桥接模块增强
+```python
+publisher.start_work("任务描述")      # writing 状态
+publisher.start_research("调研主题")  # researching 状态
+publisher.start_execution("命令")     # executing 状态
+publisher.finish("完成")              # idle 状态
+publisher.error("错误信息")           # error 状态
+```
+
+### 技术栈更新
+
+```
+flask==3.0.3
+flask-cors==4.0.1
+flask-socketio==5.3.6
+python-socketio==5.10.0
+# async_mode=threading (兼容 Python 3.14)
+```
+
+### 视觉效果
+
+```
+╔════════════════════════════════════════════════════════╗
+║     STAR OFFICE UI - Pixel Style                       ║
+╚════════════════════════════════════════════════════════╝
+
+[🐲 宗志] [CEO]
+┌────────────────────────────┐
+│    ⚡ 执行中                │
+│  正在执行 Phase 2 部署       │
+│  UPDATED: 2026-03-01 18:42 │
+└────────────────────────────┘
+```
+
+### 访问
+
+- HTTP: http://localhost:18795
+- WebSocket: ws://localhost:18795
+
+---
+
