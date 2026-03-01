@@ -323,3 +323,192 @@ python-socketio==5.10.0
 
 ---
 
+
+---
+
+## 🎯 Phase 3 更新 (2026-03-01)
+
+### 深度一体化功能
+
+#### 1. 任务管理系统
+
+**API**:
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `GET /tasks` | 获取 | 活动任务列表 |
+| `POST /tasks` | 创建 | 创建新任务 |
+| `PUT /tasks/<id>` | 更新 | 更新任务状态 |
+
+**请求示例**:
+```bash
+# 创建任务
+curl -X POST http://localhost:18795/tasks \
+     -H 'Content-Type: application/json' \
+     -d '{"agent": "宗志", "description": "Q1 战略规划"}'
+
+# 获取任务列表
+curl http://localhost:18795/tasks
+```
+
+**数据结构**:
+```json
+{
+  "id": "task_20260301184632_宗志",
+  "agent": "宗志",
+  "description": "Q1 战略规划",
+  "status": "active",
+  "created_at": "2026-03-01T18:46:32",
+  "updated_at": "2026-03-01T18:46:32"
+}
+```
+
+#### 2. 统计报表系统
+
+**API**: `GET /stats?days=7`
+
+**响应**:
+```json
+{
+  "daily": { "2026-03-01": { "writing": 5, "executing": 3 } },
+  "agents": { "宗志": { "writing": 2, "idle": 1 } },
+  "total": { "writing": 5, "executing": 3, "idle": 2 },
+  "period": "最近 7 天"
+}
+```
+
+**前端展示**:
+- 今日概览：6 状态汇总
+- Agent 统计：每人状态分布
+- 主要状态：最频繁状态
+
+#### 3. 状态 - 任务关联
+
+设置 Agent 状态时可绑定任务 ID：
+```python
+publisher.set_state("writing", "撰写报告", task_id="task_123")
+```
+
+API:
+```bash
+curl -X POST http://localhost:18795/agents/宗志/state \
+     -H 'Content-Type: application/json' \
+     -d '{"state": "writing", "note": "撰写报告", "task_id": "task_123"}'
+```
+
+#### 4. 活动日志扩展
+
+- 容量：200 条（Phase 2 为 100 条）
+- 字段：agent, state, note, task_id, timestamp
+- API: `GET /agents/activity-log?limit=20`
+
+### 前端三板块
+
+| 板块 | 功能 |
+|------|------|
+| Agent 墙 | 6 Agent 实时状态 + 活动日志 |
+| 统计 | 今日概览 + Agent 统计 |
+| 任务 | 活动任务列表 |
+
+### 文件结构
+
+```
+backend/star-office/
+├── app.py              # Phase 3 服务
+├── state.json          # 简洁模式状态
+├── agents_state.json   # Agent 状态
+├── activity_log.json   # 活动日志 (200 条)
+├── tasks.json          # 任务管理 (新增)
+├── stats.json          # 统计数据 (新增)
+└── frontend/
+    └── index.html      # 三板块 UI
+```
+
+### 桥接模块 Phase 3
+
+```python
+from star_office_bridge import StatePublisher
+
+publisher = StatePublisher("宗志")
+
+# 创建任务并绑定
+task = requests.post('http://localhost:18795/tasks', json={
+    'agent': '宗志',
+    'description': 'Q1 战略规划'
+}).json()['task']
+
+# 设置状态时绑定任务
+publisher.set_state("writing", "撰写战略报告", task_id=task['id'])
+
+# 完成任务
+publisher.finish("Q1 战略完成")
+requests.put(f"http://localhost:18795/tasks/{task['id']}", json={'status': 'completed'})
+```
+
+### 统计数据自动累积
+
+每次状态变更自动记录：
+- 按天统计：`stats.days["2026-03-01"]["writing"] += 1`
+- 按 Agent 统计：`stats.agents["宗志"]["writing"] += 1`
+
+---
+
+## 📊 三阶段对比
+
+| 功能 | Phase 1 | Phase 2 | Phase 3 |
+|------|---------|---------|---------|
+| HTTP API | ✅ | ✅ | ✅ |
+| WebSocket | ❌ | ✅ | ✅ |
+| 像素风视觉 | ❌ | ✅ | ✅ |
+| Agent 头像 | ❌ | ✅ | ✅ |
+| 任务管理 | ❌ | ❌ | ✅ |
+| 统计报表 | ❌ | ❌ | ✅ |
+| 状态 - 任务关联 | ❌ | ❌ | ✅ |
+| 活动日志 | 100 条 | 100 条 | 200 条 |
+| 前端板块 | 2 | 2 | 3 |
+
+---
+
+## 🎉 完整功能清单
+
+### API (13 个端点)
+
+**基础**:
+- `GET /health`
+- `GET /status`
+- `POST /set_state`
+- `GET /yesterday-memo`
+
+**Agent**:
+- `GET /agents/status`
+- `GET /agents/:name/status`
+- `POST /agents/:name/state`
+- `GET /agents/activity-log`
+- `GET /agents/config`
+
+**任务**:
+- `GET /tasks`
+- `POST /tasks`
+- `PUT /tasks/:id`
+
+**统计**:
+- `GET /stats`
+
+### WebSocket 事件
+
+- `connect` → `agents_init`
+- `agent_update`
+- `status_update`
+
+### 前端功能
+
+- 实时状态墙（6 Agent）
+- 活动日志时间轴
+- 今日概览统计
+- Agent 个人统计
+- 活动任务列表
+- WebSocket 连接状态
+
+---
+
+_Phase 3 完成日期：2026-03-01_
+_GitHub: https://github.com/maoshuorz/nexus-ai_
